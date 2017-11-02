@@ -33,5 +33,3 @@ var Text = {
 	Text.strings = [];
     }
 };
-// TODO: google if I can attach multiple key press listeners
-//   Text.clear after key press if Text.strings.length > 0

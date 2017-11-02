@@ -21,15 +21,12 @@ function loop () {
     delta_s = (current_frame_time - last_frame_time)/1000;
     last_frame_time = current_frame_time;
     elapsed_time += delta_s;
-    
-    curr_scene.update_callback(delta_s);
 
     
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    Update.callback();
     
     //TODO: look up canvas translate for camera movement
-    curr_scene.display();
 
     // Write text
-    Text.draw();
+    //Text.draw();
 }
