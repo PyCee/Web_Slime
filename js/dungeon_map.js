@@ -35,20 +35,37 @@ var dungeon_door = new Actor(new Vector(9.5, 2.5), 0.5, 1.0, "red.png");
 dungeon.add_actor(dungeon_door);
 
 // The interaction box for the dungeon exit
-var dungeon_door_hitbox = new Actor(new Vector(9.0, 2.25), 0.5, 1.5, "green.png",
+var dungeon_door_unlock_hitbox = new Actor(new Vector(9.0, 2.25), 0.5, 1.5, "green.png",
 				    false, false);
 
 function dungeon_door_attempt_unlock () {
-    return dungeon_door_hitbox.bounding_box.detect_intersection(slime.bounding_box) ==
+    return dungeon_door_unlock_hitbox.bounding_box.detect_intersection(slime.bounding_box) ==
 	block_relative_position.intersects && Inventory.contains(dungeon_key_item);
 }
 function dungeon_door_unlock () {
-    console.log("Used the key to unlock the door");
     dungeon_door.blocking = false;
     dungeon_door.draw = false;
     Inventory.remove_item(dungeon_key_item);
 }
 
-var dungeon_door_attempt_unlock =
+var dungeon_door_unlock_event =
     new Event(dungeon_door_attempt_unlock, dungeon_door_unlock);
-dungeon.add_event(dungeon_door_attempt_unlock);
+dungeon.add_event(dungeon_door_unlock_event);
+
+
+
+function dungeon_exit_attempt () {
+    return dungeon_door.bounding_box.detect_intersection(slime.bounding_box) ==
+	block_relative_position.intersects;
+}
+var exit_message_displayed = false;
+function dungeon_exit () {
+    if(!exit_message_displayed){
+	Alert.set("You escaped!");
+	exit_message_displayed = true;
+    }
+}
+
+var dungeon_exit = new Event(dungeon_exit_attempt, dungeon_exit);
+dungeon.add_event(dungeon_exit);
+
