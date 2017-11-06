@@ -62,7 +62,8 @@ title_scene.add_keyboard_event(" ", "press", function(){
 	help_scene.show();
 	break;
     case title_selection.options[2]:
-	credits_scene.show();
+	//credits_scene.show();
+	combat.scene.show();
 	break;
     default:
 	break;

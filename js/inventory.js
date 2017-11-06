@@ -16,5 +16,9 @@ var Inventory = {
     remove_item: function (item) {
 	var index = Inventory.items.indexOf(item);
 	Inventory.items.splice(index, 1);
-    }
+    },
+
+    scene: new Scene("Inventory")
 };
+
+Inventory.scene.add_keyboard_event("e", "press", function(){console.log("inventory e")});

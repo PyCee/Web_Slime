@@ -18,8 +18,8 @@ class Scene {
     }
     update (delta_s) {
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
-	curr_scene.display();
 	curr_scene.inner_update_callback(delta_s);
+	curr_scene.display();
     }
     show () {
 	curr_scene = this;

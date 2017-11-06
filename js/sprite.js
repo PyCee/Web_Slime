@@ -10,7 +10,6 @@ class Sprite extends Renderable {
 	    var size = this.size.scale(scale);
 	    
 	    // TODO: change sprite offset and dimensions for animations
-	    
 	    // Draw sprite
 	    ctx.drawImage(get_resource(this.resource),
 			  // Spritemap offset (x, y)

@@ -38,18 +38,22 @@ dungeon.add_actor(dungeon_door);
 var dungeon_door_unlock_hitbox = new Actor(new Vector(9.0, 2.25), 0.5, 1.5, "green.png",
 				    false, false);
 
+function dungeon_door_unlock_collision () {
+    return dungeon_door_unlock_hitbox.bounding_box.
+	detect_intersection(slime.bounding_box) == block_relative_position.intersects;
+}
+var locked_alert = false;
 function dungeon_door_attempt_unlock () {
-    return dungeon_door_unlock_hitbox.bounding_box.detect_intersection(slime.bounding_box) ==
-	block_relative_position.intersects && Inventory.contains(dungeon_key_item);
+    if(Inventory.contains(dungeon_key_item)){
+	dungeon_door.blocking = false;
+	dungeon_door.draw = false;
+    } else if(!locked_alert){
+	locked_alert = true;
+	Alert.set("The exit is locked...");
+    }
 }
-function dungeon_door_unlock () {
-    dungeon_door.blocking = false;
-    dungeon_door.draw = false;
-    Inventory.remove_item(dungeon_key_item);
-}
-
 var dungeon_door_unlock_event =
-    new Event(dungeon_door_attempt_unlock, dungeon_door_unlock);
+    new Event(dungeon_door_unlock_collision, dungeon_door_attempt_unlock);
 dungeon.add_event(dungeon_door_unlock_event);
 
 
@@ -65,7 +69,6 @@ function dungeon_exit () {
 	exit_message_displayed = true;
     }
 }
-
 var dungeon_exit = new Event(dungeon_exit_attempt, dungeon_exit);
 dungeon.add_event(dungeon_exit);
 
