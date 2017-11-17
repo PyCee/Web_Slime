@@ -1,6 +1,9 @@
 class Action {
-    constructor (name, damage) {
+    constructor (name, todo=function(target){}) {
 	this.name = name;
-	this.damage = damage;
+	this.todo = todo;
+    }
+    act (target) {
+	this.todo(target);
     }
 }

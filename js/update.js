@@ -1,5 +1,5 @@
 var Update = {
-    callback:function () {},
+    callback:function (delta_s) {},
     get: function () {
 	return Update.callback;
     },

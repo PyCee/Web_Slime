@@ -1,4 +1,4 @@
-var elapsed_time = 0;
+var global_timeline = new Timeline();
 var last_frame_time = window.performance.now();
 var current_frame_time = 0;
 var delta_s = 0;
@@ -20,13 +20,7 @@ function loop () {
     current_frame_time = window.performance.now();
     delta_s = (current_frame_time - last_frame_time)/1000;
     last_frame_time = current_frame_time;
-    elapsed_time += delta_s;
-
+    global_timeline.update(delta_s);
     
-    Update.callback();
-    
-    //TODO: look up canvas translate for camera movement
-
-    // Write text
-    //Text.draw();
+    Update.callback(delta_s);
 }
