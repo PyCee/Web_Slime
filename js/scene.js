@@ -25,6 +25,9 @@ class Scene {
 	for(var i = 0; i < this.events.length; ++i){
 	    this.events[i].test();
 	}
+	for (var i = 0; i < this.sprites.length; ++i){
+	    this.sprites[i].update(delta_s);
+	}
 	this.display();
     }
     show () {

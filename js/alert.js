@@ -1,6 +1,5 @@
 var Alert = {
     string: "",
-    exit_update_callback: function(){},
     draw: function (delta_s) {
 	// TODO draw
 	
@@ -26,9 +25,8 @@ var Alert = {
     },
     set: function (string) {
 	// Will pop up a message that will dissapear upon a button press
-	Alert.exit_update_callback = Update.get();
 	Alert.string = string;
-	Update.set(Alert.draw());
+	Update.set(Update.type.alert);
 	
 	if (document.addEventListener) {
 	    // For all major browsers, except IE 8 and earlier
@@ -41,9 +39,10 @@ var Alert = {
     remove: function (event) {
 	if(event.keyCode == " ".toUpperCase().charCodeAt(0)){
 	    if(Alert.string != ""){
-		Update.set(Alert.exit_update_callback);
+		Update.set(Update.type.scene);
 		Alert.string = "";
 		
+		// Remove Alert.remove from key listening
 		if (document.addEventListener) {
 		    // For all major browsers, except IE 8 and earlier
 		    document.removeEventListener("keydown", Alert.remove);
