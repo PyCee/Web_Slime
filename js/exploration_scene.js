@@ -4,7 +4,7 @@ var exploration = {
     // The scene that will be updated for each map
     scene: new Scene("Exploration", 1.0, function(){
 	physics_time_accum = 0;
-    }, function(delts_s){
+    }, function(delta_s){
 	
 	// Physics
 	physics_time_accum += delta_s;
@@ -18,21 +18,15 @@ var exploration = {
 	    physics_time_accum -= PHYSICS_UPDATE_DELTA_S;
 	}
 	//TODO: interpolate between the current and the next physics state
-	
-	// Handle Events
-	for(var i = 0; i < exploration.events.length; ++i){
-	    exploration.events[i].test();
-	}
     }),
 
     // Lists the actors that are apart of the map
-    actors: [],
-
-    // The exploration events that will trigger callbacks
-    events: []
+    actors: []
 };
 
-var slime = new Actor(new Vector(0.0, 0.0), 0.5, 0.5, "slime.png", false, true);
+var slime = new Actor(new Vector(0.0, 0.0), new Vector(0.5, 0.5),
+		      new Sprite(new Vector(0.0, 0.0), new Vector(0.5, 0.5),
+				 "slime.png"), false, true);
 var SLIME_MOVE_SPEED = 2.0;
 
 // Add basic control for exploration

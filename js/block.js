@@ -5,9 +5,10 @@ var block_relative_position = {
     above: 3,
     below: 4
 };
-class Block extends Renderable {
-    constructor (position, width, height, color="#000000", draw=true) {
-	super(position, width, height, color, draw);
+class Block {
+    constructor (position, size) {
+	this.position = position;
+	this.size = size;
     }
     detect_intersection (block) {
 	var relative_position = -1;

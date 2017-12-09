@@ -1,9 +1,11 @@
-class Actor extends Sprite {
-    constructor (position, width, height, resource, blocking=true, movable=false,
+class Actor {
+    constructor (position, size, sprite, blocking=true, movable=false,
 		 interaction=function(){}) {
-	super(position, width, height, resource);
+	this.sprite = sprite;
+	this.position = position;
+	this.size = size;
 	this.velocity = new Vector(0.0, 0.0);
-	this.bounding_box = new Block(position, width, height);
+	this.bounding_box = new Block(position, size);
 	this.blocking = blocking;
 	this.movable = movable;
 	this.interaction = interaction;
@@ -19,14 +21,11 @@ class Actor extends Sprite {
 	    if(i == this_index){
 		continue;
 	    }
-	    
 	    // For each block in the list
 	    if(!actors[i].blocking){
 		continue;
 	    }
-	    
-	    var updated_bb = new Block(this.position, this.size.x, this.size.y);
-	    
+	    var updated_bb = new Block(this.position, this.size);
 	    var inter = actors[i].bounding_box.detect_intersection(updated_bb);
 	    if(inter == block_relative_position.intersects){
 		// If the actor's bounding box and the block intersect
@@ -59,6 +58,7 @@ class Actor extends Sprite {
 		i = 0;
 	    }
 	}
-	this.bounding_box = new Block(this.position, this.size.x, this.size.y);
+	this.bounding_box = new Block(this.position, this.size);
+	this.sprite.position = this.position;
     }
 }
