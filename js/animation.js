@@ -1,12 +1,20 @@
 class Animation extends Sprite {
-    constructor (position, size, resource_s, name, duration_s, time_array) {
-	super(position, size, resource_s);
+    constructor (resource_s, name, duration_s, time_array) {
+	super(resource_s);
 	this.name = name;
 	this.duration_s = duration_s;
 	this.timeline = new Timeline();
 	this.time_array = time_array;
 	
 	// Check that the time array is sorted
+	var last_time = 0.0;
+	for(var i = 1; i < this.time_array.length; ++i){
+	    if(this.time_array[i - 1] >= this.time_array[i]){
+		// If the previous time is equal to or greater than the next
+		// Error, the time_array must be sorted in ascending order
+		console.log("ERROR::" + this.name + " has an unsorted time_array");
+	    }
+	}
 	
 	this.frame_width = get_resource(resource_s).width / this.time_array.length;
 	if(this.frame_width != Math.floor(this.frame_width)){
@@ -25,8 +33,8 @@ class Animation extends Sprite {
     draw (position, size) {
 	if(this.display){
 	    // If the animation should be displayed
-	    var position = this.position.scale(scene_scale);
-	    var size = this.size.scale(scene_scale);
+	    position = position.scale(scene_scale);
+	    size = size.scale(scene_scale);
 	    
 	    // calculate current frame index from elapsed time in time_array
 	    for(var i = 0; i < this.time_array.length - 1; ++i){

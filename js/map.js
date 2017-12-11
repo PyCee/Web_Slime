@@ -15,7 +15,6 @@ class Map {
 	for(var i = 0; i < this.actors.length; ++i){
 	    sprites.push(this.actors[i].sprite);
 	}
-	exploration.scene.set_sprites(sprites);
 	exploration.actors = this.actors;
 	exploration.scene.events = this.events;
 

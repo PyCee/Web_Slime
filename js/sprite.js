@@ -1,19 +1,17 @@
 class Sprite {
-    constructor (position, size, resource_s) {
+    constructor (resource_s) {
 	load_resource("img", resource_s);
-	this.position = position;
-	this.size = size;
 	this.resource_s = resource_s;
 	this.display = true;
     }
     hide () {this.display = false;}
     show () {this.display = true;}
     update (delta_s) {}
-    draw () {
+    draw (position, size) {
 	if(this.display){
 	    // If the animation should be displayed
-	    var position = this.position.scale(scene_scale);
-	    var size = this.size.scale(scene_scale);
+	    var position = position.scale(scene_scale);
+	    var size = size.scale(scene_scale);
 	    // Draw sprite
 	    ctx.drawImage(get_resource(this.resource_s),
 			  // Spritemap offset (x, y)

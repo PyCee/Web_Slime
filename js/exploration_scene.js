@@ -11,26 +11,26 @@ var exploration = {
 	while(physics_time_accum >= PHYSICS_UPDATE_DELTA_S){
 	    
 	    // Step actor physics
-	    for(var i = 0
-		; i < exploration.actors.length; ++i){
+	    for(var i = 0; i < exploration.actors.length; ++i){
 		exploration.actors[i].step_physics(exploration.actors, i);
 	    }
 	    
 	    physics_time_accum -= PHYSICS_UPDATE_DELTA_S;
 	}
 	//TODO: interpolate between the current and the next physics state
+
+	for(var i = 0; i < exploration.actors.length; ++i){
+	    exploration.actors[i].sprite.update(delta_s);
+	    exploration.actors[i].sprite.draw(exploration.actors[i].position,
+					     exploration.actors[i].size);
+	}
     }),
 
     // Lists the actors that are apart of the map
     actors: []
 };
-/*
 var slime = new Actor(new Vector(0.0, 0.0), new Vector(0.5, 0.5),
-		      new Sprite(new Vector(0.0, 0.0), new Vector(0.5, 0.5),
-				 "slime.png"), false, true);
-*/
-var slime = new Actor(new Animation(new Vector(0.0, 0.0), new Vector(0.5, 0.5),
-				    "slime.png", "move", 2, [0.0, 1.0]),
+		      new Animation("slime.png", "Slime_Move", 2, [0.0, 1.0]),
 		      false, true, function(){});
 var SLIME_MOVE_SPEED = 2.0;
 

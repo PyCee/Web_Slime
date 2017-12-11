@@ -9,14 +9,14 @@ class Scene {
 	this.inner_update_callback = inner_update_callback;
 	this.events = [];
 	
-	this.sprites = [];
+	this.ui_elements = [];
 	this.user_input = new User_Input_Group();
 	this.tmp = true;
     }
     display () {
 	scene_scale = canvas.width / this.inside_width;
-	for (var i = 0; i < this.sprites.length; ++i){
-	    this.sprites[i].draw();
+	for (var i = 0; i < this.ui_elements.length; ++i){
+	    this.ui_elements[i].display();
 	}
     }
     update (delta_s) {
@@ -25,9 +25,6 @@ class Scene {
 	for(var i = 0; i < this.events.length; ++i){
 	    this.events[i].test();
 	}
-	for (var i = 0; i < this.sprites.length; ++i){
-	    this.sprites[i].update(delta_s);
-	}
 	this.display();
     }
     show () {
@@ -35,8 +32,8 @@ class Scene {
 	this.user_input.bind();
 	this.show_callback();
     }
-    set_sprites (sprites) {
-	this.sprites = sprites;
+    set_ui_elements (ui_elements) {
+	this.ui_elements = ui_elements;
     }
     set_events(events) {
 	this.events = events;
