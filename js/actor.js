@@ -33,7 +33,6 @@ class Actor {
 		// Check where the actor was before the recent update
 		// and press them against the wall
 
-		//console.log(this.bounding_box.width);
 		var pre_inter =
 		    actors[i].bounding_box.detect_intersection(this.bounding_box);
 		
