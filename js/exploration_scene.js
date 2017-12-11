@@ -23,10 +23,14 @@ var exploration = {
     // Lists the actors that are apart of the map
     actors: []
 };
-
+/*
 var slime = new Actor(new Vector(0.0, 0.0), new Vector(0.5, 0.5),
 		      new Sprite(new Vector(0.0, 0.0), new Vector(0.5, 0.5),
 				 "slime.png"), false, true);
+*/
+var slime = new Actor(new Vector(0.0, 0.0), new Vector(0.5, 0.5),
+		      new Animation(new Vector(0.0, 0.0), new Vector(0.5, 0.5),
+				    "slime.png", "move", 2, 2), false, true);
 var SLIME_MOVE_SPEED = 2.0;
 
 // Add basic control for exploration
