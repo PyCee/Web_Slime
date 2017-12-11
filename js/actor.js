@@ -1,5 +1,5 @@
 class Actor {
-    constructor (sprite, blocking=true, movable=false,
+    constructor (sprite, blocking=true, movable=false, update=function(){},
 		 interaction=function(){}) {
 	this.sprite = sprite;
 	this.position = sprite.position;
@@ -10,6 +10,7 @@ class Actor {
 	this.movable = movable;
 	this.interaction = interaction;
     }
+    update (delta_s) {}
     step_physics (actors, this_index) {
 	if(!this.movable){
 	    return;

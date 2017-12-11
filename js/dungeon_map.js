@@ -40,11 +40,11 @@ function dungeon_key_interaction () {
 }
 var dungeon_key = new Actor(new Sprite(new Vector(3.5, 1.5), new Vector(0.5, 0.5),
 				       "key.png"),
-			    false, false, dungeon_key_interaction);
+			    false, false, function(){}, dungeon_key_interaction);
 dungeon.add_actor(dungeon_key);
 
 var dungeon_gate = new Actor(new Sprite(new Vector(2.0, 0.0), new Vector(0.75, 1.0),
-				       "red.png"));
+				       "gate.png"));
 dungeon.add_actor(dungeon_gate);
 
 // The interaction box for the dungeon exit
@@ -62,6 +62,7 @@ var dungeon_gate_locked = true;
 function dungeon_gate_unlock_callback () {
     if(dungeon_gate_locked && Inventory.contains(dungeon_key_item)){
 	dungeon_gate_locked = false;
+	locked_alert = true;
 	dungeon_gate.blocking = false;
 	dungeon_gate.sprite.hide();
 	// play animation for gate opening
@@ -75,10 +76,10 @@ var dungeon_door_unlock_event =
 dungeon.add_event(dungeon_door_unlock_event);
 
 
-
 var dungeon_exit_hitbox = new Actor(new Sprite(new Vector(2.0, 0.0),
 					       new Vector(0.75, 0.5),
 					       "green.png"), false, false);
+dungeon_exit_hitbox.sprite.hide();
 dungeon.add_actor(dungeon_exit_hitbox);
 
 function dungeon_exit_test () {
