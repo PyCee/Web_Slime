@@ -1,11 +1,11 @@
 class Actor {
-    constructor (position, size, sprite, blocking=true, movable=false,
+    constructor (sprite, blocking=true, movable=false,
 		 interaction=function(){}) {
 	this.sprite = sprite;
-	this.position = position;
-	this.size = size;
+	this.position = sprite.position;
+	this.size = sprite.size;
 	this.velocity = new Vector(0.0, 0.0);
-	this.bounding_box = new Block(position, size);
+	this.bounding_box = new Block(this.position, this.size);
 	this.blocking = blocking;
 	this.movable = movable;
 	this.interaction = interaction;
