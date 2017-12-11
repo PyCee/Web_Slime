@@ -1,4 +1,3 @@
-
 class Timeline {
     constructor (active=true) {
 
