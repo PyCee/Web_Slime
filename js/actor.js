@@ -2,8 +2,6 @@ var g_next_actor_id = 0;
 function assign_actor_id () {
     return g_next_actor_id++;
 }
-
-
 class Actor extends Renderable {
     constructor (position, size, render_element, blocking=true, movable=false,
 		 update=function(){}, interaction=function(){}) {
@@ -14,7 +12,6 @@ class Actor extends Renderable {
 	this.interaction = interaction;
 	this.velocity = new Vector(0.0, 0.0);
 	this.id = assign_actor_id();
-	console.log(this.id);
     }
     update (delta_s) {}
     step_physics (actors, this_index) {

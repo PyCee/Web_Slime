@@ -48,14 +48,12 @@ var dungeon_gate = new Actor(new Vector(2.0, 0.0), new Vector(0.75, 1.0),
 dungeon.add_actor(dungeon_gate);
 
 // The interaction box for the dungeon exit
-var dungeon_gate_unlock_hitbox = new Actor(new Vector(2.0, 1.0),
-					   new Vector(0.75, 0.05),
-					   new Sprite("red.png"),
-					   false, false);
+var dungeon_gate_unlock_hitbox = new Block(new Vector(2.0, 1.0),
+					   new Vector(0.75, 0.05));
 
 function dungeon_gate_unlock_test () {
-    return dungeon_gate_unlock_hitbox.bounding_box.
-	detect_intersection(slime.bounding_box) == block_relative_position.intersects;
+    return dungeon_gate_unlock_hitbox.detect_intersection(slime.bounding_box) ==
+	block_relative_position.intersects;
 }
 var locked_alert = false;
 var dungeon_gate_locked = true;
@@ -75,23 +73,14 @@ var dungeon_door_unlock_event =
     new Event(dungeon_gate_unlock_test, dungeon_gate_unlock_callback);
 dungeon.add_event(dungeon_door_unlock_event);
 
-
-var dungeon_exit_hitbox = new Actor(new Vector(2.0, 0.0),
-				    new Vector(0.75, 0.5),
-				    new Sprite("green.png"), false, false);
-dungeon_exit_hitbox.hide();
-dungeon.add_actor(dungeon_exit_hitbox);
-
+var dungeon_exit_hitbox = new Block(new Vector(2.0, 0.0),
+				    new Vector(0.75, 0.1));
 function dungeon_exit_test () {
-    return dungeon_exit_hitbox.bounding_box.detect_intersection(slime.bounding_box) ==
+    return dungeon_exit_hitbox.detect_intersection(slime.bounding_box) ==
 	block_relative_position.intersects;
 }
-var exit_message_displayed = false;
 function dungeon_exit_callback () {
-    if(!exit_message_displayed){
-	Alert.set("You escaped!");
-	exit_message_displayed = true;
-    }
+    corridor.set();
 }
 var dungeon_exit_event = new Event(dungeon_exit_test, dungeon_exit_callback);
 dungeon.add_event(dungeon_exit_event);
