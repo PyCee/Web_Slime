@@ -1,4 +1,4 @@
-class Character extends UI_Element{
+class Character extends Renderable{
     constructor (name, sprite_res, max_health=10,
 		 action_1=new Action("DEFAULT_ACTION"),
 		 action_2=new Action("DEFAULT_ACTION"),

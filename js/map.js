@@ -16,6 +16,7 @@ class Map {
 	    sprites.push(this.actors[i].sprite);
 	}
 	exploration.actors = this.actors;
+	exploration.scene.set_renderables(this.actors)
 	exploration.scene.events = this.events;
 
 	exploration.scene.show();

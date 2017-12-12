@@ -1,14 +1,21 @@
-class Actor {
-    constructor (position, size, sprite, blocking=true, movable=false,
+var g_next_actor_id = 0;
+function assign_actor_id () {
+    g_next_actor_id += 1;
+    return g_next_actor_id - 1;
+}
+
+
+class Actor extends Renderable {
+    constructor (position, size, render_element, blocking=true, movable=false,
 		 update=function(){}, interaction=function(){}) {
-	this.position = position;
-	this.size = size;
-	this.sprite = sprite;
-	this.velocity = new Vector(0.0, 0.0);
+	super(position, size, render_element);
 	this.bounding_box = new Block(this.position, this.size);
 	this.blocking = blocking;
 	this.movable = movable;
 	this.interaction = interaction;
+	this.velocity = new Vector(0.0, 0.0);
+	this.id = assign_actor_id();
+	console.log(this.id);
     }
     update (delta_s) {}
     step_physics (actors, this_index) {
@@ -59,6 +66,5 @@ class Actor {
 	    }
 	}
 	this.bounding_box = new Block(this.position, this.size);
-	this.sprite.position = this.position;
     }
 }

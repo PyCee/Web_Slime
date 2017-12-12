@@ -5,7 +5,6 @@ class Animation extends Sprite {
 	this.duration_s = duration_s;
 	this.timeline = new Timeline();
 	this.time_array = time_array;
-	
 	// Check that the time array is sorted
 	var last_time = 0.0;
 	for(var i = 1; i < this.time_array.length; ++i){
@@ -15,7 +14,6 @@ class Animation extends Sprite {
 		console.log("ERROR::" + this.name + " has an unsorted time_array");
 	    }
 	}
-	
 	this.frame_width = get_resource(resource_s).width / this.time_array.length;
 	if(this.frame_width != Math.floor(this.frame_width)){
 	    // If the width of the sprite map is not divisible by the number of frames

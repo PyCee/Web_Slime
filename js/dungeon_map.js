@@ -35,7 +35,7 @@ function dungeon_key_interaction () {
     if(!Inventory.contains(dungeon_key_item)){
 	Alert.set("Picked up a key!");
 	Inventory.add_item(dungeon_key_item);
-	dungeon_key.sprite.hide();
+	dungeon_key.hide();
     }
 }
 var dungeon_key = new Actor(new Vector(3.5, 1.5), new Vector(0.5, 0.5),
@@ -64,7 +64,7 @@ function dungeon_gate_unlock_callback () {
 	dungeon_gate_locked = false;
 	locked_alert = true;
 	dungeon_gate.blocking = false;
-	dungeon_gate.sprite.hide();
+	dungeon_gate.hide();
 	// play animation for gate opening
     } else if(!locked_alert){
 	locked_alert = true;
@@ -79,7 +79,7 @@ dungeon.add_event(dungeon_door_unlock_event);
 var dungeon_exit_hitbox = new Actor(new Vector(2.0, 0.0),
 				    new Vector(0.75, 0.5),
 				    new Sprite("green.png"), false, false);
-dungeon_exit_hitbox.sprite.hide();
+dungeon_exit_hitbox.hide();
 dungeon.add_actor(dungeon_exit_hitbox);
 
 function dungeon_exit_test () {

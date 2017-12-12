@@ -17,7 +17,7 @@ enemy_party.add_member(enemy_character3);
 var combat = {
     scene: new Scene("Combat", 1.0, function(){
 	// set position of all characters in player_party and enemy_party
-	var ui_elements = [];
+	var renderables = [];
 	var character_selection_options = [];
 	
 	for(var i = 0; i < player_party.characters.length; ++i){
@@ -25,7 +25,7 @@ var combat = {
 	    player_party.characters[i].position = 
 		new Vector(0.5 - (i+1) * 1.10 *
 			   player_party.characters[i].size.x, 0.2);
-	    ui_elements.push(player_party.characters[i]);
+	    renderables.push(player_party.characters[i]);
 	    character_selection_options.push(player_party.characters[i].name);
 	}
 	for(var i = 0; i < enemy_party.characters.length; ++i){
@@ -33,17 +33,17 @@ var combat = {
 	    enemy_party.characters[i].position = 
 		new Vector(0.5 + (i) * 1.10 *
 			   enemy_party.characters[i].size.x, 0.2);
-	    ui_elements.push(enemy_party.characters[i]);
+	    renderables.push(enemy_party.characters[i]);
 	}
 	
-	// Add ui ui_elements
-	ui_elements.push(combat.action_selection_col);
-	ui_elements.push(combat.first_attack);
-	ui_elements.push(combat.second_attack);
+	// Add ui renderables
+	renderables.push(combat.action_selection_col);
+	renderables.push(combat.first_attack);
+	renderables.push(combat.second_attack);
 
 	combat.character_selection = new Selection(character_selection_options);
 		
-	combat.scene.set_ui_elements(ui_elements);
+	combat.scene.set_renderables(renderables);
 	
     }, function (delta_s) {
 	// Update enemy logic if needed and play animations
@@ -51,15 +51,15 @@ var combat = {
 	// Set first_attack and second_attack to pngs based on character_selection
     }),
     action_selection: new Selection(["First", "Second"], true),
-    action_selection_col: new UI_Element(new Vector(0.05, 0.4), new Vector(0.1, 0.1),
+    action_selection_col: new Renderable(new Vector(0.05, 0.4), new Vector(0.1, 0.1),
 					 new Sprite("red.png")),
-    first_attack: new UI_Element(new Vector(0.15, 0.4), new Vector(0.3, 0.1),
+    first_attack: new Renderable(new Vector(0.15, 0.4), new Vector(0.3, 0.1),
 				 new Sprite("blue.png")),
-    second_attack: new UI_Element(new Vector(0.65, 0.4), new Vector(0.3, 0.1),
+    second_attack: new Renderable(new Vector(0.65, 0.4), new Vector(0.3, 0.1),
 				  new Sprite("blue.png")),
 
     character_selection: null,
-    character_selection_col: new UI_Element(new Vector(1, 1), new Vector(1, 1),
+    character_selection_col: new Renderable(new Vector(1, 1), new Vector(1, 1),
 					    new Sprite("black.png"))
 };
 combat.scene.add_keyboard_event(" ", "press", function(){

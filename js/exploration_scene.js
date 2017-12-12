@@ -20,9 +20,7 @@ var exploration = {
 	//TODO: interpolate between the current and the next physics state
 
 	for(var i = 0; i < exploration.actors.length; ++i){
-	    exploration.actors[i].sprite.update(delta_s);
-	    exploration.actors[i].sprite.draw(exploration.actors[i].position,
-					     exploration.actors[i].size);
+	    exploration.actors[i].render_element.update(delta_s);
 	}
     }),
 
