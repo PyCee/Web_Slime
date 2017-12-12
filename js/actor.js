@@ -1,7 +1,6 @@
 var g_next_actor_id = 0;
 function assign_actor_id () {
-    g_next_actor_id += 1;
-    return g_next_actor_id - 1;
+    return g_next_actor_id++;
 }
 
 
