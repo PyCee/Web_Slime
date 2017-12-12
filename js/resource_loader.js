@@ -15,8 +15,6 @@ function load_resource (type, res_string) {
 	resource_loaded[res_string] = false;
 	resources[res_string].onload = function () {
 	    resource_loaded[res_string] = true;
-	    console.log(res_string + " loaded!: " + resource_loaded[res_string]);
-	    
 	};
 	resources[res_string].src = resource_path + res_string;
     }
