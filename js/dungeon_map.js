@@ -74,7 +74,7 @@ var dungeon_door_unlock_event =
 dungeon.add_event(dungeon_door_unlock_event);
 
 var dungeon_exit_hitbox = new Block(new Vector(2.0, 0.0),
-				    new Vector(0.75, 0.1));
+				    new Vector(0.75, 0.01));
 function dungeon_exit_test () {
     return dungeon_exit_hitbox.detect_intersection(slime.bounding_box) ==
 	block_relative_position.intersects;
