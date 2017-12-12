@@ -6,7 +6,7 @@ arena.add_actor(slime);
 // Walls
 // Top wall
 arena.add_actor(new Actor(new Vector(0.0, 0.0),
-			  new Vector(arena_width, 1.0),
+			  new Vector(arena_width, 2.0),
 			  new Sprite("black.png")));
 // Bottom wall
 // Bottom Left
