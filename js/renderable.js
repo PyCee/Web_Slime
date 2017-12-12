@@ -13,6 +13,8 @@ class Renderable {
 	this.render_element.update(delta_s);
     }
     display () {
-	this.render_element.draw(this.position, this.size);
+	if(is_resource_loaded(this.render_element.resource_s)){
+	    this.render_element.draw(this.position, this.size);
+	}
     }
 }
