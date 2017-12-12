@@ -1,9 +1,7 @@
 var dungeon_width = 5.0;
 var dungeon_height = dungeon_width * canvas_dimensions.aspect_ratio.multiplier;
 
-var dungeon = new Map(dungeon_width, function(){
-    slime.position = new Vector(1.0, 1.5);
-});
+var dungeon = new Map(dungeon_width);
 dungeon.add_actor(slime);
 // Walls
 // Top wall (with gap for gate)
@@ -46,7 +44,6 @@ dungeon.add_actor(dungeon_key);
 var dungeon_gate = new Actor(new Vector(2.0, 0.0), new Vector(0.75, 1.0),
 			     new Sprite("gate.png"));
 dungeon.add_actor(dungeon_gate);
-
 // The interaction box for the dungeon exit
 var dungeon_gate_unlock_hitbox = new Block(new Vector(2.0, 1.0),
 					   new Vector(0.75, 0.05));
@@ -72,7 +69,6 @@ function dungeon_gate_unlock_callback () {
 var dungeon_door_unlock_event =
     new Event(dungeon_gate_unlock_test, dungeon_gate_unlock_callback);
 dungeon.add_event(dungeon_door_unlock_event);
-
 var dungeon_exit_hitbox = new Block(new Vector(2.0, 0.0),
 				    new Vector(0.75, 0.01));
 function dungeon_exit_test () {
@@ -80,7 +76,7 @@ function dungeon_exit_test () {
 	block_relative_position.intersects;
 }
 function dungeon_exit_callback () {
-    corridor.set();
+    corridor.set(new Vector(5.75, 6.25));
 }
 var dungeon_exit_event = new Event(dungeon_exit_test, dungeon_exit_callback);
 dungeon.add_event(dungeon_exit_event);

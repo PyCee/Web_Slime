@@ -6,7 +6,8 @@ class Map {
 	this.actors = actors;
 	this.events = events;
     }
-    set () {
+    set (slime_start_position) {
+	slime.set_position(slime_start_position);
 	exploration.scene.inside_width = this.width;
 	exploration.scene.show_callback = this.show_callback;
 	

@@ -51,7 +51,7 @@ title_scene.add_keyboard_event(" ", "press", function(){
     switch(title_selection.get()){
     case title_selection.options[0]:
 	console.log("Starting game");
-	dungeon.set();
+	dungeon.set(new Vector(1.0, 1.5));
 	break;
     case title_selection.options[1]:
 	//credits_scene.show();

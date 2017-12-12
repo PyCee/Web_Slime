@@ -14,6 +14,10 @@ class Actor extends Renderable {
 	this.id = assign_actor_id();
     }
     update (delta_s) {}
+    set_position (position) {
+	this.position = position;
+	this.bounding_box = new Block(this.position, this.size);
+    }
     step_physics (actors, this_index) {
 	if(!this.movable){
 	    return;

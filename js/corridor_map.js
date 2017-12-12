@@ -1,9 +1,7 @@
 var corridor_width = 12;
 var corridor_height = corridor_width * canvas_dimensions.aspect_ratio.multiplier;
 
-var corridor = new Map(corridor_width, function(){
-    slime.position = new Vector(5.75, 6.0);
-});
+var corridor = new Map(corridor_width);
 corridor.add_actor(slime);
 // Walls
 
@@ -23,7 +21,7 @@ function corridor_arena_exit_test () {
 	block_relative_position.intersects;
 }
 function corridor_arena_exit_callback () {
-    arena.set();
+    arena.set(new Vector(5.75, 6.0));
 }
 var corridor_arena_exit_event = new Event(corridor_arena_exit_test,
 					  corridor_arena_exit_callback);
@@ -36,7 +34,7 @@ function corridor_dungeon_exit_test () {
 	block_relative_position.intersects;
 }
 function corridor_dungeon_exit_callback () {
-    dungeon.set();
+    dungeon.set(new Vector(2.125, 0.02));
 }
 var corridor_dungeon_exit_event = new Event(corridor_dungeon_exit_test,
 					    corridor_dungeon_exit_callback);
