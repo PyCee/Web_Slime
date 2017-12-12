@@ -1,6 +1,6 @@
 class Sprite {
     constructor (resource_s) {
-	load_resource("img", resource_s);
+	load_resource("img", resource_s, function(){});
 	this.resource_s = resource_s;
 	this.display = true;
     }

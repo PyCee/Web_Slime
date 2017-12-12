@@ -6,6 +6,9 @@ class Renderable {
     }
     hide () {this.render_element.hide();}
     show () {this.render_element.show();}
+    get_resource () {
+	return this.render_element.resource_s;
+    }
     update_render_element (delta_s) {
 	this.render_element.update(delta_s);
     }

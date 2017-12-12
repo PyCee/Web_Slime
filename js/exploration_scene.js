@@ -18,10 +18,6 @@ var exploration = {
 	    physics_time_accum -= PHYSICS_UPDATE_DELTA_S;
 	}
 	//TODO: interpolate between the current and the next physics state
-
-	for(var i = 0; i < exploration.actors.length; ++i){
-	    exploration.actors[i].render_element.update(delta_s);
-	}
     }),
 
     // Lists the actors that are apart of the map

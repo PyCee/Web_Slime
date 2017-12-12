@@ -1,24 +1,36 @@
 var resources = [];
-var res_loaded = [];
 var resource_path = "res/"
+var resource_loaded = [];
 
-function load_resource (type, resource) {
-    if(!resources[resource]){
+function load_resource (type, res_string) {
+    if(!resources[res_string]){
 	switch(type){
 	case "img":
-	    resources[resource] = new Image();
-	    resources[resource].src = resource_path + resource;
+	    resources[res_string] = new Image();
 	    break;
 	default:
 	    console.log("error::Attempted to load resource of unknown type: " + type);
 	    break;
 	}
+	resource_loaded[res_string] = false;
+	resources[res_string].onload = function () {
+	    resource_loaded[res_string] = true;
+	    console.log(res_string + " loaded!: " + resource_loaded[res_string]);
+	    
+	};
+	resources[res_string].src = resource_path + res_string;
     }
-    return resources[resource];
+    return resources[res_string];
 }
-function get_resource (resource) {
-    if(!resources[resource]){
-	console.log("error::Attempted to get unloaded resource: " + resource);
+function is_resource_loaded (res_string) {
+    return resource_loaded[res_string];
+}
+function get_resource (res_string) {
+    if(!resources[res_string]){
+	console.log("error::Attempted to get unknown resource: " + res_string);
     }
-    return resources[resource];
+    if(!is_resource_loaded(res_string)){
+	console.log("attempting to get unloaded resource " + res_string);
+    }
+    return resources[res_string];
 }

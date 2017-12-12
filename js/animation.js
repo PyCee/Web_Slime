@@ -14,12 +14,6 @@ class Animation extends Sprite {
 		console.log("ERROR::" + this.name + " has an unsorted time_array");
 	    }
 	}
-	this.frame_width = get_resource(resource_s).width / this.time_array.length;
-	if(this.frame_width != Math.floor(this.frame_width)){
-	    // If the width of the sprite map is not divisible by the number of frames
-	    console.log("Animation " + resource_s +
-			" given invalid frame number " + this.time_array.length);
-	}
     }
     update (delta_s) {
 	this.timeline.update(delta_s);
@@ -40,14 +34,14 @@ class Animation extends Sprite {
 		    break;
 		}
 	    }
-	    var curr_frame_i = i;
-	    
+	    var frame_width = get_resource(this.resource_s).width /
+		this.time_array.length;
 	    // Draw the current frame from the sprite sheet
 	    ctx.drawImage(get_resource(this.resource_s),
 			  // Spritemap offset (x, y)
-			  curr_frame_i * this.frame_width, 0,
+			  i * frame_width, 0,
 			  // Spritemap disensions (width, height)
-			  this.frame_width,
+			  frame_width,
 			  get_resource(this.resource_s).height,
 			  // Position (x, y)
 			  position.x, position.y,
