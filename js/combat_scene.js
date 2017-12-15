@@ -3,15 +3,19 @@ var enemy_party = new Party();
 
 var slime_character = new Character("Slime", "green.png",
 				    new Action("tackle", Action_Type.Enemy_Single,
-					       function(target){target.health-=2;}),
+					       function(target){target.health-=2;},
+					       "blue.png"),
 				    new Action("slime it", Action_Type.Enemy_All,
-					       function(target){target.health-=1;}));
+					       function(target){target.health-=1;},
+					       "black.png"));
 ally_party.add_member(slime_character);
 var fight_character = new Character("Fight", "green.png",
 				    new Action("tackle", Action_Type.Enemy_Single,
-					       function(target){target.health-=2;}),
+					       function(target){target.health-=2;},
+					       "green.png"),
 				    new Action("fight it", Action_Type.Enemy_Single,
-					       function(target){target.health-=1;}));
+					       function(target){target.health-=1;},
+					       "red.png"));
 ally_party.add_member(fight_character);
 
 var enemy_character1 = new Character("Enemy1", "red.png",
@@ -146,6 +150,10 @@ var combat = {
 	    break;
 	case Combat_State.Action_Select:
 	    combat.action_sel.reset();
+	    combat.first_action.render_element.resource_s =
+		combat.ally_sel.get().action_1.resource_s;
+	    combat.second_action.render_element.resource_s =
+		combat.ally_sel.get().action_2.resource_s;
 	    combat.update_action_indicator();
 	    break;
 	case Combat_State.Target_Select:
