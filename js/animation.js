@@ -1,10 +1,11 @@
 class Animation extends Sprite {
-    constructor (resource_s, name, duration_s, time_array) {
+    constructor (resource_s, name, duration_s, time_array, loop=false) {
 	super(resource_s);
 	this.name = name;
 	this.duration_s = duration_s;
 	this.timeline = new Timeline();
 	this.time_array = time_array;
+	this.loop = loop;
 	// Check that the time array is sorted
 	var last_time = 0.0;
 	for(var i = 1; i < this.time_array.length; ++i){
@@ -19,7 +20,11 @@ class Animation extends Sprite {
 	this.timeline.update(delta_s);
 	var difference = this.timeline.get_elapsed_time() - this.duration_s;
 	if(difference >= 0.0){
-	    this.timeline.set(difference);
+	    if(this.loop){
+		this.timeline.set(difference);
+	    } else {
+		this.timeline.set(this.duration_s);
+	    }
 	}
     }
     draw (position, size) {

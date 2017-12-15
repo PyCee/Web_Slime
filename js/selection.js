@@ -36,4 +36,7 @@ class Selection {
     get () {
 	return this.options[this.selected_i];
     }
+    get_index () {
+	return this.selected_i;
+    }
 }

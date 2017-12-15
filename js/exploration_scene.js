@@ -24,7 +24,7 @@ var exploration = {
     actors: []
 };
 var slime = new Actor(new Vector(0.0, 0.0), new Vector(0.5, 0.5),
-		      new Animation("slime.png", "Slime_Move", 2, [0.0, 1.0]),
+		      new Animation("slime.png", "Slime_Move", 2, [0.0, 1.0], true),
 		      false, true, function(){});
 var SLIME_MOVE_SPEED = 2.0;
 

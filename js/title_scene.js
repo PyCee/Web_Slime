@@ -30,6 +30,7 @@ title_scene.add_keyboard_event("w", "press", function(){
 	break;
     }
 });
+
 title_scene.add_keyboard_event("s", "press", function(){
     // When 's' is pressed
     // Select the below option

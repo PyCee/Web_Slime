@@ -1,9 +1,16 @@
+var Action_Type = {
+    Enemy_Single: 0,
+    Enemy_All: 1,
+    Ally_Single: 2,
+    Ally_All: 3
+};
 class Action {
-    constructor (name, todo=function(target){}) {
+    constructor (name, type, fun) {
 	this.name = name;
-	this.todo = todo;
+	this.type = type;
+	this.fun = fun;
     }
-    act (target) {
-	this.todo(target);
+    complete (target) {
+	this.fun(target);
     }
 }
