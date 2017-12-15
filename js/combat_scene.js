@@ -4,23 +4,30 @@ var enemy_party = new Party();
 var slime_character = new Character("Slime", "green.png",
 				    new Action("tackle", Action_Type.Enemy_Single,
 					       function(target){target.health-=2;}),
-				    new Action("slime it", Action_Type.Enemy_Single,
+				    new Action("slime it", Action_Type.Enemy_All,
 					       function(target){target.health-=1;}));
 ally_party.add_member(slime_character);
-/*
-var fighter_character = new Character("Fighter", "green.png");
-ally_party.add_member(fighter_character);
-*/
-var enemy_character1 = new Character("Enemy", "red.png",
+var fight_character = new Character("Fight", "green.png",
+				    new Action("tackle", Action_Type.Enemy_Single,
+					       function(target){target.health-=2;}),
+				    new Action("fight it", Action_Type.Enemy_Single,
+					       function(target){target.health-=1;}));
+ally_party.add_member(fight_character);
+
+var enemy_character1 = new Character("Enemy1", "red.png",
 				    new Action("kil", Action_Type.Enemy_Single,
 					       function(target){target.health-=2;}),
 				    new Action("murk", Action_Type.Enemy_Single,
 					       function(target){target.health-=1;}));
 enemy_party.add_member(enemy_character1);
-/*
-var enemy_character2 = new Character("Enemy", "red.png");
+var enemy_character2 = new Character("Enemy2", "red.png",
+				    new Action("kill", Action_Type.Enemy_Single,
+					       function(target){target.health-=2;}),
+				    new Action("murkee", Action_Type.Enemy_Single,
+					       function(target){target.health-=1;}));
 enemy_party.add_member(enemy_character2);
-var enemy_character3 = new Character("Enemy", "red.png");
+/*
+var enemy_character3 = new Character("Enemy3", "red.png");
 enemy_party.add_member(enemy_character3);
 */
 var Combat_State = {
@@ -34,9 +41,6 @@ var combat = {
     state: Combat_State.Character_Select,
     scene: new Scene("Combat", 1.0, function(){
 	// set position of all characters in ally_party and enemy_party
-	var renderables = [];
-	var ally_sel_options = [];
-	var enemy_sel_options = [];
 	for(var i = 0; i < ally_party.characters.length; ++i){
 	    // Set positions from center-screen, right to left
 	    ally_party.characters[i].position = 
@@ -50,10 +54,13 @@ var combat = {
 			   enemy_party.characters[i].size.x, 0.2);
 	}
 	// Create non-static selections for this battle
-	combat.ally_sel = new Selection(ally_party.characters, true);
-	combat.enemy_sel = new Selection(enemy_party.characters, true);
+	// Reverse ally_party.characters so left and right selection fits
+	//   when drawn in reverse order
+	combat.ally_sel = new Selection(ally_party.characters.reverse(), false);
+	combat.enemy_sel = new Selection(enemy_party.characters, false);
 	
 	// Add ui renderables
+	var renderables = [];
 	for(var i = 0; i < ally_party.characters.length; ++i){
 	    // Add each player character to renderables
 	    renderables.push(ally_party.characters[i]);
@@ -63,13 +70,16 @@ var combat = {
 	    renderables.push(enemy_party.characters[i]);
 	}
 	renderables.push(combat.action_sel_indicator);
+	renderables.push(combat.character_sel_indicator);
 	renderables.push(combat.first_action);
 	renderables.push(combat.second_action);
 	combat.scene.set_renderables(renderables);
+
+
+	// Initialize state to character select
 	combat.set_state(Combat_State.Character_Select);
+	combat.update_character_indicator(combat.ally_sel.get());
     }, function (delta_s) {
-	//console.log(combat.state);
-	
 	switch(combat.state){
 	case Combat_State.Character_Select:
 	    console.log("Select player character");
@@ -113,17 +123,44 @@ var combat = {
     // ally_sel and enemy_sel are created upon combat.scene load,
     //   and changed as characters die during battle
     ally_sel: null,
-    ally_sel_indicator: new Renderable(new Vector(1, 1), new Vector(1, 1),
-				       new Sprite("red.png")),
     enemy_sel: null,
-    enemy_sel_indicator: new Renderable(new Vector(1, 1), new Vector(1, 1),
-					new Sprite("red.png")),
     // target_sel will be set to ally_sel or enemy_sel depending on action type
     target_sel: null,
+    character_sel_indicator: new Renderable(new Vector(0, 0), new Vector(0.15, 0.05),
+					    new Sprite("red.png")),
 
     set_state: function (state) {
 	combat.state = state;
-	combat.animation_timeline.reset();
+	switch(combat.state){
+	case Combat_State.Character_Select:
+	    for(var i = 0; i < ally_party.characters.length; ++i){
+		console.log(ally_party.characters[i].name+" has health: "+
+			    ally_party.characters[i].health);
+	    }
+	    for(var i = 0; i < enemy_party.characters.length; ++i){
+		console.log(enemy_party.characters[i].name+" has health: "+
+			    enemy_party.characters[i].health);
+	    }
+	    combat.ally_sel.reset();
+	    combat.update_character_indicator(combat.ally_sel.get());
+	    break;
+	case Combat_State.Action_Select:
+	    combat.action_sel.reset();
+	    combat.update_action_indicator();
+	    break;
+	case Combat_State.Target_Select:
+	    combat.target_sel.reset();
+	    combat.update_character_indicator(combat.target_sel.get());
+	    break;
+	case Combat_State.Player_Animation:
+	    combat.animation_timeline.reset();
+	    break;
+	case Combat_State.Enemy_Animation:
+	    combat.animation_timeline.reset();
+	    break;
+	default:
+	    break;
+	}
     },
     enemy_turn: function () {
 	// Calculate enemy to use action
@@ -131,22 +168,12 @@ var combat = {
 	// Calculate enemy's target
     },
     update_action_indicator: function () {
-	switch(combat.action_sel.get()){
-	case combat.action_sel.options[0]:
-	    combat.action_sel_indicator.position = new Vector(0.05, 0.4);
-	    break;
-	case combat.action_sel.options[1]:
-	    combat.action_sel_indicator.position = new Vector(0.55, 0.4);
-	    break;
-	default:
-	    break;
-	}
+	combat.action_sel_indicator.position =
+	    new Vector(0.05 + combat.action_sel.get_index() * 0.5, 0.4);
     },
-    update_ally_indicator: function () {
-	
-    },
-    update_enemy_indicator: function () {
-	
+    update_character_indicator: function (character) {
+	combat.character_sel_indicator.position =
+	    new Vector(character.position.x, 0.15);
     }
 };
 combat.scene.add_keyboard_event(" ", "press", function(){
@@ -154,8 +181,7 @@ combat.scene.add_keyboard_event(" ", "press", function(){
     case Combat_State.Character_Select:
 	// Character has been selected
 	combat.action_sel = new Selection([combat.ally_sel.get().action_1,
-					   combat.ally_sel.get().action_2], true);
-	combat.update_action_indicator();
+					   combat.ally_sel.get().action_2], false);
 	combat.set_state(Combat_State.Action_Select);
 	break;
     case Combat_State.Action_Select:
@@ -164,14 +190,15 @@ combat.scene.add_keyboard_event(" ", "press", function(){
 	switch(combat.action_sel.get().type){
 	case Action_Type.Enemy_Single:
 	    // Ready target selection
-	    combat.enemy_sel.reset();
 	    combat.target_sel = combat.enemy_sel;
+
+	    // TODO put the below 3 lines in one piece of code
 	    combat.set_state(Combat_State.Target_Select);
 	    break;
 	case Action_Type.Ally_Single:
 	    // Ready target selection
-	    combat.ally_sel.reset();
 	    combat.target_sel = combat.ally_sel;
+	    
 	    combat.set_state(Combat_State.Target_Select);
 	    break;
 	case Action_Type.Enemy_All:
@@ -212,10 +239,14 @@ combat.scene.add_keyboard_event(" ", "press", function(){
 combat.scene.add_keyboard_event("a", "press", function(){
     switch(combat.state){
     case Combat_State.Character_Select:
+	var prev_char_i = combat.ally_sel.get_index();
 	while(!combat.ally_sel.previous().is_alive()){
 	    // Loop through characters until we reach an alive character
+	    if(prev_char_i == combat.ally_sel.get_index()){
+		break;
+	    }
 	}
-	combat.update_ally_indicator();
+	combat.update_character_indicator(combat.ally_sel.get());
 	break;
     case Combat_State.Action_Select:
 	combat.action_sel.previous();
@@ -226,7 +257,7 @@ combat.scene.add_keyboard_event("a", "press", function(){
 	    // Loop through targets until we reach a living target
 	}
 	// update_target_indicator
-	combat.update_enemy_indicator();
+	combat.update_character_indicator(combat.target_sel.get());
 	break;
     default:
 	break;
@@ -238,7 +269,7 @@ combat.scene.add_keyboard_event("d", "press", function(){
 	while(!combat.ally_sel.next().is_alive()){
 	    // Loop through characters until we reach an alive character
 	}
-	combat.update_ally_indicator();
+	combat.update_character_indicator(combat.ally_sel.get());
 	break;
     case Combat_State.Action_Select:
 	combat.action_sel.next();
@@ -249,7 +280,7 @@ combat.scene.add_keyboard_event("d", "press", function(){
 	    // Loop through targets until we reach a living target
 	}
 	// update_target_indicator
-	combat.update_enemy_indicator();
+	combat.update_character_indicator(combat.target_sel.get());
 	break;
     default:
 	break;
