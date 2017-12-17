@@ -8,11 +8,11 @@ corridor.add_actor(slime);
 // Left wall
 corridor.add_actor(new Actor(new Vector(0.0, 0.0),
 			     new Vector(5.5, corridor_height),
-			     new Sprite("black.png")));
+			     new Animation("black", Sprite.black)));
 // Right wall
 corridor.add_actor(new Actor(new Vector(6.5, 0.0),
 			     new Vector(5.5, corridor_height),
-			     new Sprite("black.png")));
+			     new Animation("black", Sprite.black)));
 
 var corridor_arena_exit_hitbox = new Block(new Vector(5.5, 0.0),
 					   new Vector(1.0, 0.05));

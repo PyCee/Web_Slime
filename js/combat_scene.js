@@ -1,39 +1,57 @@
 var ally_party = new Party();
 var enemy_party = new Party();
 
-var slime_character = new Character("Slime", "green.png",
+var slime_character = new Character("Slime", new Animation("sli",
+							   Sprite.green),
 				    new Action("tackle", Action_Type.Enemy_Single,
 					       function(target){target.health-=2;},
-					       "blue.png"),
+					       new Animation("slime",
+							     Sprite.slime, 0, 0,
+							     2, 2),
+					       new Animation("tackle",
+							     Sprite.action_tackle)),
 				    new Action("slime it", Action_Type.Enemy_All,
 					       function(target){target.health-=1;},
-					       "black.png"));
+					       new Animation("slime",
+							     Sprite.slime, 0, 0,
+							     2, 2),
+					       new Animation("slime_them",
+							     Sprite.action_slime_them)));
 ally_party.add_member(slime_character);
-var fight_character = new Character("Fight", "green.png",
+var fight_character = new Character("Fight", new Animation("fig",
+							   Sprite.green),
 				    new Action("tackle", Action_Type.Enemy_Single,
 					       function(target){target.health-=2;},
-					       "green.png"),
+					       null,
+					       new Animation("punch",
+							     Sprite.action_punch)),
 				    new Action("fight it", Action_Type.Enemy_Single,
 					       function(target){target.health-=1;},
-					       "red.png"));
+					       null,
+					       new Animation("super_punch",
+							     Sprite.action_super_punch)));
 ally_party.add_member(fight_character);
-
-var enemy_character1 = new Character("Enemy1", "red.png",
+var enemy_character1 = new Character("Enemy1", new Animation("ene",
+							     Sprite.red),
 				    new Action("kil", Action_Type.Enemy_Single,
-					       function(target){target.health-=2;}),
+					       function(target){target.health-=2;},
+					       null),
 				    new Action("murk", Action_Type.Enemy_Single,
-					       function(target){target.health-=1;}));
+					       function(target){target.health-=1;},
+					       null));
 enemy_party.add_member(enemy_character1);
-var enemy_character2 = new Character("Enemy2", "red.png",
+
+
+var enemy_character2 = new Character("Enemy2", new Animation("ene",
+							     Sprite.red),
 				    new Action("kill", Action_Type.Enemy_Single,
-					       function(target){target.health-=2;}),
+					       function(target){target.health-=2;},
+					       null),
 				    new Action("murkee", Action_Type.Enemy_Single,
-					       function(target){target.health-=1;}));
+					       function(target){target.health-=1;},
+					       null));
 enemy_party.add_member(enemy_character2);
-/*
-var enemy_character3 = new Character("Enemy3", "red.png");
-enemy_party.add_member(enemy_character3);
-*/
+
 var Combat_State = {
     Characer_Select: 0,
     Action_Select: 1,
@@ -73,13 +91,15 @@ var combat = {
 	    // Add each enemy character to renderables
 	    renderables.push(enemy_party.characters[i]);
 	}
+	
 	renderables.push(combat.action_sel_indicator);
 	renderables.push(combat.character_sel_indicator);
+	
 	renderables.push(combat.first_action);
 	renderables.push(combat.second_action);
+	
 	combat.scene.set_renderables(renderables);
-
-
+	
 	// Initialize state to character select
 	combat.set_state(Combat_State.Character_Select);
 	combat.update_character_indicator(combat.ally_sel.get());
@@ -96,9 +116,9 @@ var combat = {
 	    break;
 	case Combat_State.Player_Animation:
 	    console.log("playing player animation");
-	    combat.animation_timeline.update(delta_s);
-	    if(combat.animation_timeline.get_elapsed_time() > 2.0){
-		// Calculate enemy action and set animation (tmp: timeline)
+	    if(combat.ally_sel.get().animation.is_finished()){
+		// If animation has finished
+		combat.ally_sel.get().set_idle();
 		combat.set_state(Combat_State.Enemy_Animation);
 	    }
 	    break;
@@ -118,12 +138,12 @@ var combat = {
     animation_timeline: new Timeline(true),
     
     first_action: new Renderable(new Vector(0.15, 0.4), new Vector(0.3, 0.1),
-				 new Sprite("black.png")),
+				 new Animation("default", Sprite.black)),
     second_action: new Renderable(new Vector(0.65, 0.4), new Vector(0.3, 0.1),
-				  new Sprite("black.png")),
+				  new Animation("default", Sprite.black)),
     action_sel: null,
     action_sel_indicator: new Renderable(new Vector(0.05, 0.4), new Vector(0.1, 0.1),
-					 new Sprite("red.png")),
+					 new Animation("default", Sprite.red)),
     // ally_sel and enemy_sel are created upon combat.scene load,
     //   and changed as characters die during battle
     ally_sel: null,
@@ -131,7 +151,7 @@ var combat = {
     // target_sel will be set to ally_sel or enemy_sel depending on action type
     target_sel: null,
     character_sel_indicator: new Renderable(new Vector(0, 0), new Vector(0.15, 0.05),
-					    new Sprite("red.png")),
+					    new Animation("default", Sprite.black)),
 
     set_state: function (state) {
 	combat.state = state;
@@ -150,10 +170,6 @@ var combat = {
 	    break;
 	case Combat_State.Action_Select:
 	    combat.action_sel.reset();
-	    combat.first_action.render_element.resource_s =
-		combat.ally_sel.get().action_1.resource_s;
-	    combat.second_action.render_element.resource_s =
-		combat.ally_sel.get().action_2.resource_s;
 	    combat.update_action_indicator();
 	    break;
 	case Combat_State.Target_Select:
@@ -161,7 +177,7 @@ var combat = {
 	    combat.update_character_indicator(combat.target_sel.get());
 	    break;
 	case Combat_State.Player_Animation:
-	    combat.animation_timeline.reset();
+	    combat.ally_sel.get().set_animation(combat.action_sel.get().character_animation);
 	    break;
 	case Combat_State.Enemy_Animation:
 	    combat.animation_timeline.reset();
@@ -175,11 +191,18 @@ var combat = {
 	// Calculate enemy action
 	// Calculate enemy's target
     },
+    update_action_icons: function () {
+	combat.first_action.set_animation(
+	    combat.ally_sel.get().action_1.display_animation);
+	combat.second_action.set_animation(
+	    combat.ally_sel.get().action_2.display_animation);
+    },
     update_action_indicator: function () {
 	combat.action_sel_indicator.position =
 	    new Vector(0.05 + combat.action_sel.get_index() * 0.5, 0.4);
     },
     update_character_indicator: function (character) {
+	combat.update_action_icons();
 	combat.character_sel_indicator.position =
 	    new Vector(character.position.x, 0.15);
     }

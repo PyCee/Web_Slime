@@ -5,12 +5,12 @@ var Action_Type = {
     Ally_All: 3
 };
 class Action {
-    constructor (name, type, fun, resource_s="black.png") {
+    constructor (name, type, fun, character_animation, display_animation=null) {
 	this.name = name;
 	this.type = type;
 	this.fun = fun;
-	this.resource_s = resource_s;
-	load_resource("img", resource_s);
+	this.character_animation = character_animation;
+	this.display_animation = display_animation;
     }
     complete (target) {
 	this.fun(target);

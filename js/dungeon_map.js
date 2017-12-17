@@ -8,23 +8,23 @@ dungeon.add_actor(slime);
 // Top wall (left part)
 dungeon.add_actor(new Actor(new Vector(0.0, 0.0),
 			    new Vector(2, 1.0),
-			    new Sprite("black.png")));
+			    new Animation("black", Sprite.black)));
 // Top wall (right part)
 dungeon.add_actor(new Actor(new Vector(2.75, 0.0),
 			    new Vector(2.25, 1.0),
-			    new Sprite("black.png")));
+			    new Animation("black", Sprite.black)));
 // Bottom wall
 dungeon.add_actor(new Actor(new Vector(0.0, dungeon_height - 0.3),
 			    new Vector(dungeon_width, 0.3),
-			    new Sprite("black.png")));
+			    new Animation("black", Sprite.black)));
 // Left wall
 dungeon.add_actor(new Actor(new Vector(0.0, 0.0),
 			    new Vector(0.5, dungeon_height),
-			    new Sprite("black.png")));
+			    new Animation("black", Sprite.black)));
 // Right wall
 dungeon.add_actor(new Actor(new Vector(dungeon_width - 0.5, 0.0),
 			    new Vector(0.5, dungeon_height),
-			    new Sprite("black.png")));
+			    new Animation("black", Sprite.black)));
 
 
 var dungeon_key_item = new Inventory_Item("dungeon key", "key from a skeleton");
@@ -37,12 +37,12 @@ function dungeon_key_interaction () {
     }
 }
 var dungeon_key = new Actor(new Vector(3.5, 1.5), new Vector(0.5, 0.5),
-			    new Sprite("key.png"),
+			    new Animation("key.png", Sprite.key),
 			    false, false, function(){}, dungeon_key_interaction);
 dungeon.add_actor(dungeon_key);
 
 var dungeon_gate = new Actor(new Vector(2.0, 0.0), new Vector(0.75, 1.0),
-			     new Sprite("gate.png"));
+			     new Animation("gate.png", Sprite.gate));
 dungeon.add_actor(dungeon_gate);
 // The interaction box for the dungeon exit
 var dungeon_gate_unlock_hitbox = new Block(new Vector(2.0, 1.0),
@@ -80,3 +80,4 @@ function dungeon_exit_callback () {
 }
 var dungeon_exit_event = new Event(dungeon_exit_test, dungeon_exit_callback);
 dungeon.add_event(dungeon_exit_event);
+

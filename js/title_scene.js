@@ -6,12 +6,15 @@ var title_scene = new Scene("Title", 1.0, function(){
     title_selection.reset();
     arrow.position = new Vector(arrow.position.x, 0.2);
 });
+
 var title_scene_start_sel = new Renderable(new Vector(0.3, 0.2), new Vector(0.4, 0.075),
-					   new Sprite("black.png"));
+					   new Animation("black", Sprite.black));
+
 var title_scene_test_sel = new Renderable(new Vector(0.3, 0.3), new Vector(0.4, 0.075),
-					  new Sprite("black.png"));
+					  new Animation("black", Sprite.black));
+
 var arrow = new Renderable(new Vector(0.15, 0.2), new Vector(0.1, 0.075),
-			   new Sprite("black.png"));
+			   new Animation("black", Sprite.black));
 
 title_scene.set_renderables([arrow, title_scene_start_sel, title_scene_test_sel]);
 

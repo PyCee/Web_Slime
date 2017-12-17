@@ -1,20 +1,23 @@
 class Renderable {
-    constructor (position, size, render_element){
+    constructor (position, size, idle_animation){
 	this.position = position;
 	this.size = size;
-	this.render_element = render_element;
+	this.idle_animation = idle_animation;
+	this.animation = this.idle_animation;
     }
-    hide () {this.render_element.hide();}
-    show () {this.render_element.show();}
-    get_resource () {
-	return this.render_element.resource_s;
+    hide () {this.animation.hide();}
+    show () {this.animation.show();}
+    set_animation (animation) {
+	this.animation = animation;
+	this.animation.reset();
     }
-    update_render_element (delta_s) {
-	this.render_element.update(delta_s);
+    set_idle () {
+	this.set_animation(this.idle_animation);
+    }
+    update_animation (delta_s) {
+	this.animation.update(delta_s);
     }
     display () {
-	if(is_resource_loaded(this.render_element.resource_s)){
-	    this.render_element.draw(this.position, this.size);
-	}
+	this.animation.draw(this.position, this.size);
     }
 }

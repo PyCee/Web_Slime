@@ -7,24 +7,24 @@ arena.add_actor(slime);
 // Top wall
 arena.add_actor(new Actor(new Vector(0.0, 0.0),
 			  new Vector(arena_width, 2.0),
-			  new Sprite("black.png")));
+			  new Animation("black", Sprite.black)));
 // Bottom wall
 // Bottom Left
 arena.add_actor(new Actor(new Vector(0.0, arena_height - 0.3),
 			  new Vector(5.5, 0.3),
-			  new Sprite("black.png")));
+			  new Animation("black", Sprite.black)));
 // Bottom Right
 arena.add_actor(new Actor(new Vector(6.5, arena_height - 0.3),
 			  new Vector(5.5, 0.3),
-			  new Sprite("black.png")));
+			  new Animation("black", Sprite.black)));
 // Left wall
 arena.add_actor(new Actor(new Vector(0.0, 0.0),
 			  new Vector(0.5, arena_height),
-			  new Sprite("black.png")));
+			  new Animation("black", Sprite.black)));
 // Right wall
 arena.add_actor(new Actor(new Vector(arena_width - 0.5, 0.0),
 			  new Vector(0.5, arena_height),
-			  new Sprite("black.png")));
+			  new Animation("black", Sprite.black)));
 
 var arena_corridor_exit_hitbox = new Block(new Vector(5.5, arena_height),
 					   new Vector(1.0, 0.05));

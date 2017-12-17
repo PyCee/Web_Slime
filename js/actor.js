@@ -3,9 +3,9 @@ function assign_actor_id () {
     return g_next_actor_id++;
 }
 class Actor extends Renderable {
-    constructor (position, size, render_element, blocking=true, movable=false,
+    constructor (position, size, animation, blocking=true, movable=false,
 		 update=function(){}, interaction=function(){}) {
-	super(position, size, render_element);
+	super(position, size, animation);
 	this.bounding_box = new Block(this.position, this.size);
 	this.blocking = blocking;
 	this.movable = movable;

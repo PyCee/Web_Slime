@@ -1,53 +1,58 @@
-class Animation extends Sprite {
-    constructor (resource_s, name, duration_s, time_array, loop=false) {
-	super(resource_s);
+class Animation {
+    constructor (name, spritemap, row=0, col=0, frame_count=1, duration_s=1.0,
+		 loop=false) {
 	this.name = name;
-	this.duration_s = duration_s;
-	this.timeline = new Timeline();
-	this.time_array = time_array;
+	this.spritemap = spritemap;
+	this.row = row;
+	this.col = col;
+	this.frame_count = frame_count;
+	this.frame_time = duration_s / this.frame_count;
 	this.loop = loop;
-	// Check that the time array is sorted
-	var last_time = 0.0;
-	for(var i = 1; i < this.time_array.length; ++i){
-	    if(this.time_array[i - 1] >= this.time_array[i]){
-		// If the previous time is equal to or greater than the next
-		// Error, the time_array must be sorted in ascending order
-		console.log("ERROR::" + this.name + " has an unsorted time_array");
-	    }
-	}
+	this.frame = 0;
+	this.timeline = new Timeline();
+	this.hidden = false;
+	// TODO: check max row/col for inclusion in spritemap
     }
+    hide () {this.hidden = true;}
+    show () {this.hidden = false;}
     update (delta_s) {
 	this.timeline.update(delta_s);
-	var difference = this.timeline.get_elapsed_time() - this.duration_s;
-	if(difference >= 0.0){
-	    if(this.loop){
-		this.timeline.set(difference);
-	    } else {
-		this.timeline.set(this.duration_s);
+	while(this.timeline.get_elapsed_time() > this.frame_time){
+	    this.timeline.set(this.timeline.get_elapsed_time() - this.frame_time);
+	    ++this.frame;
+	    if(this.frame == this.frame_count) {
+		if(this.loop){
+		    this.frame = 0;
+		} else {
+		    this.frame = this.frame_count-1;
+		    this.timeline.stop();
+		}
 	    }
 	}
     }
+    reset () {
+	this.timeline.reset();
+	this.timeline.start();
+	this.frame = 0;
+    }
+    is_finished () {
+	return this.timeline.active == false;
+    }
     draw (position, size) {
-	if(this.display){
+	if(this.hidden == false){
 	    // If the animation should be displayed
 	    position = position.scale(scene_scale);
 	    size = size.scale(scene_scale);
 	    
-	    // calculate current frame index from elapsed time in time_array
-	    for(var i = 0; i < this.time_array.length - 1; ++i){
-		if(this.time_array[i + 1] > this.timeline.get_elapsed_time()){
-		    break;
-		}
-	    }
-	    var frame_width = get_resource(this.resource_s).width /
-		this.time_array.length;
 	    // Draw the current frame from the sprite sheet
-	    ctx.drawImage(get_resource(this.resource_s),
+	    ctx.drawImage(this.spritemap.resource,
 			  // Spritemap offset (x, y)
-			  i * frame_width, 0,
+			  // TODO: put stuff in terms of pixels
+			  (this.col + this.frame) * this.spritemap.get_sprite_width(),
+			  this.row * this.spritemap.get_sprite_height(),
 			  // Spritemap disensions (width, height)
-			  frame_width,
-			  get_resource(this.resource_s).height,
+			  this.spritemap.get_sprite_width(),
+			  this.spritemap.get_sprite_height(),
 			  // Position (x, y)
 			  position.x, position.y,
 			  // Display dimensions (width, height)
