@@ -10,8 +10,8 @@ var slime_character = new Character("Slime", new Animation("sli",
 							     2, 2),
 					       new Animation("tackle",
 							     Sprite.action_tackle)),
-				    new Action("slime it", Action_Type.Enemy_All,
-					       function(target){target.health-=1;},
+				    new Action("heal", Action_Type.Ally_Single,
+					       function(target){target.health+=1;},
 					       new Animation("slime",
 							     Sprite.slime, 0, 0,
 							     2, 2),
@@ -202,9 +202,11 @@ var combat = {
 	    new Vector(0.05 + combat.action_sel.get_index() * 0.5, 0.4);
     },
     update_character_indicator: function (character) {
-	combat.update_action_icons();
 	combat.character_sel_indicator.position =
 	    new Vector(character.position.x, 0.15);
+	if(combat.state == Combat_State.Character_Select){
+	    combat.update_action_icons();
+	}
     }
 };
 combat.scene.add_keyboard_event(" ", "press", function(){
@@ -222,14 +224,11 @@ combat.scene.add_keyboard_event(" ", "press", function(){
 	case Action_Type.Enemy_Single:
 	    // Ready target selection
 	    combat.target_sel = combat.enemy_sel;
-
-	    // TODO put the below 3 lines in one piece of code
 	    combat.set_state(Combat_State.Target_Select);
 	    break;
 	case Action_Type.Ally_Single:
 	    // Ready target selection
 	    combat.target_sel = combat.ally_sel;
-	    
 	    combat.set_state(Combat_State.Target_Select);
 	    break;
 	case Action_Type.Enemy_All:
@@ -253,6 +252,8 @@ combat.scene.add_keyboard_event(" ", "press", function(){
 	    combat.set_state(Combat_State.Player_Animation);
 	    break;
 	default:
+	    console.log("ERROR::unknown Action_Type: " +
+			combat.action_sel.get().type);
 	    break;
 	}
 	break;
