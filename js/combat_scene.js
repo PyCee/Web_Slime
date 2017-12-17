@@ -118,7 +118,7 @@ var combat = {
 	    console.log("playing player animation");
 	    if(combat.ally_sel.get().animation.is_finished()){
 		// If animation has finished
-		combat.ally_sel.get().set_idle();
+		combat.acting_character.set_idle();
 		combat.set_state(Combat_State.Enemy_Animation);
 	    }
 	    break;
@@ -136,6 +136,7 @@ var combat = {
     }),
     // TODO: replace timeline with character animation
     animation_timeline: new Timeline(true),
+    acting_character: null,
     
     first_action: new Renderable(new Vector(0.15, 0.4), new Vector(0.3, 0.1),
 				 new Animation("default", Sprite.black)),
@@ -177,7 +178,8 @@ var combat = {
 	    combat.update_character_indicator(combat.target_sel.get());
 	    break;
 	case Combat_State.Player_Animation:
-	    combat.ally_sel.get().set_animation(combat.action_sel.get().character_animation);
+	    combat.acting_character.set_animation(
+		combat.action_sel.get().character_animation);
 	    break;
 	case Combat_State.Enemy_Animation:
 	    combat.animation_timeline.reset();
@@ -213,8 +215,9 @@ combat.scene.add_keyboard_event(" ", "press", function(){
     switch(combat.state){
     case Combat_State.Character_Select:
 	// Character has been selected
-	combat.action_sel = new Selection([combat.ally_sel.get().action_1,
-					   combat.ally_sel.get().action_2], false);
+	combat.acting_character = combat.ally_sel.get();
+	combat.action_sel = new Selection([combat.acting_character.action_1,
+					   combat.acting_character.action_2], false);
 	combat.set_state(Combat_State.Action_Select);
 	break;
     case Combat_State.Action_Select:
