@@ -5,14 +5,14 @@ var slime_character = new Character("Slime", new Animation("sli",
 							   Sprite.green),
 				    new Action("tackle", Action_Type.Enemy_Single,
 					       function(target){target.health-=2;},
-					       new Animation("slime",
+					       new Animation("slime1",
 							     Sprite.slime, 0, 0,
 							     2, 2),
 					       new Animation("tackle",
 							     Sprite.action_tackle)),
 				    new Action("heal", Action_Type.Ally_Single,
 					       function(target){target.health+=1;},
-					       new Animation("slime",
+					       new Animation("slime2",
 							     Sprite.slime, 0, 0,
 							     2, 2),
 					       new Animation("slime_them",
@@ -116,7 +116,7 @@ var combat = {
 	    break;
 	case Combat_State.Player_Animation:
 	    console.log("playing player animation");
-	    if(combat.ally_sel.get().animation.is_finished()){
+	    if(combat.acting_character.animation.is_finished()){
 		// If animation has finished
 		combat.acting_character.set_idle();
 		combat.set_state(Combat_State.Enemy_Animation);
@@ -164,7 +164,8 @@ var combat = {
 	    }
 	    for(var i = 0; i < enemy_party.characters.length; ++i){
 		console.log(enemy_party.characters[i].name+" has health: "+
-			    enemy_party.characters[i].health);
+			    enemy_party.characters[i].health+" and is alive? "+
+			    enemy_party.characters[i].is_alive());
 	    }
 	    combat.ally_sel.reset();
 	    combat.update_character_indicator(combat.ally_sel.get());
@@ -180,6 +181,7 @@ var combat = {
 	case Combat_State.Player_Animation:
 	    combat.acting_character.set_animation(
 		combat.action_sel.get().character_animation);
+	    combat.acting_character.animation.reset();
 	    break;
 	case Combat_State.Enemy_Animation:
 	    combat.animation_timeline.reset();

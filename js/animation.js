@@ -6,7 +6,8 @@ class Animation {
 	this.row = row;
 	this.col = col;
 	this.frame_count = frame_count;
-	this.frame_time = duration_s / this.frame_count;
+	this.duration_s = duration_s;
+	this.frame_time = this.duration_s / this.frame_count;
 	this.loop = loop;
 	this.frame = 0;
 	this.timeline = new Timeline();
@@ -17,6 +18,8 @@ class Animation {
     show () {this.hidden = false;}
     update (delta_s) {
 	this.timeline.update(delta_s);
+	//console.log(this.frame);
+	
 	while(this.timeline.get_elapsed_time() > this.frame_time){
 	    this.timeline.set(this.timeline.get_elapsed_time() - this.frame_time);
 	    ++this.frame;
@@ -34,6 +37,7 @@ class Animation {
 	this.timeline.reset();
 	this.timeline.start();
 	this.frame = 0;
+	console.log("anim reset");
     }
     is_finished () {
 	return this.timeline.active == false;
