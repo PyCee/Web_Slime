@@ -20,4 +20,7 @@ function loop () {
 
     // Updates whatever is to be updated
     Update.fun(delta_s);
+    
+    // Write any dialogue
+    Dialogue.write(delta_s);
 }

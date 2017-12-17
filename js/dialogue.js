@@ -1,46 +1,45 @@
-class Sentence {
-    constructor (string, duration_s, write_duration_s=0) {
-	this.string = string;
-	this.duration_s = duration_s;
-	this.write_duration_s = write_duration_s;
-    }
-    write () {
-	
-    }
-}
-
-// TODO: finish implimentation of Dialogue
 var Dialogue = {
-    lines: [],
-
-    draw: function () {
-	if(Dialogue.lines.length){
-	    var font_size = 24;
-	    ctx.font = font_size + "px Arial";
+    text: "",
+    timeline: new Timeline(),
+    duration: 0.0,
+    font_size: 48,
+    offset: new Vector(canvas.width * 0.1, canvas.height * 0.0),
+    width: canvas.width * 0.8,
+    height: canvas.height * 0.1,
+    set: function (text, duration=-1) {
+	Dialogue.text = text;
+	Dialogue.duration = duration;
+	Dialogue.timeline.reset();
+    },
+    reset: function (){
+	Dialogue.set("");
+    },
+    has_text () {return Dialogue.text != ""},
+    write (delta_s) {
+	if(Dialogue.has_text()){
+	    // If there is text to write
 	    
-	    var x_offset = canvas.width * 0.10;
-	    var y_offset = canvas.height * 0.8;
-	    var y_stride = font_size * 1.2;
-
-	    // Draw text background
-	    
-	    ctx.fillStyle = "#ffffff";
-	    ctx.fillRect(0, y_offset - 30,
-			 canvas.width, canvas.height - (y_offset + 30));
-	    
-	    // Draw text
-	    
-	    ctx.fillStyle = "#000000";
-	    for(var i = 0; i < Dialogue.lines.length; ++i){
-		ctx.fillText(Dialogue.lines[i].string, x_offset, y_offset +
-			     i * y_stride);
+	    // Update the timeline
+	    Dialogue.timeline.update(delta_s);
+	    if(Dialogue.timeline.get_elapsed_time() >= Dialogue.duration &&
+	       Dialogue.duration != -1){
+		// If the text has lived it's life
+		Dialogue.text = "";
+		Dialogue.timeline.reset();
+		Dialogue.duration = -1;
+		return;
 	    }
+	    
+	    // Draw text background
+	    ctx.fillStyle = "#ffffff";
+	    ctx.fillRect(Dialogue.offset.x, Dialogue.offset.y,
+			 Dialogue.width, Dialogue.height);
+	    // Draw text
+	    ctx.font = Dialogue.font_size + "px Arial";
+	    ctx.fillStyle = "#005500";
+	    ctx.fillText(Dialogue.text,
+			 Dialogue.offset.x,
+			 Dialogue.offset.y + Dialogue.font_size);
 	}
-    },
-    add_line: function (sentence) {
-	Text.lines.push(sentence);
-    },
-    clear: function () {
-	Text.lines = [];
     }
 };

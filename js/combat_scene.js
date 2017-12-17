@@ -41,7 +41,6 @@ var enemy_character1 = new Character("Enemy1", new Animation("ene",
 					       null));
 enemy_party.add_member(enemy_character1);
 
-
 var enemy_character2 = new Character("Enemy2", new Animation("ene",
 							     Sprite.red),
 				    new Action("kill", Action_Type.Enemy_Single,
@@ -107,15 +106,19 @@ var combat = {
 	switch(combat.state){
 	case Combat_State.Character_Select:
 	    console.log("Select player character");
+	    Dialogue.set("Select an ally character");
 	    break;
 	case Combat_State.Action_Select:
 	    console.log("Select action");
+	    Dialogue.set("Select one of that character's moves");
 	    break;
 	case Combat_State.Target_Select:
 	    console.log("Select target");
+	    Dialogue.set("Select a target");
 	    break;
 	case Combat_State.Player_Animation:
 	    console.log("playing player animation");
+	    Dialogue.reset();
 	    if(combat.acting_character.animation.is_finished()){
 		// If animation has finished
 		combat.acting_character.set_idle();

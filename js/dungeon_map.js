@@ -37,7 +37,7 @@ function dungeon_key_pickup_test () {
 	block_relative_position.intersects && !Inventory.contains(dungeon_key_item);
 }
 function dungeon_key_pickup_callback () {
-    Alert.set("Picked up a key!");
+    Dialogue.set("Picked up a key!", 1.5);
     Inventory.add_item(dungeon_key_item);
     dungeon_key.hide();
 }
@@ -64,10 +64,11 @@ function dungeon_gate_unlock_callback () {
 	locked_alert = true;
 	dungeon_gate.blocking = false;
 	dungeon_gate.hide();
+	Dialogue.set("You unlocked the gate", 2);
 	// play animation for gate opening
     } else if(!locked_alert){
 	locked_alert = true;
-	Alert.set("The exit is locked...");
+	Dialogue.set("The exit is locked...", 2);
     }
 }
 var dungeon_door_unlock_event =
