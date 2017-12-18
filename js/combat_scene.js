@@ -106,19 +106,19 @@ var combat = {
 	switch(combat.state){
 	case Combat_State.Character_Select:
 	    console.log("Select player character");
-	    Dialogue.set("Select an ally character");
+	    Dialogue.set(["Select an ally character"]);
 	    break;
 	case Combat_State.Action_Select:
 	    console.log("Select action");
-	    Dialogue.set("Select one of that character's moves");
+	    Dialogue.set(["Select one of that character's moves"]);
 	    break;
 	case Combat_State.Target_Select:
 	    console.log("Select target");
-	    Dialogue.set("Select a target");
+	    Dialogue.set(["Select a target"]);
 	    break;
 	case Combat_State.Player_Animation:
 	    console.log("playing player animation");
-	    Dialogue.reset();
+	    Dialogue.set(["Playing character animation..."]);
 	    if(combat.acting_character.animation.is_finished()){
 		// If animation has finished
 		combat.acting_character.set_idle();
@@ -127,6 +127,7 @@ var combat = {
 	    break;
 	case Combat_State.Enemy_Animation:
 	    console.log("playing enemy animation");
+	    Dialogue.set(["Playing enemy animation..."]);
 	    combat.animation_timeline.update(delta_s);
 	    if(combat.animation_timeline.get_elapsed_time() > 2.0){
 		// Calculate enemy action and set animation (tmp: timeline)

@@ -23,13 +23,6 @@ class Scene {
 	for(var i = 0; i < this.renderables.length; ++i){
 	    // For each renderable
 	    this.renderables[i].update_animation(delta_s);
-	    /*
-	    if(!is_resource_loaded(this.renderables[i].get_resource())){
-		// If the resource is not loaded, skip this update
-		console.log("unloaded");
-		return;
-	    }
-	    */
 	}
 	this.inner_update_callback(delta_s);
 	for(var i = 0; i < this.events.length; ++i){
