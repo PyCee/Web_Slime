@@ -7,16 +7,9 @@ class Scene {
 	this.inside_width = inside_width;
 	this.show_callback = show_callback;
 	this.inner_update_callback = inner_update_callback;
-	this.events = [];
 	
 	this.renderables = [];
 	this.user_input = new User_Input_Group();
-    }
-    display () {
-	scene_scale = canvas.width / this.inside_width;
-	for (var i = 0; i < this.renderables.length; ++i){
-	    this.renderables[i].display();
-	}
     }
     update (delta_s) {
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -25,10 +18,13 @@ class Scene {
 	    this.renderables[i].update_animation(delta_s);
 	}
 	this.inner_update_callback(delta_s);
-	for(var i = 0; i < this.events.length; ++i){
-	    this.events[i].test();
-	}
 	this.display();
+    }
+    display () {
+	scene_scale = canvas.width / this.inside_width;
+	for (var i = 0; i < this.renderables.length; ++i){
+	    this.renderables[i].display();
+	}
     }
     show () {
 	curr_scene = this;
@@ -37,9 +33,6 @@ class Scene {
     }
     set_renderables (renderables) {
 	this.renderables = renderables;
-    }
-    set_events(events) {
-	this.events = events;
     }
     add_keyboard_event (key, action, fun){
 	this.user_input.add_keyboard_event(key, action, fun);

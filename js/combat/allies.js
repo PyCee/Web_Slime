@@ -1,7 +1,7 @@
 var slime_character = new Character("Slime", new Animation("sli",
 							   Sprite.slime, 0, 0, 1, 1),
-				    new Action("tackle", Action_Type.Ally_Single,
-					       function(target){target.health-=10;},
+				    new Action("tackle", Action_Type.Enemy_Single,
+					       function(target){target.health-=3;},
 					       new Animation("slime1",
 							     Sprite.slime, 0, 0,
 							     2, 2),
@@ -27,4 +27,4 @@ var fight_character =
 			     new Animation("super_punch",
 					   Sprite.action_super_punch)));
 combat.ally_party.add_member(slime_character);
-combat.ally_party.add_member(fight_character);
+//combat.ally_party.add_member(fight_character);

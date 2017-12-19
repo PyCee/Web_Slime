@@ -11,17 +11,24 @@ var exploration = {
 	while(physics_time_accum >= PHYSICS_UPDATE_DELTA_S){
 	    
 	    // Step actor physics
-	    for(var i = 0; i < exploration.actors.length; ++i){
-		exploration.actors[i].step_physics(exploration.actors, i);
+	    for(var i = 0; i < exploration.map.actors.length; ++i){
+		exploration.map.actors[i].step_physics(exploration.map.actors, i);
 	    }
 	    
 	    physics_time_accum -= PHYSICS_UPDATE_DELTA_S;
 	}
 	//TODO: interpolate between the current and the next physics state
+	
+	for(var i = 0; i < exploration.map.events.length; ++i){
+	    exploration.map.events[i].test();
+	}
     }),
+    set_map: function (map) {
+	exploration.map = map;
+    },
 
-    // Lists the actors that are apart of the map
-    actors: []
+    // Reference to the data that makes up the current map
+    map: null
 };
 var slime = new Actor(new Vector(0.0, 0.0), new Vector(0.5, 0.5),
 		      new Animation("Slime_Move", Sprite.slime, 0, 0, 2, 2, true),

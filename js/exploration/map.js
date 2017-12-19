@@ -3,6 +3,7 @@ class Map {
 		 actors=[], events=[]) {
 	this.width = width;
 	this.show_callback = show_callback;
+	// Lists the actors that are apart of the map
 	this.actors = actors;
 	this.events = events;
     }
@@ -16,10 +17,10 @@ class Map {
 	for(var i = 0; i < this.actors.length; ++i){
 	    sprites.push(this.actors[i].sprite);
 	}
-	exploration.actors = this.actors;
+	//exploration.actors = this.actors;
 	exploration.scene.set_renderables(this.actors)
-	exploration.scene.events = this.events;
-
+	//exploration.scene.events = this.events;
+	exploration.set_map(this);
 	exploration.scene.show();
     }
     add_actor (actor) {

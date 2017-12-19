@@ -1,29 +1,11 @@
-
-var enemy_character1 = new Character("Enemy1", new Animation("ene",
-							     Sprite.red),
-				    new Action("kil", Action_Type.Enemy_Single,
-					       function(target){target.health-=2;},
-					       null),
-				    new Action("murk", Action_Type.Enemy_Single,
-					       function(target){target.health-=1;},
-					       null));
-
-var enemy_character2 = new Character("Enemy2", new Animation("ene",
-							     Sprite.red),
-				    new Action("kill", Action_Type.Enemy_Single,
-					       function(target){target.health-=2;},
-					       null),
-				    new Action("murkee", Action_Type.Enemy_Single,
-					       function(target){target.health-=1;},
-					       null));
-var test_b = new Battle(new Party([enemy_character1, enemy_character2]));
-
 var Combat_State = {
     Characer_Select: 0,
     Action_Select: 1,
     Target_Select: 2,
     Player_Animation: 3,
-    Enemy_Animation: 4
+    Enemy_Animation: 4,
+    Win: 5,
+    Lose: 6
 };
 var combat = {
     ally_party: new Party(),
@@ -59,14 +41,14 @@ var combat = {
 	    // Add each enemy character to renderables
 	    renderables.push(combat.enemy_party.characters[i]);
 	}
-	
 	renderables.push(combat.action_sel_indicator);
 	renderables.push(combat.character_sel_indicator);
-	
 	renderables.push(combat.first_action);
 	renderables.push(combat.second_action);
-	
 	combat.scene.set_renderables(renderables);
+
+	// Initially hide action selection indicator
+	combat.action_sel_indicator.hide();
 	
 	// Initialize state to character select
 	combat.set_state(Combat_State.Character_Select);
@@ -74,20 +56,17 @@ var combat = {
     }, function (delta_s) {
 	switch(combat.state){
 	case Combat_State.Character_Select:
-	    console.log("Select player character");
 	    Dialogue.set(["Select an ally character"]);
 	    break;
 	case Combat_State.Action_Select:
-	    console.log("Select action");
 	    Dialogue.set(["Select one of that character's moves"]);
 	    break;
 	case Combat_State.Target_Select:
-	    console.log("Select target");
 	    Dialogue.set(["Select a target"]);
 	    break;
 	case Combat_State.Player_Animation:
-	    console.log("playing player animation");
-	    Dialogue.set(["Playing character animation..."]);
+	    Dialogue.set([combat.acting_character.name + " is using " +
+			  combat.action_sel.get().name]);
 	    if(combat.acting_character.animation.is_finished()){
 		// If animation has finished
 		combat.acting_character.set_idle();
@@ -95,12 +74,27 @@ var combat = {
 	    }
 	    break;
 	case Combat_State.Enemy_Animation:
-	    console.log("playing enemy animation");
-	    Dialogue.set(["Playing enemy animation..."]);
+	    Dialogue.set(["Enemy's turn"]);
 	    combat.animation_timeline.update(delta_s);
 	    if(combat.animation_timeline.get_elapsed_time() > 2.0){
 		// Calculate enemy action and set animation (tmp: timeline)
 		combat.set_state(Combat_State.Character_Select);
+	    }
+	    break;
+	case Combat_State.Win:
+	    Dialogue.set(["You Win!"]);
+	    combat.end_timeline.update(delta_s);
+	    if(combat.end_timeline.get_elapsed_time() > 3.0){
+		// switch to prev scene, denoted by battle
+		console.log("should switch now");
+	    }
+	    break;
+	case Combat_State.Lose:
+	    Dialogue.set(["You Lose..."]);
+	    combat.end_timeline.update(delta_s);
+	    if(combat.end_timeline.get_elapsed_time() > 3.0){
+		// switch to prev scene, denoted by battle
+		console.log("should switch now");
 	    }
 	    break;
 	default:
@@ -108,6 +102,7 @@ var combat = {
 	}
     }),
     // TODO: replace timeline with character animation
+    end_timeline: new Timeline(true),
     animation_timeline: new Timeline(true),
     acting_character: null,
     
@@ -126,7 +121,7 @@ var combat = {
     target_sel: null,
     character_sel_indicator: new Renderable(new Vector(0, 0), new Vector(0.15, 0.05),
 					    new Animation("default", Sprite.black)),
-    reset_selection: function (selection, party, s) {
+    reset_selection: function (selection, party, s, all_dead_state) {
 	selection.reset();
 	// Select the first alive character, unless
 	for(var i = 0; i < party.characters.length; ++i){
@@ -139,23 +134,24 @@ var combat = {
 	    }else if(party.characters[i] == selection.get_end()){
 		// Else if this is the last character (none are alive)
 		//   End the combat (in defeat)
-		// TODO: End combat
+		combat.set_state(all_dead_state);
 		console.log("All " + s + " defeated");
 		break;
 	    }
 	}
     },
     reset_ally_selection () {
-	combat.reset_selection(combat.ally_sel, combat.ally_party, "allies");
+	combat.reset_selection(combat.ally_sel, combat.ally_party, "allies",
+			      Combat_State.Lose);
     },
     reset_enemy_selection () {
-	combat.reset_selection(combat.enemy_sel, combat.enemy_party, "enemies");
+	combat.reset_selection(combat.enemy_sel, combat.enemy_party, "enemies",
+			      Combat_State.Win);
     },
     set_state: function (state) {
 	combat.state = state;
 	switch(combat.state){
 	case Combat_State.Character_Select:
-	    // TODO: Check for combat end (all allies dead)
 	    for(var i = 0; i < combat.ally_party.characters.length; ++i){
 		console.log(combat.ally_party.characters[i].name+" has health: "+
 			    combat.ally_party.characters[i].health);
@@ -176,25 +172,25 @@ var combat = {
 	    combat.update_character_indicator(combat.target_sel.get());
 	    break;
 	case Combat_State.Player_Animation:
+
+	    // Hide aciton selection indicator after selecting target
+	    combat.action_sel_indicator.hide();
+	    
 	    combat.acting_character.set_animation(
 		combat.action_sel.get().character_animation);
 	    combat.acting_character.animation.reset();
 	    break;
 	case Combat_State.Enemy_Animation:
-	    // TODO: Check for combat end (all enemies dead)
-	    for(var i = 0; i < combat.enemy_party.characters.length; ++i){
-		if(combat.enemy_party.characters[i].is_alive()){
-		    // If the character is alive
-		    combat.enemy_sel.set_index(i);
-		    break;
-		}else if(combat.enemy_party.characters[i] == combat.enemy_sel.get_end()){
-		    // Else if this is the last enemy (none are alive)
-		    //   End the combat (with win)
-		    // TODO: End combat
-		    console.log("All enemies defeated");
-		}
-	    }
+	    combat.reset_enemy_selection();
+	    
+	    // Select enemy to use action
+	    // Use enemy action
+	    // On target
 	    combat.animation_timeline.reset();
+	    break;
+	case Combat_State.Win:
+	    break;
+	case Combat_State.Lose:
 	    break;
 	default:
 	    break;
@@ -212,6 +208,7 @@ var combat = {
 	    combat.ally_sel.get().action_2.display_animation);
     },
     update_action_indicator: function () {
+	combat.action_sel_indicator.show();
 	combat.action_sel_indicator.position =
 	    new Vector(0.05 + combat.action_sel.get_index() * 0.5, 0.4);
     },

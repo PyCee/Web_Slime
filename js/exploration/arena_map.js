@@ -26,6 +26,24 @@ arena.add_actor(new Actor(new Vector(arena_width - 0.5, 0.0),
 			  new Vector(0.5, arena_height),
 			  new Animation("black", Sprite.black)));
 
+var training_dummy_actor = new Actor(new Vector(3, 3),
+				     new Vector(1, 1),
+				     new Animation("training_dummy",
+						   Sprite.training_dummy),
+				     false);
+arena.add_actor(training_dummy_actor);
+function arena_training_dummy_test () {
+    return training_dummy_actor.bounding_box.detect_intersection(slime.bounding_box) ==
+	block_relative_position.intersects;
+}
+function arena_training_dummy_callback () {
+    console.log("fighting training dummy");
+    training_dummy_battle.fight();
+}
+var arena_training_dummy_event = new Event(arena_training_dummy_test,
+					   arena_training_dummy_callback);
+arena.add_event(arena_training_dummy_event);
+
 var arena_corridor_exit_hitbox = new Block(new Vector(5.5, arena_height),
 					   new Vector(1.0, 0.05));
 function arena_corridor_exit_test () {

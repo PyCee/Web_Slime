@@ -58,7 +58,7 @@ title_scene.add_keyboard_event(" ", "press", function(){
 	tutorial.exp_scene.show(new Vector(1.0, 1.5));
 	break;
     case title_selection.options[1]:
-	tutorial.com_scene.show();
+	training_dummy_battle.fight();
 	break;
     default:
 	break;
