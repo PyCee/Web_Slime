@@ -1,6 +1,6 @@
 var slime_character = new Character("Slime", new Animation("sli",
 							   Sprite.slime, 0, 0, 1, 1),
-				    new Action("tackle", Action_Type.Enemy_Single,
+				    new Action("tackle", Action_Type.Ally_Single,
 					       function(target){target.health-=10;},
 					       new Animation("slime1",
 							     Sprite.slime, 0, 0,

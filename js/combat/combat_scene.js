@@ -126,7 +126,31 @@ var combat = {
     target_sel: null,
     character_sel_indicator: new Renderable(new Vector(0, 0), new Vector(0.15, 0.05),
 					    new Animation("default", Sprite.black)),
-
+    reset_selection: function (selection, party, s) {
+	selection.reset();
+	// Select the first alive character, unless
+	for(var i = 0; i < party.characters.length; ++i){
+	    if(party.characters[i].is_alive()){
+		// If the character is alive
+		//   Set this character as the default selected
+		//   Stop searching
+		selection.set_index(i);
+		break;
+	    }else if(party.characters[i] == selection.get_end()){
+		// Else if this is the last character (none are alive)
+		//   End the combat (in defeat)
+		// TODO: End combat
+		console.log("All " + s + " defeated");
+		break;
+	    }
+	}
+    },
+    reset_ally_selection () {
+	combat.reset_selection(combat.ally_sel, combat.ally_party, "allies");
+    },
+    reset_enemy_selection () {
+	combat.reset_selection(combat.enemy_sel, combat.enemy_party, "enemies");
+    },
     set_state: function (state) {
 	combat.state = state;
 	switch(combat.state){
@@ -141,7 +165,7 @@ var combat = {
 			    combat.enemy_party.characters[i].health+" and is alive? "+
 			    combat.enemy_party.characters[i].is_alive());
 	    }
-	    combat.ally_sel.reset();
+	    combat.reset_ally_selection();
 	    combat.update_character_indicator(combat.ally_sel.get());
 	    break;
 	case Combat_State.Action_Select:
@@ -149,7 +173,6 @@ var combat = {
 	    combat.update_action_indicator();
 	    break;
 	case Combat_State.Target_Select:
-	    combat.target_sel.reset();
 	    combat.update_character_indicator(combat.target_sel.get());
 	    break;
 	case Combat_State.Player_Animation:
@@ -159,6 +182,18 @@ var combat = {
 	    break;
 	case Combat_State.Enemy_Animation:
 	    // TODO: Check for combat end (all enemies dead)
+	    for(var i = 0; i < combat.enemy_party.characters.length; ++i){
+		if(combat.enemy_party.characters[i].is_alive()){
+		    // If the character is alive
+		    combat.enemy_sel.set_index(i);
+		    break;
+		}else if(combat.enemy_party.characters[i] == combat.enemy_sel.get_end()){
+		    // Else if this is the last enemy (none are alive)
+		    //   End the combat (with win)
+		    // TODO: End combat
+		    console.log("All enemies defeated");
+		}
+	    }
 	    combat.animation_timeline.reset();
 	    break;
 	default:
@@ -203,11 +238,13 @@ combat.scene.add_keyboard_event(" ", "press", function(){
 	switch(combat.action_sel.get().type){
 	case Action_Type.Enemy_Single:
 	    // Ready target selection
+	    combat.reset_enemy_selection();
 	    combat.target_sel = combat.enemy_sel;
 	    combat.set_state(Combat_State.Target_Select);
 	    break;
 	case Action_Type.Ally_Single:
 	    // Ready target selection
+	    combat.reset_ally_selection();
 	    combat.target_sel = combat.ally_sel;
 	    combat.set_state(Combat_State.Target_Select);
 	    break;
