@@ -1,6 +1,6 @@
 class Party {
-    constructor () {
-	this.characters = [];
+    constructor (characters=[]) {
+	this.characters = characters;
     }
     add_member (character, display_message=false) {
 	this.characters.push(character);

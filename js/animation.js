@@ -37,7 +37,6 @@ class Animation {
 	this.timeline.reset();
 	this.timeline.start();
 	this.frame = 0;
-	console.log("anim reset");
     }
     is_finished () {
 	return this.timeline.active == false;

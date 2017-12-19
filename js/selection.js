@@ -7,15 +7,17 @@ class Selection {
 	this.options = selections;
 	this.selected_i = 0;
     }
+    set_index (i) {
+	this.selected_i = i;
+    }
     reset () {
-	this.selected_i = 0;
+	this.set_index(0);
     }
     next () {
 	++this.selected_i;
 	if(this.selected_i > this.options.length-1){
 	    if(this.loop){
 		this.selected_i -= this.options.length;
-		console.log
 	    } else{
 		this.selected_i = this.options.length-1;
 	    }
@@ -32,6 +34,12 @@ class Selection {
 	    }
 	}
 	return this.get();
+    }
+    get_start () {
+	return this.options[0];
+    }
+    get_end () {
+	return this.options[this.options.length-1];
     }
     get () {
 	return this.options[this.selected_i];

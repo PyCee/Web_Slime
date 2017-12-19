@@ -24,7 +24,7 @@ var Sprite = {
     key: new Spritemap("key.png"),
     gate: new Spritemap("gate.png"),
     action_tackle: new Spritemap("action_tackle.png"),
-    action_slime_them: new Spritemap("action_slime_them.png"),
+    action_heal: new Spritemap("action_heal.png"),
     action_punch: new Spritemap("action_punch.png"),
     action_super_punch: new Spritemap("action_super_punch.png")
     //: new Spritemap(".png")

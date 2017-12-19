@@ -20,5 +20,6 @@ tutorial.exp_scene.add_keyboard_event(" ", "press", function(){
 });
 tutorial.com_scene.add_keyboard_event(" ", "press", function(){
     Dialogue.reset();
-    combat.scene.show();
+    test_b.fight();
+    //combat.scene.show();
 });

@@ -1,36 +1,4 @@
-var ally_party = new Party();
-var enemy_party = new Party();
 
-var slime_character = new Character("Slime", new Animation("sli",
-							   Sprite.green),
-				    new Action("tackle", Action_Type.Enemy_Single,
-					       function(target){target.health-=2;},
-					       new Animation("slime1",
-							     Sprite.slime, 0, 0,
-							     2, 2),
-					       new Animation("tackle",
-							     Sprite.action_tackle)),
-				    new Action("heal", Action_Type.Ally_Single,
-					       function(target){target.health+=1;},
-					       new Animation("slime2",
-							     Sprite.slime, 0, 0,
-							     2, 2),
-					       new Animation("slime_them",
-							     Sprite.action_slime_them)));
-ally_party.add_member(slime_character);
-var fight_character = new Character("Fight", new Animation("fig",
-							   Sprite.green),
-				    new Action("tackle", Action_Type.Enemy_Single,
-					       function(target){target.health-=2;},
-					       null,
-					       new Animation("punch",
-							     Sprite.action_punch)),
-				    new Action("fight it", Action_Type.Enemy_Single,
-					       function(target){target.health-=1;},
-					       null,
-					       new Animation("super_punch",
-							     Sprite.action_super_punch)));
-ally_party.add_member(fight_character);
 var enemy_character1 = new Character("Enemy1", new Animation("ene",
 							     Sprite.red),
 				    new Action("kil", Action_Type.Enemy_Single,
@@ -39,7 +7,6 @@ var enemy_character1 = new Character("Enemy1", new Animation("ene",
 				    new Action("murk", Action_Type.Enemy_Single,
 					       function(target){target.health-=1;},
 					       null));
-enemy_party.add_member(enemy_character1);
 
 var enemy_character2 = new Character("Enemy2", new Animation("ene",
 							     Sprite.red),
@@ -49,7 +16,7 @@ var enemy_character2 = new Character("Enemy2", new Animation("ene",
 				    new Action("murkee", Action_Type.Enemy_Single,
 					       function(target){target.health-=1;},
 					       null));
-enemy_party.add_member(enemy_character2);
+var test_b = new Battle(new Party([enemy_character1, enemy_character2]));
 
 var Combat_State = {
     Characer_Select: 0,
@@ -59,36 +26,38 @@ var Combat_State = {
     Enemy_Animation: 4
 };
 var combat = {
+    ally_party: new Party(),
+    enemy_party: new Party(),
     state: Combat_State.Character_Select,
     scene: new Scene("Combat", 1.0, function(){
-	// set position of all characters in ally_party and enemy_party
-	for(var i = 0; i < ally_party.characters.length; ++i){
+	// set position of all characters in combat.ally_party and combat.enemy_party
+	for(var i = 0; i < combat.ally_party.characters.length; ++i){
 	    // Set positions from center-screen, right to left
-	    ally_party.characters[i].position = 
+	    combat.ally_party.characters[i].position = 
 		new Vector(0.5 - (i+1) * 1.10 *
-			   ally_party.characters[i].size.x, 0.2);
+			   combat.ally_party.characters[i].size.x, 0.2);
 	}
-	for(var i = 0; i < enemy_party.characters.length; ++i){
+	for(var i = 0; i < combat.enemy_party.characters.length; ++i){
 	    // Set positions from center-screen, left to right
-	    enemy_party.characters[i].position = 
+	    combat.enemy_party.characters[i].position = 
 		new Vector(0.5 + (i) * 1.10 *
-			   enemy_party.characters[i].size.x, 0.2);
+			   combat.enemy_party.characters[i].size.x, 0.2);
 	}
 	// Create non-static selections for this battle
-	// Reverse ally_party.characters so left and right selection fits
+	// Reverse combat.ally_party.characters so left and right selection fits
 	//   when drawn in reverse order
-	combat.ally_sel = new Selection(ally_party.characters.reverse(), false);
-	combat.enemy_sel = new Selection(enemy_party.characters, false);
+	combat.ally_sel = new Selection(combat.ally_party.characters.reverse(), false);
+	combat.enemy_sel = new Selection(combat.enemy_party.characters, false);
 	
 	// Add ui renderables
 	var renderables = [];
-	for(var i = 0; i < ally_party.characters.length; ++i){
+	for(var i = 0; i < combat.ally_party.characters.length; ++i){
 	    // Add each player character to renderables
-	    renderables.push(ally_party.characters[i]);
+	    renderables.push(combat.ally_party.characters[i]);
 	}
-	for(var i = 0; i < enemy_party.characters.length; ++i){
+	for(var i = 0; i < combat.enemy_party.characters.length; ++i){
 	    // Add each enemy character to renderables
-	    renderables.push(enemy_party.characters[i]);
+	    renderables.push(combat.enemy_party.characters[i]);
 	}
 	
 	renderables.push(combat.action_sel_indicator);
@@ -162,14 +131,15 @@ var combat = {
 	combat.state = state;
 	switch(combat.state){
 	case Combat_State.Character_Select:
-	    for(var i = 0; i < ally_party.characters.length; ++i){
-		console.log(ally_party.characters[i].name+" has health: "+
-			    ally_party.characters[i].health);
+	    // TODO: Check for combat end (all allies dead)
+	    for(var i = 0; i < combat.ally_party.characters.length; ++i){
+		console.log(combat.ally_party.characters[i].name+" has health: "+
+			    combat.ally_party.characters[i].health);
 	    }
-	    for(var i = 0; i < enemy_party.characters.length; ++i){
-		console.log(enemy_party.characters[i].name+" has health: "+
-			    enemy_party.characters[i].health+" and is alive? "+
-			    enemy_party.characters[i].is_alive());
+	    for(var i = 0; i < combat.enemy_party.characters.length; ++i){
+		console.log(combat.enemy_party.characters[i].name+" has health: "+
+			    combat.enemy_party.characters[i].health+" and is alive? "+
+			    combat.enemy_party.characters[i].is_alive());
 	    }
 	    combat.ally_sel.reset();
 	    combat.update_character_indicator(combat.ally_sel.get());
@@ -188,6 +158,7 @@ var combat = {
 	    combat.acting_character.animation.reset();
 	    break;
 	case Combat_State.Enemy_Animation:
+	    // TODO: Check for combat end (all enemies dead)
 	    combat.animation_timeline.reset();
 	    break;
 	default:
@@ -242,20 +213,20 @@ combat.scene.add_keyboard_event(" ", "press", function(){
 	    break;
 	case Action_Type.Enemy_All:
 	    // Do action on all alive enemies
-	    for(var i = 0; i < enemy_party.characters.length; ++i){
+	    for(var i = 0; i < combat.enemy_party.characters.length; ++i){
 		// For each enemy character
 		//   Complete the action
-		combat.action_sel.get().complete(enemy_party.characters[i]);
+		combat.action_sel.get().complete(combat.enemy_party.characters[i]);
 	    }
 	    // Go into player animation
 	    combat.set_state(Combat_State.Player_Animation);
 	    break;
 	case Action_Type.Ally_All:
 	    // Do action on all allies
-	    for(var i = 0; i < ally_party.characters.length; ++i){
+	    for(var i = 0; i < combat.ally_party.characters.length; ++i){
 		// For each enemy character
 		//   Complete the action
-		combat.action_sel.get().complete(ally_party.characters[i]);
+		combat.action_sel.get().complete(combat.ally_party.characters[i]);
 	    }
 	    // Go into player animation
 	    combat.set_state(Combat_State.Player_Animation);
@@ -282,8 +253,12 @@ combat.scene.add_keyboard_event("a", "press", function(){
     case Combat_State.Character_Select:
 	var prev_char_i = combat.ally_sel.get_index();
 	while(!combat.ally_sel.previous().is_alive()){
-	    // Loop through characters until we reach an alive character
-	    if(prev_char_i == combat.ally_sel.get_index()){
+	    // Loop through allies until we reach a living ally
+	    if(combat.ally_sel.get() == combat.ally_sel.get_start()){
+		// If this is the start selection
+		//   No character after our prev selection is alive
+		//   Go back to our prev selection
+		combat.ally_sel.set_index(prev_char_i);
 		break;
 	    }
 	}
@@ -294,10 +269,17 @@ combat.scene.add_keyboard_event("a", "press", function(){
 	combat.update_action_indicator();
 	break;
     case Combat_State.Target_Select:
+	var prev_char_i = combat.target_sel.get_index();
 	while(!combat.target_sel.previous().is_alive()){
 	    // Loop through targets until we reach a living target
+	    if(combat.target_sel.get() == combat.target_sel.get_start()){
+		// If this is the start selection
+		//   No character after our prev selection is alive
+		//   Go back to our prev selection
+		combat.target_sel.set_index(prev_char_i);
+		break;
+	    }
 	}
-	// update_target_indicator
 	combat.update_character_indicator(combat.target_sel.get());
 	break;
     default:
@@ -307,8 +289,16 @@ combat.scene.add_keyboard_event("a", "press", function(){
 combat.scene.add_keyboard_event("d", "press", function(){
     switch(combat.state){
     case Combat_State.Character_Select:
+	var prev_char_i = combat.ally_sel.get_index();
 	while(!combat.ally_sel.next().is_alive()){
-	    // Loop through characters until we reach an alive character
+	    // Loop through allies until we reach a living ally
+	    if(combat.ally_sel.get() == combat.ally_sel.get_end()){
+		// If this is the end selection
+		//   No character after our prev selection is alive
+		//   Go back to our prev selection
+		combat.ally_sel.set_index(prev_char_i);
+		break;
+	    }
 	}
 	combat.update_character_indicator(combat.ally_sel.get());
 	break;
@@ -317,10 +307,17 @@ combat.scene.add_keyboard_event("d", "press", function(){
 	combat.update_action_indicator();
 	break;
     case Combat_State.Target_Select:
+	var prev_char_i = combat.target_sel.get_index();
 	while(!combat.target_sel.next().is_alive()){
 	    // Loop through targets until we reach a living target
+	    if(combat.target_sel.get() == combat.target_sel.get_end()){
+		// If this is the end selection
+		//   No character after our prev selection is alive
+		//   Go back to our prev selection
+		combat.target_sel.set_index(prev_char_i);
+		break;
+	    }
 	}
-	// update_target_indicator
 	combat.update_character_indicator(combat.target_sel.get());
 	break;
     default:
