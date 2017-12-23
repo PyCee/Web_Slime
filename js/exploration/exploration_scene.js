@@ -36,34 +36,34 @@ var slime = new Actor(new Vector(0.0, 0.0), new Vector(0.5, 0.5),
 var SLIME_MOVE_SPEED = 2.0;
 
 // Add basic control for exploration
-exploration.scene.add_keyboard_event("w", "press", function(){
+exploration.scene.user_input.add_keyboard_event("w", "press", function(){
     slime.velocity.y -= SLIME_MOVE_SPEED;
 }, true);
-exploration.scene.add_keyboard_event("w", "release", function(){
+exploration.scene.user_input.add_keyboard_event("w", "release", function(){
     slime.velocity.y += SLIME_MOVE_SPEED;
 });
-exploration.scene.add_keyboard_event("a", "press", function(){
+exploration.scene.user_input.add_keyboard_event("a", "press", function(){
     slime.velocity.x -= SLIME_MOVE_SPEED;
 }, true);
-exploration.scene.add_keyboard_event("a", "release", function(){
+exploration.scene.user_input.add_keyboard_event("a", "release", function(){
     slime.velocity.x += SLIME_MOVE_SPEED;
 });
-exploration.scene.add_keyboard_event("s", "press", function(){
+exploration.scene.user_input.add_keyboard_event("s", "press", function(){
     slime.velocity.y += SLIME_MOVE_SPEED;
 }, true);
-exploration.scene.add_keyboard_event("s", "release", function(){
+exploration.scene.user_input.add_keyboard_event("s", "release", function(){
     slime.velocity.y -= SLIME_MOVE_SPEED;
 });
-exploration.scene.add_keyboard_event("d", "press", function(){
+exploration.scene.user_input.add_keyboard_event("d", "press", function(){
     slime.velocity.x += SLIME_MOVE_SPEED;
 }, true);
-exploration.scene.add_keyboard_event("d", "release", function(){
+exploration.scene.user_input.add_keyboard_event("d", "release", function(){
     slime.velocity.x -= SLIME_MOVE_SPEED;
 });
-exploration.scene.add_keyboard_event("q", "press", function(){
+exploration.scene.user_input.add_keyboard_event("q", "press", function(){
     console.log("opening inventory");
 });
-exploration.scene.add_keyboard_event(" ", "press", function(){
+exploration.scene.user_input.add_keyboard_event(" ", "press", function(){
     for(var i = 0; i < exploration.map.actors.length; ++i){
 	if(slime.bounding_box.detect_intersection(
 	    exploration.map.actors[i].bounding_box) ==

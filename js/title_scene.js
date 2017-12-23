@@ -18,7 +18,7 @@ var arrow = new Renderable(new Vector(0.15, 0.2), new Vector(0.1, 0.075),
 
 title_scene.set_renderables([arrow, title_scene_start_sel, title_scene_test_sel]);
 
-title_scene.add_keyboard_event("w", "press", function(){
+title_scene.user_input.add_keyboard_event("w", "press", function(){
     // When 'w' is pressed
     // Select the above option
     //console.log("w press");
@@ -34,7 +34,7 @@ title_scene.add_keyboard_event("w", "press", function(){
     }
 });
 
-title_scene.add_keyboard_event("s", "press", function(){
+title_scene.user_input.add_keyboard_event("s", "press", function(){
     // When 's' is pressed
     // Select the below option
     switch(title_selection.next()){
@@ -49,7 +49,7 @@ title_scene.add_keyboard_event("s", "press", function(){
     }
 });
 
-title_scene.add_keyboard_event(" ", "press", function(){
+title_scene.user_input.add_keyboard_event(" ", "press", function(){
     // When 'spacebar' is pressed
     // Complete an action depending on the selection
     switch(title_selection.get()){

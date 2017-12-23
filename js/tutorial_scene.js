@@ -17,11 +17,11 @@ var tutorial = {
 	Dialogue.set(com_text);
     }, function(delta_s){})
 };
-tutorial.exp_scene.add_keyboard_event(" ", "press", function(){
+tutorial.exp_scene.user_input.add_keyboard_event(" ", "press", function(){
     Dialogue.reset();
     dungeon.set(new Vector(1.0, 1.5));
 });
-tutorial.com_scene.add_keyboard_event(" ", "press", function(){
+tutorial.com_scene.user_input.add_keyboard_event(" ", "press", function(){
     Dialogue.reset();
     test_b.fight();
     //combat.scene.show();

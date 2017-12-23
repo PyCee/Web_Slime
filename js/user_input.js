@@ -32,7 +32,6 @@ class User_Input_Group {
 	    this.keyboard.push(new Key_Callback_Group());
 	}
 	if(hangover){
-	    console.log("ho");
 	    this.keyboard[key_value].hangover = true;
 	}
 	switch(action){
@@ -53,8 +52,8 @@ class User_Input_Group {
 	for(var i = 0; i < this.keyboard.length; ++i){
 	    // For each key
 	    if(keys_down[i] && this.keyboard[i].hangover){
-		// If the key is currently held down
-		console.log("hangover");
+		// If the key is currently held down and
+		//   hangover is enabled for this key
 		this.keyboard[i].press_callback();
 	    }
 	}

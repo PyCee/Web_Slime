@@ -226,7 +226,7 @@ var combat = {
 	}
     }
 };
-combat.scene.add_keyboard_event(" ", "press", function(){
+combat.scene.user_input.add_keyboard_event(" ", "press", function(){
     switch(combat.state){
     case Combat_State.Character_Select:
 	// Character has been selected
@@ -288,7 +288,7 @@ combat.scene.add_keyboard_event(" ", "press", function(){
     }
     
 });
-combat.scene.add_keyboard_event("a", "press", function(){
+combat.scene.user_input.add_keyboard_event("a", "press", function(){
     switch(combat.state){
     case Combat_State.Character_Select:
 	var prev_char_i = combat.ally_sel.get_index();
@@ -326,7 +326,7 @@ combat.scene.add_keyboard_event("a", "press", function(){
 	break;
     }
 });
-combat.scene.add_keyboard_event("d", "press", function(){
+combat.scene.user_input.add_keyboard_event("d", "press", function(){
     switch(combat.state){
     case Combat_State.Character_Select:
 	var prev_char_i = combat.ally_sel.get_index();

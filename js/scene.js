@@ -40,7 +40,4 @@ class Scene {
     set_renderables (renderables) {
 	this.renderables = renderables;
     }
-    add_keyboard_event (key, action, fun, hangover){
-	this.user_input.add_keyboard_event(key, action, fun, hangover);
-    }
 }

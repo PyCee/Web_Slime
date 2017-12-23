@@ -21,4 +21,5 @@ var Inventory = {
     scene: new Scene("Inventory")
 };
 
-Inventory.scene.add_keyboard_event("e", "press", function(){console.log("inventory e")});
+Inventory.scene.user_input.add_keyboard_event("e", "press",
+					      function(){console.log("inventory e")});
