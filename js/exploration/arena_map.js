@@ -31,14 +31,16 @@ var training_dummy_actor = new Actor(new Vector(3, 3),
 				     new Animation("training_dummy",
 						   Sprite.training_dummy),
 				     false);
+var dummy_alive = true;
 arena.add_actor(training_dummy_actor);
 function arena_training_dummy_test () {
     return training_dummy_actor.bounding_box.detect_intersection(slime.bounding_box) ==
-	block_relative_position.intersects;
+	block_relative_position.intersects && dummy_alive;
 }
 function arena_training_dummy_callback () {
     console.log("fighting training dummy");
     training_dummy_battle.fight();
+    dummy_alive = false;
 }
 var arena_training_dummy_event = new Event(arena_training_dummy_test,
 					   arena_training_dummy_callback);

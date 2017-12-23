@@ -86,6 +86,12 @@ var combat = {
 	    combat.end_timeline.update(delta_s);
 	    if(combat.end_timeline.get_elapsed_time() > 3.0){
 		// switch to prev scene, denoted by battle
+
+		
+		// TODO: go to exploration scene
+		exploration.scene.show();
+
+		
 		console.log("should switch now");
 	    }
 	    break;

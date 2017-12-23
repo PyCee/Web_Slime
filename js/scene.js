@@ -27,6 +27,12 @@ class Scene {
 	}
     }
     show () {
+	// TODO: add code that does the stuff in comments
+	if(curr_scene != null){
+	    // If there is a previous scene
+	    //   Release it's user input
+	    curr_scene.user_input.release();
+	}
 	curr_scene = this;
 	this.user_input.bind();
 	this.show_callback();
@@ -34,7 +40,7 @@ class Scene {
     set_renderables (renderables) {
 	this.renderables = renderables;
     }
-    add_keyboard_event (key, action, fun){
-	this.user_input.add_keyboard_event(key, action, fun);
+    add_keyboard_event (key, action, fun, hangover){
+	this.user_input.add_keyboard_event(key, action, fun, hangover);
     }
 }

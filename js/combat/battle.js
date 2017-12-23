@@ -1,6 +1,7 @@
 class Battle {
-    constructor (enemy_party) {
+    constructor (enemy_party, win_callback) {
 	this.enemy_party = enemy_party;
+	this.win_callback = win_callback;
     }
     reset () {
 	// Restore health to enemy party

@@ -1,3 +1,6 @@
+
+// TODO: erase these scenes. Make it so, on the first scene of each type of scene,
+//   the dialogue will show the instructions (rather than having special inst. scenes)
 var tutorial = {
     exp_scene: new Scene("Exploration Tutorial", 1.0, function(){
 	var exp_text = [

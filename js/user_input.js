@@ -2,7 +2,11 @@ var keys_down = [];
 class Key_Callback_Group {
     constructor () {
 	this.press_callbacks = [];
-	this.release_callbacks = []
+	this.release_callbacks = [];
+
+	// hangover is whether or not press_callback will be called when the key is
+	//   held while the User_Input_Group is enabled
+	this.hangover = false;
     }
     press_callback () {
 	for(var i = 0; i < this.press_callbacks.length; ++i){
@@ -19,13 +23,17 @@ class User_Input_Group {
     constructor () {
 	this.keyboard = [];
     }
-    add_keyboard_event (key, action, callback) {
+    add_keyboard_event (key, action, callback, hangover=false) {
 	var key_value = key.toUpperCase().charCodeAt(0);
 	while(keys_down.length <= key_value){
 	    keys_down.push(false);
 	}
 	while(this.keyboard.length <= key_value){
 	    this.keyboard.push(new Key_Callback_Group());
+	}
+	if(hangover){
+	    console.log("ho");
+	    this.keyboard[key_value].hangover = true;
 	}
 	switch(action){
 	case "press":
@@ -41,6 +49,25 @@ class User_Input_Group {
     }
     bind () {
 	curr_user_input_group = this;
+	// Key press events for keys that are held down
+	for(var i = 0; i < this.keyboard.length; ++i){
+	    // For each key
+	    if(keys_down[i] && this.keyboard[i].hangover){
+		// If the key is currently held down
+		console.log("hangover");
+		this.keyboard[i].press_callback();
+	    }
+	}
+    }
+    release () {
+	// Key release events for keys that are held down
+	for(var i = 0; i < this.keyboard.length; ++i){
+	    // For each key
+	    if(keys_down[i]){
+		// If the key is currently held down
+		this.keyboard[i].release_callback();
+	    }
+	}
     }
 }
 var curr_user_input_group = new User_Input_Group();
