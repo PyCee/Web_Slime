@@ -21,7 +21,6 @@ class Map {
 	exploration.scene.set_renderables(this.actors)
 	//exploration.scene.events = this.events;
 	exploration.set_map(this);
-	exploration.scene.show();
     }
     add_actor (actor) {
 	this.actors.push(actor);

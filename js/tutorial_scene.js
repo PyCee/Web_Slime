@@ -20,6 +20,7 @@ var tutorial = {
 tutorial.exp_scene.user_input.add_keyboard_event(" ", "press", function(){
     Dialogue.reset();
     dungeon.set(new Vector(1.0, 1.5));
+    exploration.scene.show();
 });
 tutorial.com_scene.user_input.add_keyboard_event(" ", "press", function(){
     Dialogue.reset();

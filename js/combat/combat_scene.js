@@ -282,7 +282,6 @@ var combat = {
 		    break;
 		}
 	    }
-
 	    combat.acting_character.animation.reset();
 	    Dialogue.set([combat.acting_character.name + " is using " +
 			  combat.action_sel.get().name]);
