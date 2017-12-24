@@ -105,18 +105,13 @@ var combat = {
 	case Combat_State.Win:
 	    combat.end_timeline.update(delta_s);
 	    if(combat.end_timeline.get_elapsed_time() > combat.win_wait){
-		
-		// TODO: go to exploration scene
 		exploration.scene.show();
-		
-		console.log("should switch now");
 	    }
 	    break;
 	case Combat_State.Lose:
 	    combat.end_timeline.update(delta_s);
 	    if(combat.end_timeline.get_elapsed_time() > combat.lose_wait){
-		// switch to prev scene, denoted by battle
-		console.log("should switch now");
+		// TODO:switch to prev scene, denoted by battle
 	    }
 	    break;
 	default:
@@ -149,17 +144,6 @@ var combat = {
 	case Combat_State.Character_Select:
 	    Dialogue.set(["Select an ally character"]);
 	    combat.character_sel_indicator.show();
-	    // TODO: remove debug logs after implimentation of health bar
-	    for(var i = 0; i < combat.ally_party.characters.length; ++i){
-		console.log(combat.ally_party.characters[i].name+" has health: "+
-			    combat.ally_party.characters[i].health);
-	    }
-	    for(var i = 0; i < combat.enemy_party.characters.length; ++i){
-		console.log(combat.enemy_party.characters[i].name+" has health: "+
-			    combat.enemy_party.characters[i].health+" and is alive? "+
-			    combat.enemy_party.characters[i].is_alive());
-	    }
-	    // /end TODO
 	    
 	    var living_ally_count = 0;
 	    var last_living_ally_index = -1;
@@ -232,7 +216,8 @@ var combat = {
 	    break;
 	case Combat_State.Player_Action:
 	    Dialogue.set([combat.acting_character.name + " is using " +
-			  combat.action_sel.get().name]);
+			  combat.action_sel.get().name,
+			  "on " + combat.target_sel.get().name]);
 	    // Hide aciton selection indicator after selecting target
 	    combat.action_sel_indicator.hide();
 	    combat.character_sel_indicator.hide();
