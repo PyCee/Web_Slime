@@ -18,12 +18,14 @@ var combat = {
 	    combat.ally_party.characters[i].position = 
 		new Vector(0.5 - (i+1) * 1.10 *
 			   combat.ally_party.characters[i].size.x, 0.2);
+	    combat.ally_party.characters[i].position_health_bar();
 	}
 	for(var i = 0; i < combat.enemy_party.characters.length; ++i){
 	    // Set positions from center-screen, left to right
 	    combat.enemy_party.characters[i].position = 
 		new Vector(0.5 + (i) * 1.10 *
 			   combat.enemy_party.characters[i].size.x, 0.2);
+	    combat.enemy_party.characters[i].position_health_bar();
 	}
 	// Create non-static selections for this battle
 	// Reverse combat.ally_party.characters so left and right selection fits
@@ -34,12 +36,14 @@ var combat = {
 	// Add ui renderables
 	var renderables = [];
 	for(var i = 0; i < combat.ally_party.characters.length; ++i){
-	    // Add each player character to renderables
+	    // Add each player character and health bar to renderables
 	    renderables.push(combat.ally_party.characters[i]);
+	    renderables.push(combat.ally_party.characters[i].health_bar);
 	}
 	for(var i = 0; i < combat.enemy_party.characters.length; ++i){
-	    // Add each enemy character to renderables
+	    // Add each enemy character and health bar to renderables
 	    renderables.push(combat.enemy_party.characters[i]);
+	    renderables.push(combat.enemy_party.characters[i].health_bar);
 	}
 	renderables.push(combat.action_sel_indicator);
 	renderables.push(combat.character_sel_indicator);

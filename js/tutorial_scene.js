@@ -15,6 +15,7 @@ var tutorial = {
 	Dialogue.set(text);
     }, function(delta_s){})
 };
+
 tutorial.scene.user_input.add_keyboard_event(" ", "press", function(){
     Dialogue.reset();
     title_scene.show();
