@@ -100,7 +100,7 @@ var combat = {
 	    break;
 	case Combat_State.Win:
 	    combat.end_timeline.update(delta_s);
-	    if(combat.end_timeline.get_elapsed_time() > 3.0){
+	    if(combat.end_timeline.get_elapsed_time() > combat.win_wait){
 		
 		// TODO: go to exploration scene
 		exploration.scene.show();
@@ -110,7 +110,7 @@ var combat = {
 	    break;
 	case Combat_State.Lose:
 	    combat.end_timeline.update(delta_s);
-	    if(combat.end_timeline.get_elapsed_time() > 3.0){
+	    if(combat.end_timeline.get_elapsed_time() > combat.lose_wait){
 		// switch to prev scene, denoted by battle
 		console.log("should switch now");
 	    }
@@ -119,6 +119,8 @@ var combat = {
 	    break;
 	}
     }),
+    win_wait: 3,
+    lose_wait: 3,
     end_timeline: new Timeline(true),
     acting_character: null,
     
@@ -142,6 +144,7 @@ var combat = {
 	switch(combat.state){
 	case Combat_State.Character_Select:
 	    Dialogue.set(["Select an ally character"]);
+	    combat.character_sel_indicator.show();
 	    // TODO: remove debug logs after implimentation of health bar
 	    for(var i = 0; i < combat.ally_party.characters.length; ++i){
 		console.log(combat.ally_party.characters[i].name+" has health: "+
@@ -181,6 +184,8 @@ var combat = {
 	    break;
 	case Combat_State.Action_Select:
 	    Dialogue.set(["Select an action"]);
+	    combat.action_sel_indicator.show();
+	    combat.update_action_icons();
 	    combat.acting_character = combat.ally_sel.get();
 	    combat.action_sel = new Selection([combat.acting_character.action_1,
 					       combat.acting_character.action_2], false);
@@ -226,6 +231,7 @@ var combat = {
 			  combat.action_sel.get().name]);
 	    // Hide aciton selection indicator after selecting target
 	    combat.action_sel_indicator.hide();
+	    combat.character_sel_indicator.hide();
 	    combat.acting_character.set_animation(
 		combat.action_sel.get().character_animation);
 	    combat.acting_character.animation.reset();
@@ -287,10 +293,10 @@ var combat = {
 			  combat.action_sel.get().name]);
 	    break;
 	case Combat_State.Win:
-	    Dialogue.set(["You Win!"]);
+	    Dialogue.set(["You Win!"], combat.win_wait);
 	    break;
 	case Combat_State.Lose:
-	    Dialogue.set(["You Lose..."]);
+	    Dialogue.set(["You Lose..."], combat.lose_wait);
 	    break;
 	default:
 	    break;
@@ -303,7 +309,6 @@ var combat = {
 	    combat.ally_sel.get().action_2.display_animation);
     },
     update_action_indicator: function () {
-	combat.action_sel_indicator.show();
 	combat.action_sel_indicator.position =
 	    new Vector(0.05 + combat.action_sel.get_index() * 0.5, 0.4);
     },

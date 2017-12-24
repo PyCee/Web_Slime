@@ -27,4 +27,4 @@ var fight_character =
 			     new Animation("super_punch",
 					   Sprite.action_super_punch)));
 combat.ally_party.add_member(slime_character);
-combat.ally_party.add_member(fight_character);
+//combat.ally_party.add_member(fight_character);
