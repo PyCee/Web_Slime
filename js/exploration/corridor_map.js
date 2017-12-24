@@ -24,7 +24,7 @@ function corridor_arena_exit_callback () {
     arena.set(new Vector(5.75, 6.0));
 }
 var corridor_arena_exit_event = new Event(corridor_arena_exit_test,
-					  corridor_arena_exit_callback);
+					  corridor_arena_exit_callback, true);
 corridor.add_event(corridor_arena_exit_event);
 
 var corridor_dungeon_exit_hitbox = new Block(new Vector(5.5, corridor_height),
@@ -37,5 +37,5 @@ function corridor_dungeon_exit_callback () {
     dungeon.set(new Vector(2.125, 0.02));
 }
 var corridor_dungeon_exit_event = new Event(corridor_dungeon_exit_test,
-					    corridor_dungeon_exit_callback);
+					    corridor_dungeon_exit_callback, true);
 corridor.add_event(corridor_dungeon_exit_event);

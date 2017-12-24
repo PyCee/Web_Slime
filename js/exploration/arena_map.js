@@ -31,16 +31,14 @@ var training_dummy_actor = new Actor(new Vector(3, 3),
 				     new Animation("training_dummy",
 						   Sprite.training_dummy),
 				     false);
-var dummy_alive = true;
 arena.add_actor(training_dummy_actor);
 function arena_training_dummy_test () {
     return training_dummy_actor.bounding_box.detect_intersection(slime.bounding_box) ==
-	block_relative_position.intersects && dummy_alive;
+	block_relative_position.intersects;
 }
 function arena_training_dummy_callback () {
     console.log("fighting training dummy");
     training_dummy_battle.fight();
-    dummy_alive = false;
 }
 var arena_training_dummy_event = new Event(arena_training_dummy_test,
 					   arena_training_dummy_callback);
@@ -56,5 +54,5 @@ function arena_corridor_exit_callback () {
     corridor.set(new Vector(5.75, 0.1));
 }
 var arena_corridor_exit_event = new Event(arena_corridor_exit_test,
-					  arena_corridor_exit_callback);
+					  arena_corridor_exit_callback, true);
 arena.add_event(arena_corridor_exit_event);
