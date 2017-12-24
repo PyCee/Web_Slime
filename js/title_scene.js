@@ -1,64 +1,42 @@
-
-// A selection that manages selecting options on the home screen
-var title_selection = new Selection(["Start", "Credits"]);
-
-var title_scene = new Scene("Title", 1.0, function(){
-    title_selection.reset();
-    arrow.position = new Vector(arrow.position.x, 0.2);
-});
-
-var title_scene_start_sel = new Renderable(new Vector(0.3, 0.2), new Vector(0.4, 0.075),
-					   new Animation("black", Sprite.black));
-
-var title_scene_test_sel = new Renderable(new Vector(0.3, 0.3), new Vector(0.4, 0.075),
-					  new Animation("black", Sprite.black));
-
-var arrow = new Renderable(new Vector(0.15, 0.2), new Vector(0.1, 0.075),
-			   new Animation("black", Sprite.black));
-
-title_scene.set_renderables([arrow, title_scene_start_sel, title_scene_test_sel]);
-
-title_scene.user_input.add_keyboard_event("w", "press", function(){
-    // When 'w' is pressed
-    // Select the above option
-    //console.log("w press");
-    switch(title_selection.previous()){
-    case title_selection.options[0]:
-	arrow.position = new Vector(arrow.position.x, 0.2);
-	break;
-    case title_selection.options[1]:
-	arrow.position = new Vector(arrow.position.x, 0.3);
-	break;
-    default:
-	break;
+var title = {
+    // A selection that manages selecting options on the home screen
+    scene: new Scene("Title", 1.0, function(){
+	title.selection = new Selection([title.start, title.test]);
+	title.selection.reset();
+	title.reset_sel_indicator_position();
+    }),
+    start: new Renderable(new Vector(0.15, 0.4), new Vector(0.3, 0.075),
+				    new Animation("title_start", Sprite.title_start)),
+    test: new Renderable(new Vector(0.6, 0.4), new Vector(0.3, 0.075),
+				   new Animation("title_test", Sprite.title_test)),
+    selection: null,
+    sel_indicator: new Renderable(new Vector(0.0, 0.4), new Vector(0.05, 0.075),
+			  new Animation("black", Sprite.black)),
+    reset_sel_indicator_position: function () {
+	title.sel_indicator.position =
+	    new Vector(title.selection.get().position.x - 0.055,
+		       title.sel_indicator.position.y);
     }
+};
+title.scene.set_renderables([title.sel_indicator, title.start, title.test]);
+title.scene.user_input.add_keyboard_event("a", "press", function(){
+    title.selection.previous();
+    title.reset_sel_indicator_position();
 });
-
-title_scene.user_input.add_keyboard_event("s", "press", function(){
-    // When 's' is pressed
-    // Select the below option
-    switch(title_selection.next()){
-    case title_selection.options[0]:
-	arrow.position = new Vector(arrow.position.x, 0.2);
-	break;
-    case title_selection.options[1]:
-	arrow.position = new Vector(arrow.position.x, 0.3);
-	break;
-    default:
-	break;
-    }
+title.scene.user_input.add_keyboard_event("d", "press", function(){
+    title.selection.next();
+    title.reset_sel_indicator_position();
 });
-
-title_scene.user_input.add_keyboard_event(" ", "press", function(){
-    // When 'spacebar' is pressed
+title.scene.user_input.add_keyboard_event(" ", "press", function(){
     // Complete an action depending on the selection
-    switch(title_selection.get()){
-    case title_selection.options[0]:
+    switch(title.selection.get()){
+    case title.start:
 	console.log("Starting game");
 	dungeon.set(new Vector(1.0, 1.5));
 	exploration.scene.show();
 	break;
-    case title_selection.options[1]:
+    case title.test:
+	console.log("Testing features");
 	training_dummy_battle.fight();
 	break;
     default:

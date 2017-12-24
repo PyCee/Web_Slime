@@ -20,6 +20,8 @@ var Sprite = {
     red: new Spritemap("red.png"),
     green: new Spritemap("green.png"),
     blue: new Spritemap("blue.png"),
+    title_start: new Spritemap("title_start.png"),
+    title_test: new Spritemap("title_test.png"),
     slime: new Spritemap("slime.png", 1, 2),
     training_dummy: new Spritemap("training_dummy.png", 1, 3),
     key: new Spritemap("key.png"),

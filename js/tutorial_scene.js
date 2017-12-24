@@ -4,8 +4,7 @@
 var tutorial = {
     scene: new Scene("Tutorial", 1.0, function(){
 	var text = [
-	    "w and s will change selection vertically",
-	    "a and d will change horizontally",
+	    "a and d will change selection (left/right)",
 	    "space will interact with the selection",
 	    "(and exit this screen)",
 	    "",
@@ -18,5 +17,5 @@ var tutorial = {
 
 tutorial.scene.user_input.add_keyboard_event(" ", "press", function(){
     Dialogue.reset();
-    title_scene.show();
+    title.scene.show();
 });
