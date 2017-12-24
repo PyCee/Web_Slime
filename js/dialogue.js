@@ -34,13 +34,13 @@ var Dialogue = {
 	    // Draw text background
 	    ctx.fillStyle = "#ffffff";
 	    ctx.fillRect(Dialogue.offset.x, Dialogue.offset.y,
-			 Dialogue.width, Dialogue.height);
+			 Dialogue.width, Dialogue.height * Dialogue.text_array.length);
 	    // Draw text
 	    ctx.font = Dialogue.font_size + "px Arial";
 	    ctx.fillStyle = "#005500";
 	    for(var i = 0; i < Dialogue.text_array.length; ++i){
 		ctx.fillText(Dialogue.text_array[i],
-			     Dialogue.offset.x,
+			     Dialogue.offset.x + 5,
 			     Dialogue.offset.y + Dialogue.font_size*(i+1));
 	    }
 	}
