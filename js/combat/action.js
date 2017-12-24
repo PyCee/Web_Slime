@@ -15,4 +15,11 @@ class Action {
     complete (target) {
 	this.fun(target);
     }
+    complete_all (target_array) {
+	for(var i = 0; i < target_array.length; ++i){
+	    // For each target in target_array
+	    // Complete action on target
+	    this.complete(target_array[i]);
+	}
+    }
 }

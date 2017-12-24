@@ -1,3 +1,7 @@
+var Selection_Type = {
+    Next: 0,
+    Previous: 1
+};
 class Selection {
     constructor (selections, loop = false) {
 	if(selections.length < 1){
@@ -12,6 +16,18 @@ class Selection {
     }
     reset () {
 	this.set_index(0);
+    }
+    change (selection_type) {
+	switch(selection_type){
+	case Selection_Type.Next:
+	    return this.next();
+	    break;
+	case Selection_Type.Previous:
+	    return this.previous();
+	    break;
+	default:
+	    break;
+	}
     }
     next () {
 	++this.selected_i;
