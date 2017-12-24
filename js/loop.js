@@ -4,7 +4,7 @@ var last_frame_time = window.performance.now();
 var current_frame_time = 0;
 
 // Show the title scene on start
-title_scene.show();
+tutorial.scene.show();
 
 // Tell Update to update our scenes on start
 Update.set(Update.type.scene);

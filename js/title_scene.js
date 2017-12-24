@@ -55,7 +55,8 @@ title_scene.user_input.add_keyboard_event(" ", "press", function(){
     switch(title_selection.get()){
     case title_selection.options[0]:
 	console.log("Starting game");
-	tutorial.exp_scene.show(new Vector(1.0, 1.5));
+	dungeon.set(new Vector(1.0, 1.5));
+	exploration.scene.show();
 	break;
     case title_selection.options[1]:
 	training_dummy_battle.fight();
