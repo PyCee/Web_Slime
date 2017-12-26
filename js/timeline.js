@@ -3,6 +3,7 @@ class Timeline {
 	// Elapsed time in seconds
 	this.elapsed_time = 0.0;
 	this.active = active;
+	this.timers = [];
     }
     get_elapsed_time () {return this.elapsed_time;}
     start () {this.active = true;}
@@ -14,6 +15,12 @@ class Timeline {
     update (delta_s) {
 	if(this.active){
 	    this.elapsed_time += delta_s;
+	    for(var i = 0; i < this.timers.length; ++i){
+		this.timers[i].test();
+	    }
 	}
+    }
+    add_event (time, callback) {
+	this.timers.push(new Timer(time, callback, this));
     }
 }
