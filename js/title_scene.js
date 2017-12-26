@@ -37,7 +37,8 @@ title.scene.user_input.add_keyboard_event(" ", "press", function(){
 	break;
     case title.test:
 	console.log("Testing features");
-	training_dummy_battle.fight();
+	combat.ally_party.add_member(fight_character);
+	arena_battle_3.fight();
 	break;
     default:
 	break;

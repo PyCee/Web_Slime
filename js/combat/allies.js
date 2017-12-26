@@ -15,16 +15,17 @@ var slime_character = new Character("Slime", new Animation("sli",
 					       new Animation("Heal",
 							     Sprite.action_heal)));
 var fight_character =
-    new Character("Fight", new Animation("fig", Sprite.green),
-		  new Action("tackle", Action_Type.Enemy_Single,
-			     function(target){target.health-=2;},
-			     null,
+    new Character("Fighter", new Animation("fig", Sprite.fighter),
+		  new Action("Punch", Action_Type.Enemy_Single,
+			     function(target){target.take_damage(2);},
+			     new Animation("fig", Sprite.fighter,
+					   0, 0, 2, 1.5),
 			     new Animation("punch",
 					   Sprite.action_punch)),
-		  new Action("fight it", Action_Type.Enemy_Single,
-			     function(target){target.health-=1;},
-			     null,
+		  new Action("Super Punch", Action_Type.Enemy_Single,
+			     function(target){target.take_damage(3);},
+			     new Animation("fig", Sprite.fighter,
+					   1, 0, 2, 1.5),
 			     new Animation("super_punch",
 					   Sprite.action_super_punch)));
 combat.ally_party.add_member(slime_character);
-//combat.ally_party.add_member(fight_character);

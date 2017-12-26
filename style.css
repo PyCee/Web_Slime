@@ -6,5 +6,5 @@ main {
     height: auto;
 }
 canvas {
-    background-color: hsla(135, 80%, 40%, 1.0);
+    background-color: hsla(135, 50%, 40%, 1.0);
 }

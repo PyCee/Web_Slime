@@ -22,6 +22,15 @@ class Character extends Renderable {
     }
     take_damage (damage) {
 	this.health -= damage;
-	this.health_bar.add_progress(-damage);
+	
+	if(this.health > this.max_health){
+	    this.health = this.max_health;
+	} else if (this.health < 0){
+	    this.health = 0;
+	}
+	this.health_bar.set_progress(this.health);
+    }
+    heal_damage (heal) {
+	this.take_damage(-1.0 * heal);
     }
 }

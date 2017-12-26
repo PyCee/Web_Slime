@@ -16,6 +16,9 @@ class Progress_Bar extends Renderable {
 	    this.progress = 0;
 	}
     }
+    set_progress (progress) {
+	this.progress = progress;
+    }
     display () {
 	this.back_animation.draw(this.position, this.size);
 	this.animation.draw(this.position,

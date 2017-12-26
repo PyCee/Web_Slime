@@ -8,6 +8,7 @@ var Combat_State = {
     Lose: 6
 };
 var combat = {
+    battle: null,
     ally_party: new Party(),
     enemy_party: new Party(),
     state: Combat_State.Character_Select,
@@ -53,6 +54,7 @@ var combat = {
 
 	// Initially hide action selection indicator
 	combat.action_sel_indicator.hide();
+	combat.character_sel_indicator.hide();
 	
 	// Initialize state to character select
 	combat.set_state(Combat_State.Character_Select);
@@ -106,6 +108,7 @@ var combat = {
 	    combat.end_timeline.update(delta_s);
 	    if(combat.end_timeline.get_elapsed_time() > combat.win_wait){
 		exploration.scene.show();
+		combat.battle.callback();
 	    }
 	    break;
 	case Combat_State.Lose:
@@ -143,7 +146,6 @@ var combat = {
 	switch(combat.state){
 	case Combat_State.Character_Select:
 	    Dialogue.set(["Select an ally character"]);
-	    combat.character_sel_indicator.show();
 	    
 	    var living_ally_count = 0;
 	    var last_living_ally_index = -1;
@@ -167,6 +169,7 @@ var combat = {
 		} else {
 		    // Else, update selection indicator
 		    combat.update_character_indicator(combat.target_sel.get());
+		    combat.character_sel_indicator.show();
 		}
 	    }
 	    break;
@@ -185,6 +188,7 @@ var combat = {
 	    var living_target_count = 0;
 	    var last_living_target_index = -1;
 	    combat.target_sel.reset();
+	    combat.character_sel_indicator.show();
 	    while(true){
 		if(combat.target_sel.get().is_alive()){
 		    // If the current selected target is alive
@@ -279,7 +283,8 @@ var combat = {
 	    }
 	    combat.acting_character.animation.reset();
 	    Dialogue.set([combat.acting_character.name + " is using " +
-			  combat.action_sel.get().name]);
+			  combat.action_sel.get().name,
+			  "on " + combat.target_sel.get().name]);
 	    break;
 	case Combat_State.Win:
 	    Dialogue.set(["You Win!"], combat.win_wait);

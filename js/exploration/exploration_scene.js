@@ -61,7 +61,7 @@ exploration.scene.user_input.add_keyboard_event("d", "release", function(){
     slime.velocity.x -= SLIME_MOVE_SPEED;
 });
 exploration.scene.user_input.add_keyboard_event("q", "press", function(){
-    console.log("opening inventory");
+    console.log("opening inventory (once implimented)");
 });
 exploration.scene.user_input.add_keyboard_event(" ", "press", function(){
     for(var i = 0; i < exploration.map.actors.length; ++i){
