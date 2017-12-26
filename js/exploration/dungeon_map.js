@@ -1,91 +1,90 @@
-var dungeon_width = 5.0;
-var dungeon_height = dungeon_width * canvas_dimensions.aspect_ratio.multiplier;
+var Dungeon = {};
+Dungeon.width = 5.0;
+Dungeon.height = Dungeon.width * canvas_dimensions.aspect_ratio.multiplier;
 
-var dungeon = new Map(dungeon_width);
-dungeon.add_actor(slime);
-// Walls
-// Top wall (with gap for gate)
-// Top wall (left part)
-dungeon.add_actor(new Actor(new Vector(0.0, 0.0),
-			    new Vector(2, 1.0),
-			    new Animation("black", Sprite.black)));
-// Top wall (right part)
-dungeon.add_actor(new Actor(new Vector(2.75, 0.0),
-			    new Vector(2.25, 1.0),
-			    new Animation("black", Sprite.black)));
-// Bottom wall
-dungeon.add_actor(new Actor(new Vector(0.0, dungeon_height - 0.3),
-			    new Vector(dungeon_width, 0.3),
-			    new Animation("black", Sprite.black)));
-// Left wall
-dungeon.add_actor(new Actor(new Vector(0.0, 0.0),
-			    new Vector(0.5, dungeon_height),
-			    new Animation("black", Sprite.black)));
-// Right wall
-dungeon.add_actor(new Actor(new Vector(dungeon_width - 0.5, 0.0),
-			    new Vector(0.5, dungeon_height),
-			    new Animation("black", Sprite.black)));
+Dungeon.key_item = new Inventory_Item("dungeon key", "key on the ground");
+Dungeon.key = new Actor(new Vector(3.5, 1.5), new Vector(0.5, 0.5),
+			new Animation("key.png", Sprite.key),
+			false);
+Dungeon.gate = new Actor(new Vector(2.0, 0.0), new Vector(0.75, 1.0),
+			 new Animation("gate.png", Sprite.gate));
 
+Dungeon.gate_unlock_hitbox = new Block(new Vector(2.0, 1.0),
+				       new Vector(0.75, 0.05));
+Dungeon.exit_hitbox = new Block(new Vector(2.0, 0.0),
+				new Vector(0.75, 0.01));
 
-var dungeon_key_item = new Inventory_Item("dungeon key", "key on the ground");
-var dungeon_key = new Actor(new Vector(3.5, 1.5), new Vector(0.5, 0.5),
-			    new Animation("key.png", Sprite.key),
-			    false);
-dungeon.add_actor(dungeon_key);
-function dungeon_key_pickup_test () {
-    return dungeon_key.bounding_box.detect_intersection(slime.bounding_box) ==
-	block_relative_position.intersects;
-}
-function dungeon_key_pickup_callback () {
+Dungeon.top_left_wall = new Actor(new Vector(0.0, 0.0),
+				  new Vector(2, 1.0),
+				  new Animation("black", Sprite.black));
+Dungeon.top_right_wall = new Actor(new Vector(2.75, 0.0),
+				   new Vector(2.25, 1.0),
+				   new Animation("black", Sprite.black));
+Dungeon.bottom_wall = new Actor(new Vector(0.0, Dungeon.height - 0.3),
+				new Vector(Dungeon.width, 0.3),
+				new Animation("black", Sprite.black));
+Dungeon.left_wall = new Actor(new Vector(0.0, 0.0),
+			      new Vector(0.5, Dungeon.height),
+			      new Animation("black", Sprite.black));
+Dungeon.right_wall = new Actor(new Vector(Dungeon.width - 0.5, 0.0),
+			       new Vector(0.5, Dungeon.height),
+			       new Animation("black", Sprite.black));
+// Key pickup event
+Dungeon.key_pickup_test = function() {
+    return Dungeon.key.bounding_box.intersects(slime.bounding_box);
+};
+Dungeon.key_pickup_callback = function () {
     Dialogue.set(["Picked up a key!"], 1.5);
-    Inventory.add_item(dungeon_key_item);
-    dungeon_key.hide();
-}
-var dungeon_key_pickup_event = new Event(dungeon_key_pickup_test,
-					 dungeon_key_pickup_callback);
-dungeon.add_event(dungeon_key_pickup_event);
-
-var dungeon_gate = new Actor(new Vector(2.0, 0.0), new Vector(0.75, 1.0),
-			     new Animation("gate.png", Sprite.gate));
-dungeon.add_actor(dungeon_gate);
-// The interaction box for the dungeon exit
-var dungeon_gate_unlock_hitbox = new Block(new Vector(2.0, 1.0),
-					   new Vector(0.75, 0.05));
-
-function dungeon_gate_unlock_test () {
-    return dungeon_gate_unlock_hitbox.detect_intersection(slime.bounding_box) ==
-	block_relative_position.intersects && Inventory.contains(dungeon_key_item);
-}
-function dungeon_gate_unlock_callback () {
-    dungeon_gate.blocking = false;
-    dungeon_gate.hide();
+    Inventory.add_item(Dungeon.key_item);
+    Dungeon.key.hide();
+};
+Dungeon.key_pickup_event = new Event(Dungeon.key_pickup_test,
+				     Dungeon.key_pickup_callback);
+// Gate unlock event
+Dungeon.gate_unlock_test = function () {
+    return Dungeon.gate_unlock_hitbox.intersects(slime.bounding_box) &&
+	Inventory.contains(Dungeon.key_item);
+};
+Dungeon.gate_unlock_callback = function () {
+    Dungeon.gate.blocking = false;
+    Dungeon.gate.hide();
+    //TODO = play animation for gate opening
     Dialogue.set(["You unlocked the gate"], 2);
-    // play animation for gate opening
-}
-var dungeon_gate_unlock_event =
-    new Event(dungeon_gate_unlock_test, dungeon_gate_unlock_callback);
-dungeon.add_event(dungeon_gate_unlock_event);
-
-function dungeon_gate_warning_test () {
-    return dungeon_gate_unlock_hitbox.detect_intersection(slime.bounding_box) ==
-	block_relative_position.intersects && !Inventory.contains(dungeon_key_item);
-}
-function dungeon_gate_warning_callback () {
+};
+Dungeon.gate_unlock_event = new Event(Dungeon.gate_unlock_test,
+				      Dungeon.gate_unlock_callback);
+// Gate locked warning event
+Dungeon.gate_warning_test = function () {
+    return Dungeon.gate_unlock_hitbox.intersects(slime.bounding_box) &&
+	!Inventory.contains(Dungeon.key_item);
+};
+Dungeon.gate_warning_callback = function () {
     Dialogue.set(["The exit is locked..."], 2);
-}
-var dungeon_door_warning_event =
-    new Event(dungeon_gate_warning_test, dungeon_gate_warning_callback);
-dungeon.add_event(dungeon_door_warning_event);
+};
+Dungeon.door_warning_event = new Event(Dungeon.gate_warning_test,
+				       Dungeon.gate_warning_callback);
+// Map exit event to Corridor
+Dungeon.exit_test = function () {
+    return Dungeon.exit_hitbox.intersects(slime.bounding_box);
+};
+Dungeon.exit_callback = function () {
+    Corridor.map.set(new Vector(5.75, 6.25));
+};
+Dungeon.exit_event = new Event(Dungeon.exit_test, Dungeon.exit_callback, true);
 
-var dungeon_exit_hitbox = new Block(new Vector(2.0, 0.0),
-				    new Vector(0.75, 0.01));
-function dungeon_exit_test () {
-    return dungeon_exit_hitbox.detect_intersection(slime.bounding_box) ==
-	block_relative_position.intersects;
-}
-function dungeon_exit_callback () {
-    corridor.set(new Vector(5.75, 6.25));
-}
-var dungeon_exit_event = new Event(dungeon_exit_test, dungeon_exit_callback, true);
-dungeon.add_event(dungeon_exit_event);
+Dungeon.map = new Map(Dungeon.width);
+Dungeon.map.set_actors([
+    slime,
+    Dungeon.top_right_wall,
+    Dungeon.top_left_wall,
+    Dungeon.bottom_wall,
+    Dungeon.left_wall,
+    Dungeon.right_wall,
+    Dungeon.key,
+    Dungeon.gate]);
+Dungeon.map.set_events([
+    Dungeon.key_pickup_event,
+    Dungeon.gate_unlock_event,
+    Dungeon.door_warning_event,
+    Dungeon.exit_event]);
 

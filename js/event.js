@@ -15,3 +15,12 @@ class Event {
 	}
     }
 }
+class Timer extends Event {
+    // An event that will trigger once test is called
+    //   with timeline having passed a specific time
+    constructor (trigger_time, callback, timeline) {
+	super(function(){
+	    return timeline.get_elapsed_time() >= trigger_time;
+	}, callback, false);
+    }
+}

@@ -13,19 +13,13 @@ class Map {
 	exploration.scene.show_callback = this.show_callback;
 	
 	// Reset variables for use in next map
-	var sprites = [];
-	for(var i = 0; i < this.actors.length; ++i){
-	    sprites.push(this.actors[i].sprite);
-	}
-	//exploration.actors = this.actors;
-	exploration.scene.set_renderables(this.actors)
-	//exploration.scene.events = this.events;
+	exploration.scene.set_renderables(this.actors);
 	exploration.set_map(this);
     }
-    add_actor (actor) {
-	this.actors.push(actor);
+    set_actors (actors) {
+	this.actors = actors;
     }
-    add_event (event) {
-	this.events.push(event);
+    set_events (events) {
+	this.events = events;
     }
 }

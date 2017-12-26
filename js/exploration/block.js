@@ -10,6 +10,9 @@ class Block {
 	this.position = position;
 	this.size = size;
     }
+    intersects (block) {
+	return this.detect_intersection(block) == block_relative_position.intersects;
+    }
     detect_intersection (block) {
 	var relative_position = -1;
 	if(this.position.x + this.size.x > block.position.x &&

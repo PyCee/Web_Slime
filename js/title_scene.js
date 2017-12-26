@@ -16,8 +16,9 @@ var title = {
 	title.sel_indicator.position =
 	    new Vector(title.selection.get().position.x - 0.055,
 		       title.sel_indicator.position.y);
-    }
+    },
 };
+
 title.scene.set_renderables([title.sel_indicator, title.start, title.test]);
 title.scene.user_input.add_keyboard_event("a", "press", function(){
     title.selection.previous();
@@ -32,13 +33,12 @@ title.scene.user_input.add_keyboard_event(" ", "press", function(){
     switch(title.selection.get()){
     case title.start:
 	console.log("Starting game");
-	dungeon.set(new Vector(1.0, 1.5));
+	Dungeon.map.set(new Vector(1.0, 1.5));
 	exploration.scene.show();
 	break;
     case title.test:
 	console.log("Testing features");
-	combat.ally_party.add_member(fight_character);
-	arena_battle_3.fight();
+	Dialogue.set(["No test programmed right now"]);
 	break;
     default:
 	break;

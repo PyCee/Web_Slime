@@ -1,41 +1,44 @@
-var corridor_width = 12;
-var corridor_height = corridor_width * canvas_dimensions.aspect_ratio.multiplier;
+var Corridor = {};
+Corridor.width = 12;
+Corridor.height = Corridor.width * canvas_dimensions.aspect_ratio.multiplier;
 
-var corridor = new Map(corridor_width);
-corridor.add_actor(slime);
-// Walls
+Corridor.map = new Map(Corridor.width);
 
-// Left wall
-corridor.add_actor(new Actor(new Vector(0.0, 0.0),
-			     new Vector(5.5, corridor_height),
-			     new Animation("black", Sprite.black)));
-// Right wall
-corridor.add_actor(new Actor(new Vector(6.5, 0.0),
-			     new Vector(5.5, corridor_height),
-			     new Animation("black", Sprite.black)));
+Corridor.left_wall = new Actor(new Vector(0.0, 0.0),
+			       new Vector(5.5, Corridor.height),
+			       new Animation("black", Sprite.black));
+Corridor.right_wall = new Actor(new Vector(6.5, 0.0),
+				new Vector(5.5, Corridor.height),
+				new Animation("black", Sprite.black));
 
-var corridor_arena_exit_hitbox = new Block(new Vector(5.5, 0.0),
+// Exit hitboxes
+Corridor.arena_exit_hitbox = new Block(new Vector(5.5, 0.0),
 					   new Vector(1.0, 0.05));
-function corridor_arena_exit_test () {
-    return corridor_arena_exit_hitbox.detect_intersection(slime.bounding_box) ==
-	block_relative_position.intersects;
-}
-function corridor_arena_exit_callback () {
-    arena.set(new Vector(5.75, 6.0));
-}
-var corridor_arena_exit_event = new Event(corridor_arena_exit_test,
-					  corridor_arena_exit_callback, true);
-corridor.add_event(corridor_arena_exit_event);
-
-var corridor_dungeon_exit_hitbox = new Block(new Vector(5.5, corridor_height),
+Corridor.dungeon_exit_hitbox = new Block(new Vector(5.5, Corridor.height),
 					     new Vector(1.0, 0.05));
-function corridor_dungeon_exit_test () {
-    return corridor_dungeon_exit_hitbox.detect_intersection(slime.bounding_box) ==
-	block_relative_position.intersects;
+
+// Map exit event to Arena
+Corridor.arena_exit_test = function () {
+    return Corridor.arena_exit_hitbox.intersects(slime.bounding_box);
+};
+Corridor.arena_exit_callback = function () {
+    Arena.map.set(new Vector(5.75, 6.0));
+};
+Corridor.arena_exit_event = new Event(Corridor.arena_exit_test,
+					  Corridor.arena_exit_callback, true);
+// Map exit event to Dungeon
+Corridor.dungeon_exit_test = function () {
+    return Corridor.dungeon_exit_hitbox.intersects(slime.bounding_box);
 }
-function corridor_dungeon_exit_callback () {
-    dungeon.set(new Vector(2.125, 0.02));
+Corridor.dungeon_exit_callback = function () {
+    Dungeon.map.set(new Vector(2.125, 0.02));
 }
-var corridor_dungeon_exit_event = new Event(corridor_dungeon_exit_test,
-					    corridor_dungeon_exit_callback, true);
-corridor.add_event(corridor_dungeon_exit_event);
+Corridor.dungeon_exit_event = new Event(Corridor.dungeon_exit_test,
+					    Corridor.dungeon_exit_callback, true);
+Corridor.map.set_actors([
+    slime,
+    Corridor.left_wall,
+    Corridor.right_wall]);
+Corridor.map.set_events([
+    Corridor.arena_exit_event,
+    Corridor.dungeon_exit_event]);
