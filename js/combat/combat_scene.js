@@ -116,7 +116,7 @@ var combat = {
 	    combat.end_timeline.update(delta_s);
 	    if(combat.end_timeline.get_elapsed_time() > combat.lose_wait){
 		// TODO:switch to prev scene, denoted by battle
-		location.reload();
+		location.reload(true);
 	    }
 	    break;
 	default:
