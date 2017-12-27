@@ -58,6 +58,8 @@ var combat = {
 	// Initialize state to character select
 	combat.set_state(Combat_State.Character_Select);
 	combat.update_character_indicator(combat.ally_sel.get());
+
+	combat.end_timeline.reset();
     }, function (delta_s) {
 	switch(combat.state){
 	case Combat_State.Character_Select:
