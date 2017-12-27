@@ -6,10 +6,10 @@ Corridor.map = new Map(Corridor.width);
 
 Corridor.left_wall = new Actor(new Vector(0.0, 0.0),
 			       new Vector(5.5, Corridor.height),
-			       new Animation("black", Sprite.black));
+			       new Animation(Sprite.black));
 Corridor.right_wall = new Actor(new Vector(6.5, 0.0),
 				new Vector(5.5, Corridor.height),
-				new Animation("black", Sprite.black));
+				new Animation(Sprite.black));
 
 // Exit hitboxes
 Corridor.arena_exit_hitbox = new Block(new Vector(5.5, 0.0),

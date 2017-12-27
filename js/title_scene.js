@@ -6,12 +6,12 @@ var title = {
 	title.reset_sel_indicator_position();
     }),
     start: new Renderable(new Vector(0.15, 0.4), new Vector(0.3, 0.075),
-				    new Animation("title_start", Sprite.title_start)),
+				    new Animation(Sprite.title_start)),
     test: new Renderable(new Vector(0.6, 0.4), new Vector(0.3, 0.075),
-				   new Animation("title_test", Sprite.title_test)),
+				   new Animation(Sprite.title_test)),
     selection: null,
     sel_indicator: new Renderable(new Vector(0.0, 0.4), new Vector(0.05, 0.075),
-			  new Animation("black", Sprite.black)),
+			  new Animation(Sprite.black)),
     reset_sel_indicator_position: function () {
 	title.sel_indicator.position =
 	    new Vector(title.selection.get().position.x - 0.055,

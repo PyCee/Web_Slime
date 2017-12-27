@@ -4,53 +4,56 @@ Arena.height = Arena.width * canvas_dimensions.aspect_ratio.multiplier;
 
 Arena.top_wall = new Actor(new Vector(0.0, 0.0),
 			   new Vector(Arena.width, 1.0),
-			   new Animation("black", Sprite.black), false);
+			   new Animation(Sprite.black), false);
 Arena.gate_wall_1 = new Actor(new Vector(0.5, 1.0),
 			      new Vector(1.0, 2.0),
-			      new Animation("black", Sprite.black));
+			      new Animation(Sprite.black));
 Arena.gate_wall_2 = new Actor(new Vector(3.5, 1.0),
 			      new Vector(1.5, 2.0),
-			      new Animation("black", Sprite.black));
+			      new Animation(Sprite.black));
 Arena.gate_wall_3 = new Actor(new Vector(7.0, 1.0),
 			      new Vector(1.5, 2.0),
-			      new Animation("black", Sprite.black));
+			      new Animation(Sprite.black));
 Arena.gate_wall_4 = new Actor(new Vector(10.5, 1.0),
 			      new Vector(1.0, 2.0),
-			      new Animation("black", Sprite.black));
+			      new Animation(Sprite.black));
 
 
 Arena.bottom_left_wall = new Actor(new Vector(0.0, Arena.height - 0.3),
 				   new Vector(5.5, 0.3),
-				   new Animation("black", Sprite.black));
+				   new Animation(Sprite.black));
 Arena.bottom_right_wall = new Actor(new Vector(6.5, Arena.height - 0.3),
 				    new Vector(5.5, 0.3),
-				    new Animation("black", Sprite.black));
+				    new Animation(Sprite.black));
 Arena.left_wall = new Actor(new Vector(0.0, 0.0),
 			    new Vector(0.5, Arena.height),
-			    new Animation("black", Sprite.black));
+			    new Animation(Sprite.black));
 Arena.right_wall = new Actor(new Vector(Arena.width - 0.5, 0.0),
 			     new Vector(0.5, Arena.height),
-			     new Animation("black", Sprite.black));
+			     new Animation(Sprite.black));
 Arena.corridor_exit_hitbox = new Block(new Vector(5.5, Arena.height),
 				       new Vector(1.0, 0.05));
 Arena.gate_1 = new Actor(new Vector(1.5, 1.0),
 			 new Vector(2.0, 2.0),
-			 new Animation("Gate", Sprite.gate));
+			 new Animation(Sprite.gate));
 Arena.gate_2 = new Actor(new Vector(5.0, 1.0),
 			 new Vector(2.0, 2.0),
-			 new Animation("Gate", Sprite.gate));
+			 new Animation(Sprite.gate));
 Arena.gate_3 = new Actor(new Vector(8.5, 1.0),
 			 new Vector(2.0, 2.0),
-			 new Animation("Gate", Sprite.gate));
+			 new Animation(Sprite.gate));
 Arena.dummy_1 = new Actor(new Vector(1.75, -1.0),
-			new Vector(1.5, 1.5),
-			new Animation("dummy", Sprite.training_dummy), false, true);
+			  new Vector(1.5, 1.5),
+			  new Animation(Sprite.training_dummy, "Dummy",
+					[[0,0],[1,0],[0,0],[2,0]], 2, -1), false, true);
 Arena.dummy_2 = new Actor(new Vector(5.25, -1.0),
-			new Vector(1.5, 1.5),
-			new Animation("dummy", Sprite.training_dummy), false, true);
+			  new Vector(1.5, 1.5),
+			  new Animation(Sprite.training_dummy, "Dummy",
+					[[0,0],[1,0],[0,0],[2,0]], 2, -1), false, true);
 Arena.dummy_3 = new Actor(new Vector(8.75, -1.0),
-			new Vector(1.5, 1.5),
-			new Animation("dummy", Sprite.training_dummy), false, true);
+			  new Vector(1.5, 1.5),
+			  new Animation(Sprite.training_dummy, "Dummy",
+					[[0,0],[1,0],[0,0],[2,0]], 2, -1), false, true);
 
 // Map exit event to Corridor
 Arena.corridor_exit_test = function () {

@@ -13,8 +13,8 @@ class Character extends Renderable {
 	this.is_alive = is_alive;
 	this.health_bar = new Progress_Bar(new Vector(0,0),
 					   new Vector(0.15, 0.03),
-					   new Animation("health", Sprite.green),
-					   new Animation("red", Sprite.red),
+					   new Animation(Sprite.green, "Health"),
+					   new Animation(Sprite.red, "Health_BG"),
 					   this.max_health, this.health);
     }
     position_health_bar () {

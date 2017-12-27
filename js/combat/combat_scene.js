@@ -127,12 +127,12 @@ var combat = {
     acting_character: null,
     
     first_action_icon: new Renderable(new Vector(0.15, 0.4), new Vector(0.3, 0.1),
-				 new Animation("default", Sprite.black)),
+				 new Animation(Sprite.black)),
     second_action_icon: new Renderable(new Vector(0.65, 0.4), new Vector(0.3, 0.1),
-				  new Animation("default", Sprite.black)),
+				  new Animation(Sprite.black)),
     action_sel: null,
     action_sel_indicator: new Renderable(new Vector(0.05, 0.4), new Vector(0.1, 0.1),
-					 new Animation("default", Sprite.red)),
+					 new Animation(Sprite.red)),
     // ally_sel and enemy_sel are created upon combat.scene load,
     //   and changed as characters die during battle
     ally_sel: null,
@@ -140,7 +140,7 @@ var combat = {
     // target_sel will be set to ally_sel or enemy_sel depending on action type
     target_sel: null,
     character_sel_indicator: new Renderable(new Vector(0, 0), new Vector(0.15, 0.05),
-					    new Animation("default", Sprite.black)),
+					    new Animation(Sprite.black)),
     set_state: function (state) {
 	combat.state = state;
 	switch(combat.state){

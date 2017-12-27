@@ -4,10 +4,10 @@ Dungeon.height = Dungeon.width * canvas_dimensions.aspect_ratio.multiplier;
 
 Dungeon.key_item = new Inventory_Item("dungeon key", "key on the ground");
 Dungeon.key = new Actor(new Vector(3.5, 1.5), new Vector(0.5, 0.5),
-			new Animation("key.png", Sprite.key),
+			new Animation(Sprite.key),
 			false);
 Dungeon.gate = new Actor(new Vector(2.0, 0.0), new Vector(0.75, 1.0),
-			 new Animation("gate.png", Sprite.gate));
+			 new Animation(Sprite.gate));
 
 Dungeon.gate_unlock_hitbox = new Block(new Vector(2.0, 1.0),
 				       new Vector(0.75, 0.05));
@@ -16,19 +16,19 @@ Dungeon.exit_hitbox = new Block(new Vector(2.0, 0.0),
 
 Dungeon.top_left_wall = new Actor(new Vector(0.0, 0.0),
 				  new Vector(2, 1.0),
-				  new Animation("black", Sprite.black));
+				  new Animation(Sprite.black));
 Dungeon.top_right_wall = new Actor(new Vector(2.75, 0.0),
 				   new Vector(2.25, 1.0),
-				   new Animation("black", Sprite.black));
+				   new Animation(Sprite.black));
 Dungeon.bottom_wall = new Actor(new Vector(0.0, Dungeon.height - 0.3),
 				new Vector(Dungeon.width, 0.3),
-				new Animation("black", Sprite.black));
+				new Animation(Sprite.black));
 Dungeon.left_wall = new Actor(new Vector(0.0, 0.0),
 			      new Vector(0.5, Dungeon.height),
-			      new Animation("black", Sprite.black));
+			      new Animation(Sprite.black));
 Dungeon.right_wall = new Actor(new Vector(Dungeon.width - 0.5, 0.0),
 			       new Vector(0.5, Dungeon.height),
-			       new Animation("black", Sprite.black));
+			       new Animation(Sprite.black));
 // Key pickup event
 Dungeon.key_pickup_test = function() {
     return Dungeon.key.bounding_box.intersects(slime.bounding_box);
