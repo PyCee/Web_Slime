@@ -5,10 +5,10 @@ Enemies.training_dummy = function () {
 			 new Action("Stare", Action_Type.Ally_Single,
 				    function(target){target.take_damage(1)},
 				    new Animation("Stare", Sprite.training_dummy,
-						  0, 0, 1)),
+						  0, 0, 1, 4)),
 			 new Action("Wiggle", Action_Type.Ally_Single,
 				    function(target){target.take_damage(2)},
 				    new Animation("Stare", Sprite.training_dummy,
-						  0, 0, 3)),
+						  0, 0, 3, 4)),
 			 5);
 };
