@@ -18,7 +18,6 @@ Arena.gate_wall_4 = new Actor(new Vector(10.5, 1.0),
 			      new Vector(1.0, 2.0),
 			      new Animation(Sprite.black));
 
-
 Arena.bottom_left_wall = new Actor(new Vector(0.0, Arena.height - 0.3),
 				   new Vector(5.5, 0.3),
 				   new Animation(Sprite.black));
@@ -95,12 +94,15 @@ Arena.dummy_battle_event_3 = new Event(Arena.dummy_battle_test_3,
 				     Arena.dummy_battle_callback_3);
 
 // Encounters
-Arena.dummy_battle_1 = new Encounter(new Party([Enemies.training_dummy()]),
-				     function () {
-					 Cutscene.start(Arena.sequence_2);
-				     });
+Arena.dummy_battle_1 =
+    new Encounter(new Party([Enemies.training_dummy()]),
+		  function () {
+		      Arena.dummy_1.set_animation(new Animation(Sprite.training_dummy,
+								"dead dummy",[[3,0]]));
+		      Cutscene.start(Arena.sequence_2);
+		  });
 Arena.dummy_battle_2 = new Encounter(new Party([Enemies.training_dummy(),
-					        Enemies.training_dummy()]),
+						Enemies.training_dummy()]),
 				     function () {
 					 combat.ally_party.add_member(fight_character);
 					 Cutscene.start(Arena.sequence_3);

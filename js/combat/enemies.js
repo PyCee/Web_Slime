@@ -11,5 +11,5 @@ Enemies.training_dummy = function () {
 				    function(target){target.take_damage(2)},
 				    new Animation(Sprite.training_dummy, "Wiggle",
 						  [[0,0],[1,0],[0,0],[2,0]], 0.5, 8)),
-			 5);
+			 new Animation(Sprite.training_dummy, "dead", [[3,0]]), 5);
 };
