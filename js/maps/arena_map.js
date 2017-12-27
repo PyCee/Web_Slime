@@ -101,14 +101,22 @@ Arena.dummy_battle_1 =
 								"dead dummy",[[3,0]]));
 		      Cutscene.start(Arena.sequence_2);
 		  });
-Arena.dummy_battle_2 = new Encounter(new Party([Enemies.training_dummy(),
-						Enemies.training_dummy()]),
-				     function () {
-					 combat.ally_party.add_member(fight_character);
-					 Cutscene.start(Arena.sequence_3);
-				     });
-Arena.dummy_battle_3 = new Encounter(new Party([Enemies.training_dummy(),
-					        Enemies.training_dummy()]));
+Arena.dummy_battle_2 =
+    new Encounter(new Party([Enemies.training_dummy(),
+			     Enemies.training_dummy()]),
+		  function () {
+		      Arena.dummy_2.set_animation(new Animation(Sprite.training_dummy,
+								"dead dummy",[[3,0]]));
+		      combat.ally_party.add_member(fight_character);
+		      Cutscene.start(Arena.sequence_3);
+		  });
+Arena.dummy_battle_3 =
+    new Encounter(new Party([Enemies.training_dummy(),
+			     Enemies.training_dummy()]),
+		  function () {
+		      Arena.dummy_3.set_animation(new Animation(Sprite.training_dummy,
+								"dead dummy",[[3,0]]));
+		  });
 
 
 Arena.sequence_1 = new Sequence();
