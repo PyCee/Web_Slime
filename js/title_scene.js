@@ -37,9 +37,7 @@ title.scene.user_input.add_keyboard_event(" ", "press", function(){
 	exploration.scene.show();
 	break;
     case title.test:
-	console.log("Testing features");
-	Corridor.arena_exit_callback();
-	exploration.scene.show();
+	console.log("Testing feature: None");
 	break;
     default:
 	break;
