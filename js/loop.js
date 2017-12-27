@@ -6,9 +6,6 @@ var current_frame_time = 0;
 // Show the title scene on start
 tutorial.scene.show();
 
-// Tell Update to update our scenes on start
-Update.set(Update.type.scene);
-
 function loop () {
     // Main game loop
 
@@ -18,8 +15,8 @@ function loop () {
     last_frame_time = current_frame_time;
     global_timeline.update(delta_s);
 
-    // Updates whatever is to be updated
-    Update.fun(delta_s);
+    // Update current scene
+    curr_scene.update(delta_s);
     
     // Update the cutscene variable
     Cutscene.update(delta_s);
