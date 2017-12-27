@@ -8,9 +8,8 @@ var Combat_State = {
     Lose: 6
 };
 var combat = {
-    battle: null,
+    encounter: null,
     ally_party: new Party(),
-    enemy_party: new Party(),
     state: Combat_State.Character_Select,
     scene: new Scene("Combat", 1.0, function(){
 	// set position of all characters in combat.ally_party and combat.enemy_party
@@ -21,18 +20,18 @@ var combat = {
 			   combat.ally_party.characters[i].size.x, 0.2);
 	    combat.ally_party.characters[i].position_health_bar();
 	}
-	for(var i = 0; i < combat.enemy_party.characters.length; ++i){
+	for(var i = 0; i < combat.encounter.enemy_party.characters.length; ++i){
 	    // Set positions from center-screen, left to right
-	    combat.enemy_party.characters[i].position = 
+	    combat.encounter.enemy_party.characters[i].position = 
 		new Vector(0.5 + (i) * 1.10 *
-			   combat.enemy_party.characters[i].size.x, 0.2);
-	    combat.enemy_party.characters[i].position_health_bar();
+			   combat.encounter.enemy_party.characters[i].size.x, 0.2);
+	    combat.encounter.enemy_party.characters[i].position_health_bar();
 	}
 	// Create non-static selections for this battle
 	// Reverse combat.ally_party.characters so left and right selection fits
 	//   when drawn in reverse order
 	combat.ally_sel = new Selection(combat.ally_party.characters.reverse(), false);
-	combat.enemy_sel = new Selection(combat.enemy_party.characters, false);
+	combat.enemy_sel = new Selection(combat.encounter.enemy_party.characters, false);
 	
 	// Add ui renderables
 	var renderables = [];
@@ -41,10 +40,10 @@ var combat = {
 	    renderables.push(combat.ally_party.characters[i]);
 	    renderables.push(combat.ally_party.characters[i].health_bar);
 	}
-	for(var i = 0; i < combat.enemy_party.characters.length; ++i){
+	for(var i = 0; i < combat.encounter.enemy_party.characters.length; ++i){
 	    // Add each enemy character and health bar to renderables
-	    renderables.push(combat.enemy_party.characters[i]);
-	    renderables.push(combat.enemy_party.characters[i].health_bar);
+	    renderables.push(combat.encounter.enemy_party.characters[i]);
+	    renderables.push(combat.encounter.enemy_party.characters[i].health_bar);
 	}
 	renderables.push(combat.action_sel_indicator);
 	renderables.push(combat.character_sel_indicator);
@@ -81,7 +80,7 @@ var combat = {
 		break;
 	    case Action_Type.Enemy_All:
 		// Do action on all enemies
-		combat.action_sel.get().complete_all(combat.enemy_party.characters);
+		combat.action_sel.get().complete_all(combat.encounter.enemy_party.characters);
 		break;
 	    case Action_Type.Ally_All:
 		// Do action on all allies
@@ -107,14 +106,15 @@ var combat = {
 	case Combat_State.Win:
 	    combat.end_timeline.update(delta_s);
 	    if(combat.end_timeline.get_elapsed_time() > combat.win_wait){
+		combat.encounter.callback();
 		exploration.scene.show();
-		combat.battle.callback();
 	    }
 	    break;
 	case Combat_State.Lose:
 	    combat.end_timeline.update(delta_s);
 	    if(combat.end_timeline.get_elapsed_time() > combat.lose_wait){
 		// TODO:switch to prev scene, denoted by battle
+		location.reload();
 	    }
 	    break;
 	default:
@@ -232,14 +232,14 @@ var combat = {
 	case Combat_State.Enemy_Action:
 	    // Check that there is an alive enemy
 	    var i = 0;
-	    for(i = 0; i < combat.enemy_party.characters.length; ++i){
+	    for(i = 0; i < combat.encounter.enemy_party.characters.length; ++i){
 		// For each enemy character
-		if(combat.enemy_party.characters[i].is_alive()){
+		if(combat.encounter.enemy_party.characters[i].is_alive()){
 		    // If the character is alive, break
 		    break;
 		}
 	    }
-	    if(i == combat.enemy_party.characters.length){
+	    if(i == combat.encounter.enemy_party.characters.length){
 		console.log("all enemies defeated");
 		combat.set_state(Combat_State.Win);
 		return;
@@ -247,9 +247,11 @@ var combat = {
 	    
 	    // Select random living enemy to use action
 	    while(true){
-		var enemy_index = Math.floor(Math.random() *
-					     combat.enemy_party.characters.length);
-		combat.acting_character = combat.enemy_party.characters[enemy_index];
+		var enemy_index =
+		    Math.floor(Math.random() *
+			       combat.encounter.enemy_party.characters.length);
+		combat.acting_character =
+		    combat.encounter.enemy_party.characters[enemy_index];
 		if(combat.acting_character.is_alive()){
 		    break;
 		}

@@ -3,7 +3,7 @@ function assign_actor_id () {
     return g_next_actor_id++;
 }
 class Actor extends Renderable {
-    constructor (position, size, animation, blocking=true, movable=false,
+    constructor (position, size, animation, blocking=true, movable=true,
 		 update=function(){}, interaction=function(){}) {
 	super(position, size, animation);
 	this.bounding_box = new Block(this.position, this.size);
@@ -18,15 +18,14 @@ class Actor extends Renderable {
 	this.position = position;
 	this.bounding_box = new Block(this.position, this.size);
     }
-    step_physics (actors, this_index) {
-	if(!this.movable){
+    step_physics (actors) {
+	if(!this.movable || !this.blocking){
 	    return;
 	}
 	this.position = this.position.add(this.velocity.scale(PHYSICS_UPDATE_DELTA_S));
 	for(var i = 0; i < actors.length; ++i){
-
 	    // Do not test for collision with self
-	    if(i == this_index){
+	    if(actors[i].id == this.id){
 		continue;
 	    }
 	    // For each block in the list
@@ -62,7 +61,7 @@ class Actor extends Renderable {
 		default:
 		    break;
 		}
-		i = 0;
+		//i = 0;
 	    }
 	}
 	this.bounding_box = new Block(this.position, this.size);

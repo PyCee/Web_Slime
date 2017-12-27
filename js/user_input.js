@@ -114,3 +114,17 @@ if (document.addEventListener) {
     document.attachEvent("keyup", handle_release_user_input);
 }
 
+var disabled_controls = new User_Input_Group();
+var pre_disabled_controls = null;
+function disable_controls () {
+    curr_user_input_group.release();
+    pre_disabled_controls = curr_user_input_group;
+    disabled_controls.bind();
+}
+function enable_controls () {
+    if(pre_disabled_controls == null){
+	console.log("ERROR::attempting to enable controls that werent disabled");
+    }
+    pre_disabled_controls.bind();
+    pre_disabled_controls = null;
+}

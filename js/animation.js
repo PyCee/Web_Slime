@@ -18,14 +18,12 @@ class Animation {
     show () {this.hidden = false;}
     update (delta_s) {
 	this.timeline.update(delta_s);
-	//console.log(this.frame);
-	
 	while(this.timeline.get_elapsed_time() > this.frame_time){
 	    this.timeline.set(this.timeline.get_elapsed_time() - this.frame_time);
 	    ++this.frame;
-	    if(this.frame == this.frame_count) {
+	    if(this.frame + this.col == this.frame_count) {
 		if(this.loop){
-		    this.frame = 0;
+		    this.frame = this.col;
 		} else {
 		    this.frame = this.frame_count-1;
 		    this.timeline.stop();

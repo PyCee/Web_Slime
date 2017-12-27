@@ -38,7 +38,8 @@ title.scene.user_input.add_keyboard_event(" ", "press", function(){
 	break;
     case title.test:
 	console.log("Testing features");
-	Dialogue.set(["No test programmed right now"]);
+	Corridor.arena_exit_callback();
+	exploration.scene.show();
 	break;
     default:
 	break;

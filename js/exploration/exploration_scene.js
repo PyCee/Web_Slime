@@ -12,7 +12,7 @@ var exploration = {
 	    
 	    // Step actor physics
 	    for(var i = 0; i < exploration.map.actors.length; ++i){
-		exploration.map.actors[i].step_physics(exploration.map.actors, i);
+		exploration.map.actors[i].step_physics(exploration.map.actors);
 	    }
 	    
 	    physics_time_accum -= PHYSICS_UPDATE_DELTA_S;
@@ -32,7 +32,7 @@ var exploration = {
 };
 var slime = new Actor(new Vector(0.0, 0.0), new Vector(0.5, 0.5),
 		      new Animation("Slime_Move", Sprite.slime, 0, 0, 2, 2, true),
-		      false, true, function(){});
+		      true, true, function(){});
 var SLIME_MOVE_SPEED = 2.0;
 
 // Add basic control for exploration

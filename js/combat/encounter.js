@@ -1,4 +1,4 @@
-class Battle {
+class Encounter {
     constructor (enemy_party, callback=function(){}) {
 	this.enemy_party = enemy_party;
 	this.callback = callback;
@@ -9,12 +9,9 @@ class Battle {
 	    this.enemy_party.characters[i].heal_damage(999);
 	}
     }
-    fight () {
+    start () {
 	this.reset();
-	// Set enemy party
-	combat.enemy_party = this.enemy_party;
-	combat.battle = this;
-	// Switch to combat scene
+	combat.encounter = this;
 	combat.scene.show();
     }
 }

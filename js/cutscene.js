@@ -26,7 +26,7 @@ class Sequence {
 		// If something is to be done
 		if(pre_et < this.lerps[i].t1){pre_et = this.lerps[i].t1;}
 		if(post_et > this.lerps[i].t2){post_et = this.lerps[i].t2;}
-		this.lerps[i].lerp(pre_et - post_et);
+		this.lerps[i].update(pre_et - post_et);
 	    }
 	}
     }
@@ -45,8 +45,7 @@ class Lerp {
 	var scale = change / (this.t2 - this.t1);
 	var delta_v = this.delta_v.scale(scale);
 	for(var j = 0; j < this.renderables.length; ++j){
-	    this.renderables[j].position =
-		this.renderables[j].position.add(delta_v);
+	    this.renderables[j].set_position(this.renderables[j].position.add(delta_v));
 	}
     }
 }
