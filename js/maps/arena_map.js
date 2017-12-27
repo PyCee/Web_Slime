@@ -59,7 +59,7 @@ Arena.corridor_exit_test = function () {
     return Arena.corridor_exit_hitbox.intersects(slime.bounding_box);
 };
 Arena.corridor_exit_callback = function () {
-    corridor.set(new Vector(5.75, 0.1));
+    Corridor.map.set(new Vector(5.75, 0.1));
 };
 Arena.corridor_exit_event = new Event(Arena.corridor_exit_test,
 				      Arena.corridor_exit_callback, true);
