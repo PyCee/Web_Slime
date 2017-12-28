@@ -18,8 +18,7 @@ class Character extends Renderable {
 	super(new Vector(0, 0), new Vector(0.15, 0.15), idle_animation);
 	this.name = name;
 	this.idle_animation = idle_animation;
-	this.action_1 = action_1;
-	this.action_2 = action_2;
+	this.actions = [action_1, action_2];
 	this.dead_animation = dead_animation;
 	this.max_health = max_health;
 	this.health = max_health;

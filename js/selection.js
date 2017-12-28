@@ -17,6 +17,14 @@ class Selection {
     reset () {
 	this.set_index(0);
     }
+    select (option) {
+	var option_index = this.options.indexOf(option);
+	if(option_index == -1){
+	    console.log("Attempting to select non existing option: " + option);
+	} else {
+	    this.set_index(option_index);
+	}
+    }
     change (selection_type) {
 	switch(selection_type){
 	case Selection_Type.Next:
