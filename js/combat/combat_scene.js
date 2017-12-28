@@ -7,61 +7,61 @@ var Combat_State = {
     Win: 5,
     Lose: 6
 };
-var combat = {
+var Combat = {
     encounter: null,
     ally_party: new Party(),
     state: Combat_State.Character_Select,
     scene: new Scene("Combat", 1.0, function(){
-	// set position of all characters in combat.ally_party and combat.enemy_party
-	for(var i = 0; i < combat.ally_party.characters.length; ++i){
+	// set position of all characters in Combat.ally_party and Combat.enemy_party
+	for(var i = 0; i < Combat.ally_party.characters.length; ++i){
 	    // Set positions from center-screen, right to left
-	    combat.ally_party.characters[i].position = 
+	    Combat.ally_party.characters[i].position = 
 		new Vector(0.5 - (i+1) * 1.10 *
-			   combat.ally_party.characters[i].size.x, 0.2);
-	    combat.ally_party.characters[i].position_health_bar();
+			   Combat.ally_party.characters[i].size.x, 0.2);
+	    Combat.ally_party.characters[i].position_health_bar();
 	}
-	for(var i = 0; i < combat.encounter.enemy_party.characters.length; ++i){
+	for(var i = 0; i < Combat.encounter.enemy_party.characters.length; ++i){
 	    // Set positions from center-screen, left to right
-	    combat.encounter.enemy_party.characters[i].position = 
+	    Combat.encounter.enemy_party.characters[i].position = 
 		new Vector(0.5 + (i) * 1.10 *
-			   combat.encounter.enemy_party.characters[i].size.x, 0.2);
-	    combat.encounter.enemy_party.characters[i].position_health_bar();
+			   Combat.encounter.enemy_party.characters[i].size.x, 0.2);
+	    Combat.encounter.enemy_party.characters[i].position_health_bar();
 	}
 	// Create non-static selections for this battle
-	// Reverse combat.ally_party.characters so left and right selection fits
+	// Reverse Combat.ally_party.characters so left and right selection fits
 	//   when drawn in reverse order
-	combat.ally_sel = new Selection(combat.ally_party.characters.reverse(), false);
-	combat.enemy_sel = new Selection(combat.encounter.enemy_party.characters, false);
+	Combat.ally_sel = new Selection(Combat.ally_party.characters.reverse(), false);
+	Combat.enemy_sel = new Selection(Combat.encounter.enemy_party.characters, false);
 	
 	// Add ui renderables
 	var renderables = [];
-	for(var i = 0; i < combat.ally_party.characters.length; ++i){
+	for(var i = 0; i < Combat.ally_party.characters.length; ++i){
 	    // Add each player character and health bar to renderables
-	    renderables.push(combat.ally_party.characters[i]);
-	    renderables.push(combat.ally_party.characters[i].health_bar);
+	    renderables.push(Combat.ally_party.characters[i]);
+	    renderables.push(Combat.ally_party.characters[i].health_bar);
 	}
-	for(var i = 0; i < combat.encounter.enemy_party.characters.length; ++i){
+	for(var i = 0; i < Combat.encounter.enemy_party.characters.length; ++i){
 	    // Add each enemy character and health bar to renderables
-	    renderables.push(combat.encounter.enemy_party.characters[i]);
-	    renderables.push(combat.encounter.enemy_party.characters[i].health_bar);
+	    renderables.push(Combat.encounter.enemy_party.characters[i]);
+	    renderables.push(Combat.encounter.enemy_party.characters[i].health_bar);
 	}
-	renderables.push(combat.action_sel_indicator);
-	renderables.push(combat.character_sel_indicator);
-	renderables.push(combat.first_action_icon);
-	renderables.push(combat.second_action_icon);
-	combat.scene.set_renderables(renderables);
+	renderables.push(Combat.action_sel_indicator);
+	renderables.push(Combat.character_sel_indicator);
+	renderables.push(Combat.first_action_icon);
+	renderables.push(Combat.second_action_icon);
+	Combat.scene.set_renderables(renderables);
 
 	// Initially hide action selection indicator
-	combat.action_sel_indicator.hide();
-	combat.character_sel_indicator.hide();
+	Combat.action_sel_indicator.hide();
+	Combat.character_sel_indicator.hide();
 	
 	// Initialize state to character select
-	combat.set_state(Combat_State.Character_Select);
-	combat.update_character_indicator(combat.ally_sel.get());
+	Combat.set_state(Combat_State.Character_Select);
+	Combat.update_character_indicator(Combat.ally_sel.get());
 
-	combat.end_timeline.reset();
+	Combat.end_timeline.reset();
     }, function (delta_s) {
-	switch(combat.state){
+	switch(Combat.state){
 	case Combat_State.Character_Select:
 	    break;
 	case Combat_State.Action_Select:
@@ -69,56 +69,56 @@ var combat = {
 	case Combat_State.Target_Select:
 	    break;
 	case Combat_State.Player_Action:
-	    if(!combat.acting_character.animation.is_finished()){
+	    if(!Combat.acting_character.animation.is_finished()){
 		// If animation has not finished
 		break;
 	    }
 	    // Else, Complete the action
-	    switch(combat.action_sel.get().type){
+	    switch(Combat.action_sel.get().type){
 	    case Action_Type.Enemy_Single:
 	    case Action_Type.Ally_Single:
 		// Complete action on target (whether enemy or ally)
-		combat.action_sel.get().complete(combat.target_sel.get());
+		Combat.action_sel.get().complete(Combat.target_sel.get());
 		break;
 	    case Action_Type.Enemy_All:
 		// Do action on all enemies
-		combat.action_sel.get().complete_all(combat.encounter.enemy_party.characters);
+		Combat.action_sel.get().complete_all(Combat.encounter.enemy_party.characters);
 		break;
 	    case Action_Type.Ally_All:
 		// Do action on all allies
-		combat.action_sel.get().complete_all(combat.ally_party.characters);
+		Combat.action_sel.get().complete_all(Combat.ally_party.characters);
 		break;
 	    default:
 		break;
 	    }
-	    combat.acting_character.set_idle();
-	    combat.set_state(Combat_State.Enemy_Action);
+	    Combat.acting_character.set_idle();
+	    Combat.set_state(Combat_State.Enemy_Action);
 	    break;
 	case Combat_State.Enemy_Action:
-	    if(!combat.acting_character.animation.is_finished()){
+	    if(!Combat.acting_character.animation.is_finished()){
 		// If animation has not finished
 		break;
 	    }
 	    // TODO: allow for enemies to use action on allies and parties
-	    combat.action_sel.get().complete(combat.target_sel.get());
+	    Combat.action_sel.get().complete(Combat.target_sel.get());
 	    
-	    combat.acting_character.set_idle();
-	    combat.set_state(Combat_State.Character_Select);
+	    Combat.acting_character.set_idle();
+	    Combat.set_state(Combat_State.Character_Select);
 	    break;
 	case Combat_State.Win:
-	    combat.end_timeline.update(delta_s);
-	    if(combat.end_timeline.get_elapsed_time() > combat.win_wait){
-		combat.encounter.callback();
+	    Combat.end_timeline.update(delta_s);
+	    if(Combat.end_timeline.get_elapsed_time() > Combat.win_wait){
+		Combat.encounter.callback();
 		exploration.scene.show();
 	    }
 	    break;
 	case Combat_State.Lose:
-	    combat.end_timeline.update(delta_s);
-	    if(combat.end_timeline.get_elapsed_time() > combat.lose_wait){
+	    Combat.end_timeline.update(delta_s);
+	    if(Combat.end_timeline.get_elapsed_time() > Combat.lose_wait){
 		// TODO:switch to prev scene, denoted by battle
 		location.reload();
-		combat.end_timeline.reset();
-		combat.end_timeline.stop();
+		Combat.end_timeline.reset();
+		Combat.end_timeline.stop();
 	    }
 	    break;
 	default:
@@ -137,7 +137,7 @@ var combat = {
     action_sel: null,
     action_sel_indicator: new Renderable(new Vector(0.05, 0.4), new Vector(0.1, 0.1),
 					 new Animation(Sprite.red)),
-    // ally_sel and enemy_sel are created upon combat.scene load,
+    // ally_sel and enemy_sel are created upon Combat.scene load,
     //   and changed as characters die during battle
     ally_sel: null,
     enemy_sel: null,
@@ -146,65 +146,65 @@ var combat = {
     character_sel_indicator: new Renderable(new Vector(0, 0), new Vector(0.15, 0.05),
 					    new Animation(Sprite.black)),
     set_state: function (state) {
-	combat.state = state;
-	switch(combat.state){
+	Combat.state = state;
+	switch(Combat.state){
 	case Combat_State.Character_Select:
 	    Dialogue.set(["Select an ally character"]);
 	    
 	    var living_ally_count = 0;
 	    var last_living_ally_index = -1;
-	    for(var i = 0; i < combat.ally_party.characters.length; ++i){
-		if(combat.ally_party.characters[i].is_alive()){
+	    for(var i = 0; i < Combat.ally_party.characters.length; ++i){
+		if(Combat.ally_party.characters[i].is_alive()){
 		    ++living_ally_count;
 		    last_living_ally_index = i;
 		}
 	    }
-	    combat.target_sel = combat.ally_sel;
+	    Combat.target_sel = Combat.ally_sel;
 	    if(living_ally_count == 0){
 		// If all alies are dead
 		console.log("All allies dead...");
-		combat.set_state(Combat_State.Lose);
+		Combat.set_state(Combat_State.Lose);
 	    } else{
 		// Else, select last living ally
-		combat.target_sel.set_index(last_living_ally_index);
+		Combat.target_sel.set_index(last_living_ally_index);
 		if(living_ally_count == 1){
 		    // If there is one living ally, skip character selection
-		    combat.set_state(Combat_State.Action_Select);
+		    Combat.set_state(Combat_State.Action_Select);
 		} else {
 		    // Else, update selection indicator
-		    combat.update_character_indicator(combat.target_sel.get());
-		    combat.character_sel_indicator.show();
+		    Combat.update_character_indicator(Combat.target_sel.get());
+		    Combat.character_sel_indicator.show();
 		}
 	    }
 	    break;
 	case Combat_State.Action_Select:
 	    Dialogue.set(["Select an action"]);
-	    combat.action_sel_indicator.show();
-	    combat.update_action_icons();
-	    combat.acting_character = combat.ally_sel.get();
-	    combat.action_sel = new Selection([combat.acting_character.action_1,
-					       combat.acting_character.action_2], false);
-	    combat.update_action_indicator();
+	    Combat.action_sel_indicator.show();
+	    Combat.update_action_icons();
+	    Combat.acting_character = Combat.ally_sel.get();
+	    Combat.action_sel = new Selection([Combat.acting_character.action_1,
+					       Combat.acting_character.action_2], false);
+	    Combat.update_action_indicator();
 	    break;
 	case Combat_State.Target_Select:
 	    Dialogue.set(["Select a target"]);
 	    
 	    var living_target_count = 0;
 	    var last_living_target_index = -1;
-	    combat.target_sel.reset();
-	    combat.character_sel_indicator.show();
+	    Combat.target_sel.reset();
+	    Combat.character_sel_indicator.show();
 	    while(true){
-		if(combat.target_sel.get().is_alive()){
+		if(Combat.target_sel.get().is_alive()){
 		    // If the current selected target is alive
 		    ++living_target_count;
-		    last_living_target_index = combat.target_sel.get_index();
+		    last_living_target_index = Combat.target_sel.get_index();
 		}
-		if(combat.target_sel.get() == combat.target_sel.get_end()){
+		if(Combat.target_sel.get() == Combat.target_sel.get_end()){
 		    // If this selection is the last, break out of the while loop
 		    break;
 		} else {
 		    // Else, loop again with the next selection
-		    combat.target_sel.next();
+		    Combat.target_sel.next();
 		}
 	    }
 	    if(living_target_count == 0){
@@ -212,40 +212,40 @@ var combat = {
 		console.log("All targets are dead... should have been handled earlier");
 	    } else{
 		// Else, select last living target
-		combat.target_sel.set_index(last_living_target_index);
+		Combat.target_sel.set_index(last_living_target_index);
 		if(living_target_count == 1){
 		    // If there is one living target, skip target selection
-		    combat.set_state(Combat_State.Player_Action);
+		    Combat.set_state(Combat_State.Player_Action);
 		} else {
 		    // Else, update character indicator
-		    combat.update_character_indicator(combat.target_sel.get());
+		    Combat.update_character_indicator(Combat.target_sel.get());
 		}
 	    }
 	    break;
 	case Combat_State.Player_Action:
-	    Dialogue.set([combat.acting_character.name + " is using " +
-			  combat.action_sel.get().name,
-			  "on " + combat.target_sel.get().name]);
+	    Dialogue.set([Combat.acting_character.name + " is using " +
+			  Combat.action_sel.get().name,
+			  "on " + Combat.target_sel.get().name]);
 	    // Hide aciton selection indicator after selecting target
-	    combat.action_sel_indicator.hide();
-	    combat.character_sel_indicator.hide();
-	    combat.acting_character.set_animation(
-		combat.action_sel.get().character_animation);
-	    combat.acting_character.animation.reset();
+	    Combat.action_sel_indicator.hide();
+	    Combat.character_sel_indicator.hide();
+	    Combat.acting_character.set_animation(
+		Combat.action_sel.get().character_animation);
+	    Combat.acting_character.animation.reset();
 	    break;
 	case Combat_State.Enemy_Action:
 	    // Check that there is an alive enemy
 	    var i = 0;
-	    for(i = 0; i < combat.encounter.enemy_party.characters.length; ++i){
+	    for(i = 0; i < Combat.encounter.enemy_party.characters.length; ++i){
 		// For each enemy character
-		if(combat.encounter.enemy_party.characters[i].is_alive()){
+		if(Combat.encounter.enemy_party.characters[i].is_alive()){
 		    // If the character is alive, break
 		    break;
 		}
 	    }
-	    if(i == combat.encounter.enemy_party.characters.length){
+	    if(i == Combat.encounter.enemy_party.characters.length){
 		console.log("all enemies defeated");
-		combat.set_state(Combat_State.Win);
+		Combat.set_state(Combat_State.Win);
 		return;
 	    }
 	    
@@ -253,157 +253,157 @@ var combat = {
 	    while(true){
 		var enemy_index =
 		    Math.floor(Math.random() *
-			       combat.encounter.enemy_party.characters.length);
-		combat.acting_character =
-		    combat.encounter.enemy_party.characters[enemy_index];
-		if(combat.acting_character.is_alive()){
+			       Combat.encounter.enemy_party.characters.length);
+		Combat.acting_character =
+		    Combat.encounter.enemy_party.characters[enemy_index];
+		if(Combat.acting_character.is_alive()){
 		    break;
 		}
 	    }
 	    // Use random enemy action
-	    combat.action_sel = new Selection([combat.acting_character.action_1,
-					       combat.acting_character.action_2]);
+	    Combat.action_sel = new Selection([Combat.acting_character.action_1,
+					       Combat.acting_character.action_2]);
 	    switch(Math.floor(Math.random() * 2)){
 	    case 0:
-		combat.acting_character.set_animation(
-		    combat.acting_character.action_1.character_animation);
-		combat.action_sel.set_index(0);
+		Combat.acting_character.set_animation(
+		    Combat.acting_character.action_1.character_animation);
+		Combat.action_sel.set_index(0);
 		break;
 	    case 1:
-		combat.acting_character.set_animation(
-		    combat.acting_character.action_2.character_animation);
-		combat.action_sel.set_index(1);
+		Combat.acting_character.set_animation(
+		    Combat.acting_character.action_2.character_animation);
+		Combat.action_sel.set_index(1);
 		break;
 	    }
 	    // Select random target
 	    // TODO: allow enemy characters to target their allies
 	    //       and target entire parties
-	    combat.target_sel = combat.ally_sel;
+	    Combat.target_sel = Combat.ally_sel;
 	    while(true){
 		var target_index = Math.floor(Math.random() *
-					      combat.ally_party.characters.length);
-		combat.target_sel.set_index(target_index);
-		if(combat.target_sel.get().is_alive()){
+					      Combat.ally_party.characters.length);
+		Combat.target_sel.set_index(target_index);
+		if(Combat.target_sel.get().is_alive()){
 		    break;
 		}
 	    }
-	    combat.acting_character.animation.reset();
-	    Dialogue.set([combat.acting_character.name + " is using " +
-			  combat.action_sel.get().name,
-			  "on " + combat.target_sel.get().name]);
+	    Combat.acting_character.animation.reset();
+	    Dialogue.set([Combat.acting_character.name + " is using " +
+			  Combat.action_sel.get().name,
+			  "on " + Combat.target_sel.get().name]);
 	    break;
 	case Combat_State.Win:
-	    Dialogue.set(["You Win!"], combat.win_wait);
+	    Dialogue.set(["You Win!"], Combat.win_wait);
 	    break;
 	case Combat_State.Lose:
-	    Dialogue.set(["You Lose..."], combat.lose_wait);
+	    Dialogue.set(["You Lose..."], Combat.lose_wait);
 	    break;
 	default:
 	    break;
 	}
     },
     update_action_icons: function () {
-	combat.first_action_icon.set_animation(
-	    combat.ally_sel.get().action_1.display_animation);
-	combat.second_action_icon.set_animation(
-	    combat.ally_sel.get().action_2.display_animation);
+	Combat.first_action_icon.set_animation(
+	    Combat.ally_sel.get().action_1.display_animation);
+	Combat.second_action_icon.set_animation(
+	    Combat.ally_sel.get().action_2.display_animation);
     },
     update_action_indicator: function () {
-	combat.action_sel_indicator.position =
-	    new Vector(0.05 + combat.action_sel.get_index() * 0.5, 0.4);
+	Combat.action_sel_indicator.position =
+	    new Vector(0.05 + Combat.action_sel.get_index() * 0.5, 0.4);
     },
     update_character_indicator: function (character) {
-	combat.character_sel_indicator.position =
+	Combat.character_sel_indicator.position =
 	    new Vector(character.position.x, 0.15);
-	if(combat.state == Combat_State.Character_Select){
-	    combat.update_action_icons();
+	if(Combat.state == Combat_State.Character_Select){
+	    Combat.update_action_icons();
 	}
     },
     select_living_target: function (selection_type) {
-	var prev_char_i = combat.target_sel.get_index();
-	while(!combat.target_sel.change(selection_type).is_alive()){
+	var prev_char_i = Combat.target_sel.get_index();
+	while(!Combat.target_sel.change(selection_type).is_alive()){
 	    // Loop through targets until we reach a living target
-	    if(combat.target_sel.get() == combat.target_sel.get_start()){
+	    if(Combat.target_sel.get() == Combat.target_sel.get_start()){
 		// If this is the start selection
 		//   No character after our prev selection is alive
 		//   Go back to our prev selection
-		combat.target_sel.set_index(prev_char_i);
+		Combat.target_sel.set_index(prev_char_i);
 		break;
 	    }
 	}
     }
 };
-combat.scene.user_input.add_keyboard_event(" ", "press", function(){
-    switch(combat.state){
+Combat.scene.user_input.add_keyboard_event(" ", "press", function(){
+    switch(Combat.state){
     case Combat_State.Character_Select:
 	// Character has been selected
-	combat.set_state(Combat_State.Action_Select);
+	Combat.set_state(Combat_State.Action_Select);
 	break;
     case Combat_State.Action_Select:
 	// Action has been selected
-	// Handle combat state depending on action type
-	switch(combat.action_sel.get().type){
+	// Handle Combat state depending on action type
+	switch(Combat.action_sel.get().type){
 	case Action_Type.Enemy_Single:
 	    // Ready target selection
-	    combat.target_sel = combat.enemy_sel;
-	    combat.set_state(Combat_State.Target_Select);
+	    Combat.target_sel = Combat.enemy_sel;
+	    Combat.set_state(Combat_State.Target_Select);
 	    break;
 	case Action_Type.Ally_Single:
 	    // Ready target selection
-	    combat.target_sel = combat.ally_sel;
-	    combat.set_state(Combat_State.Target_Select);
+	    Combat.target_sel = Combat.ally_sel;
+	    Combat.set_state(Combat_State.Target_Select);
 	    break;
 	case Action_Type.Enemy_All:
 	case Action_Type.Ally_All:
 	    // Go to player action
-	    combat.set_state(Combat_State.Player_Action);
+	    Combat.set_state(Combat_State.Player_Action);
 	    break;
 	default:
 	    console.log("ERROR::unknown Action_Type: " +
-			combat.action_sel.get().type);
+			Combat.action_sel.get().type);
 	    break;
 	}
 	break;
     case Combat_State.Target_Select:
 	// Go into player animation
-	combat.set_state(Combat_State.Player_Action);
+	Combat.set_state(Combat_State.Player_Action);
 	break;
     default:
 	break;
     }
     
 });
-combat.scene.user_input.add_keyboard_event("a", "press", function(){
-    switch(combat.state){
+Combat.scene.user_input.add_keyboard_event("a", "press", function(){
+    switch(Combat.state){
     case Combat_State.Character_Select:
-	combat.select_living_target(Selection_Type.Previous);
-	combat.update_character_indicator(combat.ally_sel.get());
+	Combat.select_living_target(Selection_Type.Previous);
+	Combat.update_character_indicator(Combat.ally_sel.get());
 	break;
     case Combat_State.Action_Select:
-	combat.action_sel.previous();
-	combat.update_action_indicator();
+	Combat.action_sel.previous();
+	Combat.update_action_indicator();
 	break;
     case Combat_State.Target_Select:
-	combat.select_living_target(Selection_Type.Previous);
-	combat.update_character_indicator(combat.target_sel.get());
+	Combat.select_living_target(Selection_Type.Previous);
+	Combat.update_character_indicator(Combat.target_sel.get());
 	break;
     default:
 	break;
     }
 });
-combat.scene.user_input.add_keyboard_event("d", "press", function(){
-    switch(combat.state){
+Combat.scene.user_input.add_keyboard_event("d", "press", function(){
+    switch(Combat.state){
     case Combat_State.Character_Select:
-	combat.select_living_target(Selection_Type.Next);
-	combat.update_character_indicator(combat.ally_sel.get());
+	Combat.select_living_target(Selection_Type.Next);
+	Combat.update_character_indicator(Combat.ally_sel.get());
 	break;
     case Combat_State.Action_Select:
-	combat.action_sel.next();
-	combat.update_action_indicator();
+	Combat.action_sel.next();
+	Combat.update_action_indicator();
 	break;
     case Combat_State.Target_Select:
-	combat.select_living_target(Selection_Type.Next);
-	combat.update_character_indicator(combat.target_sel.get());
+	Combat.select_living_target(Selection_Type.Next);
+	Combat.update_character_indicator(Combat.target_sel.get());
 	break;
     default:
 	break;

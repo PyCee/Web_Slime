@@ -6,12 +6,12 @@ class Encounter {
     reset () {
 	// Restore health to enemy party
 	for(var i = 0; i < this.enemy_party.characters.length; ++i){
-	    this.enemy_party.characters[i].heal_damage(999);
+	    this.enemy_party.characters[i].reset();
 	}
     }
     start () {
 	this.reset();
-	combat.encounter = this;
-	combat.scene.show();
+	Combat.encounter = this;
+	Combat.scene.show();
     }
 }

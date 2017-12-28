@@ -8,36 +8,63 @@ class Scene {
 	this.show_callback = show_callback;
 	this.inner_update_callback = inner_update_callback;
 	
-	this.renderables = [];
+	this.renderables_list = [];
 	this.user_input = new User_Input_Group();
     }
     update (delta_s) {
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
-	for(var i = 0; i < this.renderables.length; ++i){
-	    // For each renderable
-	    this.renderables[i].update_animation(delta_s);
-	}
 	this.inner_update_callback(delta_s);
+
+	// Update animations and display
+	for(var i = 0; i < this.renderables_list.length; ++i){
+	    this.renderables_list[i].update_animation(delta_s);
+	}
 	this.display();
     }
     display () {
-	scene_scale = canvas.width / this.inside_width;
-	for (var i = 0; i < this.renderables.length; ++i){
-	    this.renderables[i].display();
+	// TODO: set scene_scale to canvas.scale (whatever it is)
+	//   and remove all refs to scene_scale
+	var scale = canvas.width / this.inside_width;
+	scene_scale = scale;
+	//scene_scale = 1.0;
+	for(var i = 0; i < this.renderables_list.length; ++i){
+	    this.renderables_list[i].display();
 	}
     }
     show () {
-	// TODO: add code that does the stuff in comments
 	if(curr_scene != null){
-	    // If there is a previous scene
-	    //   Release it's user input
+	    // If there is a previous scene, release it's user input
 	    curr_scene.user_input.release();
 	}
 	curr_scene = this;
 	this.user_input.bind();
 	this.show_callback();
     }
-    set_renderables (renderables) {
-	this.renderables = renderables;
+    set_renderables (renderables_list) {
+	this.renderables_list = renderables_list;
+    }
+    add_renderable (renderable) {
+	this.renderables_list.push(renderable);
+	return this.renderables_list[this.renderables_list.length - 1].id;
+    }
+    remove_renderable (renderable) {
+	var index = this.renderables_list.indexOf(renderable);
+	if(index == -1){
+	    console.log("Scene.remove_renderable called with invalid renderable: " +
+			renderable);
+	} else {
+	    this.remove_renderable_index(index);
+	}
+    }
+    remove_renderable_id (id) {
+	for(var i = 0; i < this.renderables_list.length; ++i){
+	    if(id == this.renderables_list[i].id){
+		this.remove_renderable_index(i);
+		return;
+	    }
+	}
+    }
+    remove_renderable_index (index) {
+	this.renderables_list.splice(index, 1);
     }
 }

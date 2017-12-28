@@ -27,11 +27,17 @@ class Sequence {
 		if(pre_et < this.lerps[i].t1){pre_et = this.lerps[i].t1;}
 		if(post_et > this.lerps[i].t2){post_et = this.lerps[i].t2;}
 		this.lerps[i].update(pre_et - post_et);
+		if(post_update_time >= this.lerps[i].t2){
+		    // remove this lerp
+		}
 	    }
 	}
     }
     add_lerp (lerp) {
 	this.lerps.push(lerp);
+    }
+    add_event (time, callback) {
+	this.timeline.add_event(time, callback);
     }
 }
 class Lerp {

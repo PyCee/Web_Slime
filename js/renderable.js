@@ -1,23 +1,31 @@
+var g_next_renderable_id = 0;
+function assign_renderable_id () {
+    return g_next_renderable_id++;
+}
+
 class Renderable {
-    constructor (position, size, idle_animation){
+    constructor (position, size, animation){
 	this.position = position;
 	this.size = size;
-	this.idle_animation = idle_animation;
-	this.animation = this.idle_animation;
+	this.animation = animation;
+	this.should_display = true;
+	this.id = assign_renderable_id();
     }
-    hide () {this.animation.hide();}
-    show () {this.animation.show();}
+    hide () {this.should_display = false;}
+    show () {this.should_display = true;}
     set_animation (animation) {
 	this.animation = animation;
 	this.animation.reset();
     }
-    set_idle () {
-	this.set_animation(this.idle_animation);
+    set_position (position) {
+	this.position = position;
     }
     update_animation (delta_s) {
 	this.animation.update(delta_s);
     }
     display () {
-	this.animation.draw(this.position, this.size);
+	if(this.should_display){
+	    this.animation.draw(this.position, this.size);
+	}
     }
 }

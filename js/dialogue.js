@@ -36,12 +36,13 @@ var Dialogue = {
 	    ctx.fillRect(Dialogue.offset.x, Dialogue.offset.y,
 			 Dialogue.width, Dialogue.height * Dialogue.text_array.length);
 	    // Draw text
+	    ctx.textBaseline = "top";
 	    ctx.font = Dialogue.font_size + "px Arial";
-	    ctx.fillStyle = "#005500";
+	    ctx.fillStyle = "#002211";
 	    for(var i = 0; i < Dialogue.text_array.length; ++i){
 		ctx.fillText(Dialogue.text_array[i],
 			     Dialogue.offset.x + 5,
-			     Dialogue.offset.y + Dialogue.font_size*(i+1));
+			     Dialogue.offset.y + Dialogue.font_size*i);
 	    }
 	}
     }
