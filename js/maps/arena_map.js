@@ -107,7 +107,7 @@ Arena.dummy_battle_2 =
 		  function () {
 		      Arena.dummy_2.set_animation(new Animation(Sprite.training_dummy,
 								"dead dummy",[[3,0]]));
-		      combat.ally_party.add_member(fight_character);
+		      Combat.ally_party.add_member(fight_character);
 		      Cutscene.start(Arena.sequence_3);
 		  });
 Arena.dummy_battle_3 =
@@ -120,32 +120,32 @@ Arena.dummy_battle_3 =
 
 
 Arena.sequence_1 = new Sequence();
-Arena.sequence_1.timeline.add_event(1.0, disable_controls);
+Arena.sequence_1.add_event(1.0, disable_controls);
 Arena.sequence_1.add_lerp(new Lerp(1.0, 2.5, new Vector(0.0, 1.5), [Arena.gate_1]));
 Arena.sequence_1.add_lerp(new Lerp(3.0, 5.0, new Vector(0.0, -4.2), [Arena.dummy_1]));
 Arena.sequence_1.timeline.add_event(4.0, function(){Dialogue.set(["Take this!"], 3.0);});
 Arena.sequence_1.add_lerp(new Lerp(4.8, 6.3, new Vector(0.0, -1.5), [Arena.gate_1]));
-Arena.sequence_1.timeline.add_event(6.5, enable_controls);
+Arena.sequence_1.add_event(6.5, enable_controls);
 
 Arena.sequence_2 = new Sequence();
-Arena.sequence_2.timeline.add_event(0.0, disable_controls);
+Arena.sequence_2.add_event(0.0, disable_controls);
 Arena.sequence_2.add_lerp(new Lerp(0.5, 2.0, new Vector(0.0, 1.5), [Arena.gate_2]));
 Arena.sequence_2.add_lerp(new Lerp(2.5, 4.5, new Vector(0.0, -4.2), [Arena.dummy_2]));
 Arena.sequence_2.timeline.add_event(3.0, function(){Dialogue.set(["Two more!"], 3.0);});
 Arena.sequence_2.add_lerp(new Lerp(4.3, 5.8, new Vector(0.0, -1.5), [Arena.gate_2]));
-Arena.sequence_2.timeline.add_event(5.8, enable_controls);
+Arena.sequence_2.add_event(5.8, enable_controls);
 
 Arena.sequence_3 = new Sequence();
-Arena.sequence_3.timeline.add_event(0.0, disable_controls);
-Arena.sequence_3.timeline.add_event(0.0, function(){
+Arena.sequence_3.add_event(0.0, disable_controls);
+Arena.sequence_3.add_event(0.0, function(){
     Dialogue.set(["Now with an ally!"], 5.0);});
 Arena.sequence_3.add_lerp(new Lerp(0.5, 2.0, new Vector(0.0, 1.5), [Arena.gate_3]));
 Arena.sequence_3.add_lerp(new Lerp(2.5, 4.5, new Vector(0.0, -4.2), [Arena.dummy_3]));
 Arena.sequence_3.add_lerp(new Lerp(4.3, 5.8, new Vector(0.0, -1.5), [Arena.gate_3]));
-Arena.sequence_3.timeline.add_event(4.5, function(){
+Arena.sequence_3.add_event(4.5, function(){
     Dialogue.set(["A Fighter joined the party!"], 5.0);});
-Arena.sequence_3.timeline.add_event(5.8, enable_controls);
-    
+Arena.sequence_3.add_event(5.8, enable_controls);
+
 Arena.map = new Map(Arena.width,function(){
     Cutscene.start(Arena.sequence_1);
 });
