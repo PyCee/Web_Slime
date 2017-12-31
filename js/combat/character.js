@@ -3,8 +3,8 @@ var Health_Change_Type = {
     Heal: 1
 };
 var Health_Change_Indicator = {
-    offset: new Vector(0.0, 0.07),
-    size: new Vector(0.0, 0.06),
+    offset: new Vector(0.02, -0.05),
+    font_size: 0.06,
     damage_color: "#aa0011",
     heal_color: "#00aa11"
 };
@@ -37,7 +37,7 @@ class Character extends Renderable {
 	this.set_animation(this.idle_animation);
     }
     position_health_bar () {
-	this.health_bar.position = this.position.subtract(new Vector(0.0, -0.16));
+	this.health_bar.position = this.position.add(new Vector(0.0, 0.16));
     }
     change_health (change, type) {
 	var health_sign = "";
@@ -66,10 +66,9 @@ class Character extends Renderable {
 	    }
 	}
 	this.health_bar.set_progress(this.health);
-	
 	var health_change_ind =
-	    new Text(this.position.subtract(Health_Change_Indicator.offset),
-		     Health_Change_Indicator.size,
+	    new Text(this.position.add(Health_Change_Indicator.offset),
+		     Health_Change_Indicator.font_size,
 		     health_sign + change, indicator_color);
 	var id = Combat.scene.add_renderable(health_change_ind);
 	var health_change_ind_sequence = new Sequence();

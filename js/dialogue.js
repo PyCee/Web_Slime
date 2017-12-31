@@ -2,12 +2,21 @@ var Dialogue = {
     text_array: [],
     timeline: new Timeline(),
     duration: 0.0,
-    font_size: 48,
-    offset: new Vector(canvas.width * 0.1, canvas.height * 0.0),
-    width: canvas.width * 0.8,
-    height: canvas.height * 0.1,
+    font_size: 0.02,
+    bg_offset: new Vector(canvas.width * 0.025,
+			 canvas.height * 0.8),
+    bg_size: new Vector(canvas.width * 0.95,
+			canvas.height * 0.15),
+    text_offset: new Vector(0.08, 0.465),
     set: function (text_array, duration=-1) {
-	Dialogue.text_array = text_array;
+	Dialogue.text_array = [];
+	for(var i = 0; i < text_array.length; ++i){
+	    Dialogue.text_array.push(
+		new Text(new Vector(Dialogue.text_offset.x,
+				    Dialogue.text_offset.y + i * Dialogue.font_size),
+			 Dialogue.font_size,
+			 text_array[i], "#002211"));
+	}
 	Dialogue.duration = duration;
 	Dialogue.timeline.reset();
     },
@@ -18,6 +27,7 @@ var Dialogue = {
     },
     has_text () {return Dialogue.text_array.length != 0},
     write (delta_s) {
+	// TODO: specify dialogue area
 	if(Dialogue.has_text()){
 	    // If there is text to write
 	    
@@ -30,19 +40,14 @@ var Dialogue = {
 		Dialogue.reset();
 		return;
 	    }
-	    
-	    // Draw text background
+
+	    // Draw dialogue background
 	    ctx.fillStyle = "#ffffff";
-	    ctx.fillRect(Dialogue.offset.x, Dialogue.offset.y,
-			 Dialogue.width, Dialogue.height * Dialogue.text_array.length);
-	    // Draw text
-	    ctx.textBaseline = "top";
-	    ctx.font = Dialogue.font_size + "px Arial";
-	    ctx.fillStyle = "#002211";
+	    ctx.fillRect(Dialogue.bg_offset.x, Dialogue.bg_offset.y,
+			 Dialogue.bg_size.x, Dialogue.bg_size.y);
 	    for(var i = 0; i < Dialogue.text_array.length; ++i){
-		ctx.fillText(Dialogue.text_array[i],
-			     Dialogue.offset.x + 5,
-			     Dialogue.offset.y + Dialogue.font_size*i);
+		// Display all lines of text
+		Dialogue.text_array[i].display();
 	    }
 	}
     }

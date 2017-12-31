@@ -1,6 +1,6 @@
 class Text extends Renderable {
-    constructor (position, size, text, color="#002211") {
-	super(position, size, null);
+    constructor (position, font_size, text, color) {
+	super(position, new Vector(font_size, font_size), null);
 	this.text = text;
 	this.color = color;
     }
@@ -10,9 +10,10 @@ class Text extends Renderable {
     update_animation(){}
     display () {
 	ctx.textBaseline = "top";
-	var pos = this.position.scale(scene_scale);
 	ctx.fillStyle = this.color;
-	ctx.font = (scene_scale * this.size.y) + "px Arial";
+	ctx.font = this.size.y*canvas.width + "px Lucida Console, Monaco, monospace";
+	var pos = this.position.scale(canvas.width);
 	ctx.fillText(this.text, pos.x, pos.y);
+	//ctx.fillText(this.text, this.position.x, this.position.y);
     }
 }

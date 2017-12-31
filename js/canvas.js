@@ -24,7 +24,7 @@ var canvas_dimensions = {
 // canvas pixel resolution
 canvas.width = 1080; // X resolution
 canvas.height = canvas.width *
-    canvas_dimensions.aspect_ratio.y / canvas_dimensions.aspect_ratio.x;
+    canvas_dimensions.aspect_ratio.multiplier;
 
 function resize_canvas () {
     // canvas style.width and style.height are the screen displayed width and height

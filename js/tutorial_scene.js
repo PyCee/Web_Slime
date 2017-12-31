@@ -5,11 +5,8 @@ var tutorial = {
     scene: new Scene("Tutorial", 1.0, function(){
 	var text = [
 	    "a and d will change selection (left/right)",
-	    "space will interact with the selection",
-	    "(and exit this screen)",
-	    "",
-	    "while exploring,",
-	    "wasd will move the character"
+	    "space will interact with the selection (and exit this screen)",
+	    "while exploring, wasd will move the character"
 	];
 	Dialogue.set(text);
     }, function(delta_s){})

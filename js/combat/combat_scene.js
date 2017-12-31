@@ -20,14 +20,14 @@ var Combat = {
 	    // Set positions from center-screen, right to left
 	    Combat.ally_party.characters[i].position = 
 		new Vector(0.5 - (i+1) * 1.10 *
-			   Combat.ally_party.characters[i].size.x, 0.2);
+			   Combat.ally_party.characters[i].size.x, 0.1);
 	    Combat.ally_party.characters[i].position_health_bar();
 	}
 	for(var i = 0; i < Combat.encounter.enemy_party.characters.length; ++i){
 	    // Set positions from center-screen, left to right
 	    Combat.encounter.enemy_party.characters[i].position = 
 		new Vector(0.5 + (i) * 1.10 *
-			   Combat.encounter.enemy_party.characters[i].size.x, 0.2);
+			   Combat.encounter.enemy_party.characters[i].size.x, 0.1);
 	    Combat.encounter.enemy_party.characters[i].position_health_bar();
 	}
 	
@@ -141,12 +141,12 @@ var Combat = {
     end_timeline: new Timeline(),
     acting_character: null,
     
-    first_action_icon: new Renderable(new Vector(0.15, 0.4), new Vector(0.3, 0.1),
+    first_action_icon: new Renderable(new Vector(0.15, 0.3), new Vector(0.3, 0.1),
 				 new Animation(Sprite.black)),
-    second_action_icon: new Renderable(new Vector(0.65, 0.4), new Vector(0.3, 0.1),
+    second_action_icon: new Renderable(new Vector(0.65, 0.3), new Vector(0.3, 0.1),
 				  new Animation(Sprite.black)),
     action_sel: null,
-    action_sel_indicator: new Renderable(new Vector(0.05, 0.4), new Vector(0.1, 0.1),
+    action_sel_indicator: new Renderable(new Vector(0.05, 0.3), new Vector(0.1, 0.1),
 					 new Animation(Sprite.red)),
     // ally_sel and enemy_sel are created upon Combat.scene load,
     //   and changed as characters die during battle
@@ -214,9 +214,10 @@ var Combat = {
 	    }
 	    break;
 	case Combat_State.Player_Action:
+	    
 	    Dialogue.set([Combat.acting_character.name + " is using " +
-			  Combat.action_sel.get().name,
-			  "on " + Combat.target_sel.get().name]);
+			  Combat.action_sel.get().name + " on " +
+			  Combat.target_sel.get().name]);
 	    // Hide aciton selection indicator after selecting target
 	    Combat.action_sel_indicator.hide();
 	    Combat.character_sel_indicator.hide();
@@ -245,12 +246,11 @@ var Combat = {
 	    var target_index = Math.floor(Math.random() *
 					  Combat.living_allies.characters.length);
 	    Combat.target_sel.set_index(target_index);
-
 	    
 	    Combat.acting_character.animation.reset();
 	    Dialogue.set([Combat.acting_character.name + " is using " +
-			  Combat.action_sel.get().name,
-			  "on " + Combat.target_sel.get().name]);
+			  Combat.action_sel.get().name + " on " +
+			  Combat.target_sel.get().name]);
 	    break;
 	case Combat_State.Win:
 	    Dialogue.set(["You Win!"], Combat.win_wait);
@@ -264,11 +264,11 @@ var Combat = {
     },
     update_action_indicator: function () {
 	Combat.action_sel_indicator.position =
-	    new Vector(0.05 + Combat.action_sel.get_index() * 0.5, 0.4);
+	    new Vector(0.05 + Combat.action_sel.get_index() * 0.5, 0.3);
     },
     update_character_indicator: function (character) {
 	Combat.character_sel_indicator.position =
-	    new Vector(character.position.x, 0.15);
+	    new Vector(character.position.x, character.position.y - 0.05);
 	if(Combat.state == Combat_State.Character_Select){
 	    Combat.update_action_icons();
 	}
