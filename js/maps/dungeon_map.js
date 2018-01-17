@@ -4,8 +4,7 @@ Dungeon.height = Dungeon.width * canvas_dimensions.aspect_ratio.multiplier;
 
 Dungeon.key_item = new Inventory_Item("dungeon key", "key on the ground");
 Dungeon.key = new Actor(new Vector(3.5, 1.5), new Vector(0.5, 0.5),
-			new Animation(Sprite.key),
-			false);
+			new Animation(Sprite.key), 1, false);
 Dungeon.gate = new Actor(new Vector(2.0, 0.0), new Vector(0.75, 1.0),
 			 new Animation(Sprite.gate));
 

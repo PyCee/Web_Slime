@@ -4,7 +4,7 @@ Arena.height = Arena.width * canvas_dimensions.aspect_ratio.multiplier;
 
 Arena.top_wall = new Actor(new Vector(0.0, 0.0),
 			   new Vector(Arena.width, 1.0),
-			   new Animation(Sprite.black), false);
+			   new Animation(Sprite.black), 1, false);
 Arena.gate_wall_1 = new Actor(new Vector(0.5, 1.0),
 			      new Vector(1.0, 2.0),
 			      new Animation(Sprite.black));
@@ -44,15 +44,15 @@ Arena.gate_3 = new Actor(new Vector(8.5, 1.0),
 Arena.dummy_1 = new Actor(new Vector(1.75, -1.0),
 			  new Vector(1.5, 1.5),
 			  new Animation(Sprite.training_dummy, "Dummy",
-					[[0,0],[1,0],[0,0],[2,0]], 2, -1), false, true);
+					[[0,0],[1,0],[0,0],[2,0]], 2, -1), 1, false, true);
 Arena.dummy_2 = new Actor(new Vector(5.25, -1.0),
 			  new Vector(1.5, 1.5),
 			  new Animation(Sprite.training_dummy, "Dummy",
-					[[0,0],[1,0],[0,0],[2,0]], 2, -1), false, true);
+					[[0,0],[1,0],[0,0],[2,0]], 2, -1), 1, false, true);
 Arena.dummy_3 = new Actor(new Vector(8.75, -1.0),
 			  new Vector(1.5, 1.5),
 			  new Animation(Sprite.training_dummy, "Dummy",
-					[[0,0],[1,0],[0,0],[2,0]], 2, -1), false, true);
+					[[0,0],[1,0],[0,0],[2,0]], 2, -1), 1, false, true);
 
 // Map exit event to Corridor
 Arena.corridor_exit_test = function () {

@@ -4,10 +4,14 @@ function assign_renderable_id () {
 }
 
 class Renderable {
-    constructor (position, size, animation){
+    constructor (position, size, animation, draw_priority=1){
 	this.position = position;
 	this.size = size;
-	this.animation = animation;
+    this.animation = animation;
+    this.draw_priority = draw_priority;
+    if(draw_priority <= 0){
+        console.log("ERROR::Renderable with draw_priority == " + draw_priority);
+    }
 	this.should_display = true;
 	this.id = assign_renderable_id();
     }

@@ -1,7 +1,7 @@
 class Actor extends Renderable {
-    constructor (position, size, animation, blocking=true, movable=true,
+    constructor (position, size, animation, draw_priority=1, blocking=true, movable=true,
 		 update=function(){}, interaction=function(){}) {
-	super(position, size, animation);
+	super(position, size, animation, draw_priority);
 	this.bounding_box = new Block(this.position, this.size);
 	this.blocking = blocking;
 	this.movable = movable;
