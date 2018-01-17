@@ -91,7 +91,7 @@ Arena.dummy_battle_callback_3 = function () {
     Arena.dummy_battle_3.start();
 };
 Arena.dummy_battle_event_3 = new Event(Arena.dummy_battle_test_3,
-				     Arena.dummy_battle_callback_3);
+				       Arena.dummy_battle_callback_3);
 
 // Encounters
 Arena.dummy_battle_1 =
@@ -99,7 +99,7 @@ Arena.dummy_battle_1 =
 		  function () {
 		      Arena.dummy_1.set_animation(new Animation(Sprite.training_dummy,
 								"dead dummy",[[3,0]]));
-		      Cutscene.start(Arena.sequence_2);
+		      Arena.sequence_2.start();
 		  });
 Arena.dummy_battle_2 =
     new Encounter(new Party([Enemies.training_dummy(),
@@ -108,7 +108,7 @@ Arena.dummy_battle_2 =
 		      Arena.dummy_2.set_animation(new Animation(Sprite.training_dummy,
 								"dead dummy",[[3,0]]));
 		      Combat.ally_party.add_member(fight_character);
-		      Cutscene.start(Arena.sequence_3);
+		      Arena.sequence_3.start();
 		  });
 Arena.dummy_battle_3 =
     new Encounter(new Party([Enemies.training_dummy(),
@@ -147,7 +147,7 @@ Arena.sequence_3.add_event(4.5, function(){
 Arena.sequence_3.add_event(5.8, enable_controls);
 
 Arena.map = new Map(Arena.width,function(){
-    Cutscene.start(Arena.sequence_1);
+    Arena.sequence_1.start();
 });
 Arena.map.set_actors([
     slime,

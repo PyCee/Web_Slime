@@ -19,7 +19,7 @@ function loop () {
     curr_scene.update(delta_s);
     
     // Update the cutscene variable
-    Cutscene.update(delta_s);
+    Active_Sequence_List.update(delta_s);
     
     // Write any dialogue
     Dialogue.write(delta_s);

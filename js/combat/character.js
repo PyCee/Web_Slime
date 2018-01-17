@@ -77,7 +77,7 @@ class Character extends Renderable {
 	health_change_ind_sequence.add_event(3.0, function(){
 	    Combat.scene.remove_renderable_id(id);
 	});
-	Cutscene.start(health_change_ind_sequence);
+	health_change_ind_sequence.start();
     }
     take_damage (damage) {
 	this.change_health(damage, Health_Change_Type.Damage);

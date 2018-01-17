@@ -1,11 +1,8 @@
-var Cutscene = {
+var Active_Sequence_List = {
     sequences: [],
-    start: function (sequence) {
-	Cutscene.sequences.push(sequence);
-    },
     update: function (delta_s) {
-	for(var i = 0; i < Cutscene.sequences.length; ++i){
-	    Cutscene.sequences[i].update(delta_s);
+	for(var i = 0; i < Active_Sequence_List.sequences.length; ++i){
+	    Active_Sequence_List.sequences[i].update(delta_s);
 	}
     }
 };
@@ -38,6 +35,9 @@ class Sequence {
     }
     add_event (time, callback) {
 	this.timeline.add_event(time, callback);
+    }
+    start () {
+	Active_Sequence_List.sequences.push(this);
     }
 }
 class Lerp {
