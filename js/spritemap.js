@@ -30,7 +30,7 @@ var Sprite = {
     action_tackle: new Spritemap("action_tackle.png"),
     action_heal: new Spritemap("action_heal.png"),
     action_punch: new Spritemap("action_punch.png"),
-    action_super_punch: new Spritemap("action_super_punch.png"),
+    action_uppercut: new Spritemap("action_uppercut.png"),
     action_sit: new Spritemap("action_sit.png"),
     action_stare: new Spritemap("action_stare.png")
     //: new Spritemap(".png")

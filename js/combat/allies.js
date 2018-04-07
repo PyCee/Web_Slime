@@ -16,9 +16,9 @@ var fight_character =
 			     new Animation(Sprite.fighter, "punch",
 					   [[0,0], [1,0]], 1.0, 3),
 			     new Animation(Sprite.action_punch)),
-		  new Action("Super Punch", Action_Type.Enemy_Single,
+		  new Action("Uppercut", Action_Type.Enemy_Single,
 			     function(target){target.take_damage(3);},
 			     new Animation(Sprite.fighter, "fig",
 					   [[0,0],[1,1]], 2),
-			     new Animation(Sprite.action_super_punch)));
+			     new Animation(Sprite.action_uppercut)));
 Combat.ally_party.add_member(slime_character);
