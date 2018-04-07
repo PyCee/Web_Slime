@@ -27,8 +27,9 @@ class Scene {
 	var scale = canvas.width / this.inside_width;
 	scene_scale = scale;
 	//scene_scale = 1.0;
+	// Draw scene's renderables
 	for(var i = 0; i < this.renderables_list.length; ++i){
-	    this.renderables_list[i].display();
+		this.renderables_list[i].display();
 	}
     }
     show () {
@@ -41,11 +42,18 @@ class Scene {
 	this.show_callback();
     }
     set_renderables (renderables_list) {
-	this.renderables_list = renderables_list;
+		this.renderables_list = renderables_list;
+
+		// Sort renerables_list so painters algorithm will draw according to priority
+		this.renderables_list.sort(function(ren_1, ren_2){
+			return ren_1.draw_priority - ren_2.draw_priority;
+		});
     }
     add_renderable (renderable) {
-	this.renderables_list.push(renderable);
-	return this.renderables_list[this.renderables_list.length - 1].id;
+		var tmp_renderables = this.renderables_list;
+		tmp_renderables.push(renderable);
+		this.set_renderables(tmp_renderables);
+		return this.renderables_list[this.renderables_list.length - 1].id;
     }
     remove_renderable (renderable) {
 	var index = this.renderables_list.indexOf(renderable);
@@ -65,6 +73,8 @@ class Scene {
 	}
     }
     remove_renderable_index (index) {
-	this.renderables_list.splice(index, 1);
+		var tmp_renderables = this.renderables_list;
+		tmp_renderables.splice(index, 1);
+		this.set_renderables(tmp_renderables);
     }
 }

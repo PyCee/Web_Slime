@@ -31,8 +31,8 @@ var exploration = {
     map: null
 };
 var slime = new Actor(new Vector(0.0, 0.0), new Vector(0.5, 0.5),
-		      new Animation(Sprite.slime, "Slime Move", [[0,0],[1,0]], 2, -1),
-		      true, true, function(){});
+			  new Animation(Sprite.slime, "Slime Move", [[0,0],[1,0]], 2, -1),
+			  2, true, true, function(){});
 var SLIME_MOVE_SPEED = 2.0;
 
 // Add basic control for exploration
