@@ -116,6 +116,7 @@ Arena.dummy_battle_3 =
 		  function () {
 		      Arena.dummy_3.set_animation(new Animation(Sprite.training_dummy,
 								"dead dummy",[[3,0]]));
+		      Dialogue.set(["You Win! Refresh the page to play again!"], -1)
 		  });
 
 
