@@ -37,8 +37,7 @@ title.scene.user_input.add_keyboard_event(" ", "press", function(){
 	exploration.scene.show();
 	break;
     case title.test:
-	Dialogue.set(["Testing feature: Arena"]);
-	Arena.dummy_battle_1.start();
+	Dialogue.set(["Testing not currently implimented"]);
 	break;
     default:
 	break;
