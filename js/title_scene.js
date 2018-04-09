@@ -1,11 +1,11 @@
 var title = {
     // A selection that manages selecting options on the home screen
     scene: new Scene("Title", 1.0, function(){
-	title.selection = new Selection([title.start, title.test]);
+	title.selection = new Selection([title.start]);//, title.test]);
 	title.selection.reset();
 	title.reset_sel_indicator_position();
     }),
-    start: new Renderable(new Vector(0.15, 0.4), new Vector(0.3, 0.075),
+    start: new Renderable(new Vector(0.3, 0.4), new Vector(0.3, 0.075),
 				    new Animation(Sprite.title_start)),
     test: new Renderable(new Vector(0.6, 0.4), new Vector(0.3, 0.075),
 				   new Animation(Sprite.title_test)),
@@ -19,7 +19,7 @@ var title = {
     },
 };
 
-title.scene.set_renderables([title.sel_indicator, title.start, title.test]);
+title.scene.set_renderables([title.sel_indicator, title.start]);//, title.test]);
 title.scene.user_input.add_keyboard_event("a", "press", function(){
     title.selection.previous();
     title.reset_sel_indicator_position();
