@@ -11,7 +11,8 @@ var title = {
 				   new Animation(Sprite.title_test)),
     selection: null,
     sel_indicator: new Renderable(new Vector(0.0, 0.4), new Vector(0.05, 0.075),
-			  new Animation(Sprite.black)),
+				  new Animation(Sprite.black)),
+    title_text: new Text(new Vector(0.2, 0.1), 0.2, "Slime", "#22aa33"),
     reset_sel_indicator_position: function () {
 	title.sel_indicator.position =
 	    new Vector(title.selection.get().position.x - 0.055,
@@ -19,7 +20,7 @@ var title = {
     },
 };
 
-title.scene.set_renderables([title.sel_indicator, title.start]);//, title.test]);
+title.scene.set_renderables([title.sel_indicator, title.start, title.title_text]);//, title.test]);
 title.scene.user_input.add_keyboard_event("a", "press", function(){
     title.selection.previous();
     title.reset_sel_indicator_position();
