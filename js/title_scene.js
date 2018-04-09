@@ -37,7 +37,7 @@ title.scene.user_input.add_keyboard_event(" ", "press", function(){
 	exploration.scene.show();
 	break;
     case title.test:
-	Dialogue.set(["Testing not currently implimented"]);
+	Dialogue.set(["Testing not currently implimented"], 3.0);
 	break;
     default:
 	break;
